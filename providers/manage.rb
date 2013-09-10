@@ -58,9 +58,11 @@ action :apply do
       rules_file << "COMMIT\n"
     end
 
-    file node['iptables-ng']["script_ipv#{ip_version}"] do
+    r = file node['iptables-ng']["script_ipv#{ip_version}"] do
       mode 00700
       content rules_file
     end
+
+    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 end
