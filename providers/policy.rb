@@ -21,20 +21,19 @@
 action :set do
   rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
 
-  r = file rule_path do
-    mode     00700
-    content  "#{new_resource.policy}\n"
-    action   :nothing
+  r = file(rule_path) do
+    mode    00700
+    content "#{new_resource.policy}\n"
+    action  :create
   end
-  r.run_action(:create)
+
+  m = iptables_ng_manage([ 4, 6 ])
+  m.subscribes(:apply, "file[#{rule_path}", :delayed)
 
   # create /etc/iptables/rules* if file is not existent or content is going to change
   if r.updated_by_last_action?
-    iptables_ng_manage(4).run_action(:apply)
-    iptables_ng_manage(6).run_action(:apply)
     new_resource.updated_by_last_action(true)
   else
-    iptables_ng_manage(4).run_action(:apply) unless ::File.exists?(node['iptables-ng']['script_ipv4'])
-    iptables_ng_manage(6).run_action(:apply) unless ::File.exists?(node['iptables-ng']['script_ipv6'])
+    m.run_action(:apply) unless ::File.exists?(node['iptables-ng']['script_ipv4'])
   end
 end

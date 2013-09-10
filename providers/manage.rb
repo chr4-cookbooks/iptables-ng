@@ -19,46 +19,48 @@
 #
 
 action :apply do
-  rules = {}
+  Array(new_resource.ip_version).each do |ip_version|
+    rules = {}
 
-  # Retrieve all iptables rules for this ip_version,
-  # as well as default policies
-  Dir["/etc/iptables.d/*/*/*.rule_v#{new_resource.ip_version}",
-      '/etc/iptables.d/*/*/default'].each do |path|
+    # Retrieve all iptables rules for this ip_version,
+    # as well as default policies
+    Dir["/etc/iptables.d/*/*/*.rule_v#{ip_version}",
+        '/etc/iptables.d/*/*/default'].each do |path|
 
-    # /etc/iptables.d/#{table}/#{chain}/#{rule}.rule_v#{ip_version}
-    table, chain, filename = path.split('/')[3..5]
-    rule = ::File.basename(filename)
+      # /etc/iptables.d/#{table}/#{chain}/#{rule}.rule_v#{ip_version}
+      table, chain, filename = path.split('/')[3..5]
+      rule = ::File.basename(filename)
 
-    # Create hashes unless they already exist, and add the rule
-    rules[table] ||= {}
-    rules[table][chain] ||= {}
-    rules[table][chain][rule] = ::File.read(path)
-  end
-
-  rules_file = ''
-  rules.each do |table, chains|
-    rules_file << "*#{table}\n"
-
-    # Get default policies and rules for this chain
-    default_policies = chains.inject({}) {|new_chain, rule| new_chain[rule[0]] = rule[1].select{|k, v| k == 'default'}; new_chain }
-    all_chain_rules = chains.inject({}) {|new_chain, rule| new_chain[rule[0]] = rule[1].reject{|k, v| k == 'default'}; new_chain }
-
-    # Apply default policies first
-    default_policies.each do |chain, policy|
-      rules_file << ":#{chain} #{policy['default'].chomp}\n"
+      # Create hashes unless they already exist, and add the rule
+      rules[table] ||= {}
+      rules[table][chain] ||= {}
+      rules[table][chain][rule] = ::File.read(path)
     end
 
-    # Apply rules for this chain, but sort before adding
-    all_chain_rules.each do |chain, chain_rules|
-      chain_rules.values.sort.each { |r| rules_file << "#{r.chomp}\n" }
+    rules_file = ''
+    rules.each do |table, chains|
+      rules_file << "*#{table}\n"
+
+      # Get default policies and rules for this chain
+      default_policies = chains.inject({}) {|new_chain, rule| new_chain[rule[0]] = rule[1].select{|k, v| k == 'default'}; new_chain }
+      all_chain_rules  = chains.inject({}) {|new_chain, rule| new_chain[rule[0]] = rule[1].reject{|k, v| k == 'default'}; new_chain }
+
+      # Apply default policies first
+      default_policies.each do |chain, policy|
+        rules_file << ":#{chain} #{policy['default'].chomp}\n"
+      end
+
+      # Apply rules for this chain, but sort before adding
+      all_chain_rules.each do |chain, chain_rules|
+        chain_rules.values.sort.each { |r| rules_file << "#{r.chomp}\n" }
+      end
+
+      rules_file << "COMMIT\n"
     end
 
-    rules_file << "COMMIT\n"
-  end
-
-  file node['iptables-ng']["script_ipv#{new_resource.ip_version}"] do
-    mode 00700
-    content rules_file
+    file node['iptables-ng']["script_ipv#{ip_version}"] do
+      mode 00700
+      content rules_file
+    end
   end
 end

@@ -30,29 +30,29 @@ end
 def edit_rule(exec_action)
   # Create rule for given ip_versions
   Array(new_resource.ip_version).each do |ip_version|
-    rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/#{new_resource.name}.rule_v#{ip_version}"
-
     rule_file = ''
     Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
 
-    r = file rule_path do
-      mode     00700
-      content  rule_file
-      action   :nothing
+    rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/#{new_resource.name}.rule_v#{ip_version}"
+
+    r = file(rule_path) do
+      mode    00700
+      content rule_file
+      action  exec_action
     end
-    r.run_action(exec_action)
+
+    m = iptables_ng_manage([ ip_version ])
+    m.subscribes(:apply, "file[#{rule_path}", :delayed)
 
     # create /etc/iptables/rules* if file is not existent or content is going to change
     if r.updated_by_last_action?
-      iptables_ng_manage(ip_version).run_action(:apply)
       new_resource.updated_by_last_action(true)
     else
-      iptables_ng_manage(ip_version).run_action(:apply) unless ::File.exists?(node['iptables-ng']["script_ipv#{ip_version}"])
+      m.run_action(:apply) unless ::File.exists?(node['iptables-ng']["script_ipv#{ip_version}"])
     end
   end
 
   # TODO: link to .rule for rhel compatibility?
-  # TODO: reload rules
 end
 
 
