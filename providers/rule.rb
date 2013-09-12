@@ -18,8 +18,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-action :create do
-  edit_rule(:create)
+action :set do
+  edit_rule(:set)
+end
+
+action :apply do
+  edit_rule(:apply)
 end
 
 action :delete do
@@ -35,23 +39,21 @@ def edit_rule(exec_action)
 
     rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/#{new_resource.name}.rule_v#{ip_version}"
 
-    r = file(rule_path) do
-      owner   'root'
-      group   'root'
-      mode    00600
-      content rule_file
-      action  exec_action
+    r = file rule_path do
+      owner    'root'
+      group    'root'
+      mode     00600
+      content  rule_file
+      notifies :create, 'ruby_block[apply_rules]', :delayed
+
+      if exec_action == :delete
+        action :delete
+      else
+        action :create
+      end
     end
 
-    m = iptables_ng_manage([ ip_version ])
-    m.subscribes(:apply, "file[#{rule_path}", :delayed)
-
-    # create /etc/iptables/rules* if file is not existent or content is going to change
-    if r.updated_by_last_action?
-      new_resource.updated_by_last_action(true)
-    else
-      m.run_action(:apply) unless ::File.exists?(node['iptables-ng']["script_ipv#{ip_version}"])
-    end
+    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 
   # TODO: link to .rule for rhel compatibility?

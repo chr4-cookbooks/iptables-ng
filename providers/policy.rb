@@ -19,23 +19,24 @@
 #
 
 action :set do
+  edit_policy(:set)
+end
+
+action :apply do
+  edit_policy(:apply)
+end
+
+def edit_policy(exec_action)
   rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
 
-  r = file(rule_path) do
-    owner   'root'
-    group   'root'
-    mode    00600
-    content "#{new_resource.policy}\n"
-    action  :create
+  r = file rule_path do
+    owner    'root'
+    group    'root'
+    mode     00600
+    content  "#{new_resource.policy}\n"
+    notifies :create, 'ruby_block[apply_rules]', :delayed
+    action   :create
   end
 
-  m = iptables_ng_manage([ 4, 6 ])
-  m.subscribes(:apply, "file[#{rule_path}", :delayed)
-
-  # create /etc/iptables/rules* if file is not existent or content is going to change
-  if r.updated_by_last_action?
-    new_resource.updated_by_last_action(true)
-  else
-    m.run_action(:apply) unless ::File.exists?(node['iptables-ng']['script_ipv4'])
-  end
+  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 end
