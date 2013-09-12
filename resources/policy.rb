@@ -21,8 +21,8 @@
 actions        :create, :create_if_missing, :delete
 default_action :create
 
-attribute :chain,  kind_of: String, name_attribute: true
-attribute :table,  kind_of: String, default: 'filter'
+attribute :chain,  kind_of: String, name_attribute: true, equal_to: %w{INPUT OUTPUT FORWARD PREROUTING POSTROUTING}
+attribute :table,  kind_of: String, default: 'filter',    equal_to: %w{filter nat mangle raw}
 attribute :policy, kind_of: String, default: 'ACCEPT [0:0]'
 
 
