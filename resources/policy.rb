@@ -18,8 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-actions        :set, :apply
-default_action :apply
+actions        :create, :delete
+default_action :create
 
 attribute :chain,  kind_of: String, name_attribute: true
 attribute :table,  kind_of: String, default: 'filter'

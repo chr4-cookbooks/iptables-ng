@@ -18,12 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-action :set do
-  edit_rule(:set)
-end
-
-action :apply do
-  edit_rule(:apply)
+action :create do
+  edit_rule(:create)
 end
 
 action :delete do
@@ -49,12 +45,7 @@ def edit_rule(exec_action)
       content  rule_file
       notifies :create, 'ruby_block[create_rules]', :delayed
       notifies :create, 'ruby_block[restart_iptables]', :delayed
-
-      if exec_action == :delete
-        action :delete
-      else
-        action :create
-      end
+      action   exec_action
     end
 
     new_resource.updated_by_last_action(true) if r.updated_by_last_action?

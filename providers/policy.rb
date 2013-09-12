@@ -18,12 +18,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-action :set do
-  edit_policy(:set)
+action :create do
+  edit_policy(:create)
 end
 
-action :apply do
-  edit_policy(:apply)
+action :delete do
+  edit_policy(:delete)
 end
 
 def edit_policy(exec_action)
@@ -36,7 +36,7 @@ def edit_policy(exec_action)
     content  "#{new_resource.policy}\n"
     notifies :create, 'ruby_block[create_rules]', :delayed
     notifies :create, 'ruby_block[restart_iptables]', :delayed
-    action   :create
+    action   exec_action
   end
 
   new_resource.updated_by_last_action(true) if r.updated_by_last_action?
