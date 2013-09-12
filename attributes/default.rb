@@ -19,7 +19,7 @@
 #
 
 # Packages to install
-default['iptables-ng']['packages'] = case platform_family
+default['iptables-ng']['packages'] = case node['platform_family']
 when 'debian'
   %w{iptables iptables-persistent}
 when 'rhel'
@@ -29,7 +29,7 @@ else
 end
 
 # Where the rules are stored and how they are executed
-case platform
+case node['platform']
 when 'debian'
   # Debian squeeze (and before) only support an outdated version
   # of iptables-persistent, which is not capable of ipv6.
