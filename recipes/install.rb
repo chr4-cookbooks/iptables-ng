@@ -25,7 +25,7 @@ Array(node['iptables-ng']['packages']).each { |pkg| package pkg }
 
 # make sure ufw is not installed on ubuntu/debian, as it might interfere
 package 'ufw' do
-  action  :purge
+  action :remove
   only_if { node['platform_family'] == 'debian' }
 end
 
