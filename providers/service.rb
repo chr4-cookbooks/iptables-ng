@@ -22,12 +22,12 @@ action :restart do
   [4, 6].each do |ip_version|
     # restart iptables service if available
     if node['iptables-ng']["service_ipv#{ip_version}"]
+      # Do not restart twice if the command is the same for IPv4 and IPv6
+      next if  node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] and ip_version == 6
+
       r = service node['iptables-ng']["service_ipv#{ip_version}"] do
         supports status: true, restart: true
         action [ :enable, :restart ]
-
-        # Do not restart twice if the command is the same for IPv4 and IPv6
-        not_if { node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] and ip_version == 6 }
       end
 
     # if no service is available, apply the rules manually
