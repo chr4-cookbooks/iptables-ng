@@ -36,7 +36,9 @@ def edit_rule(exec_action)
     rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/#{new_resource.name}.rule_v#{ip_version}"
 
     r = file(rule_path) do
-      mode    00700
+      owner   'root'
+      group   'root'
+      mode    00600
       content rule_file
       action  exec_action
     end

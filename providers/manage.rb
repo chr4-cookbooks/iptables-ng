@@ -59,7 +59,9 @@ action :apply do
     end
 
     r = file node['iptables-ng']["script_ipv#{ip_version}"] do
-      mode 00700
+      owner   'root'
+      group   'root'
+      mode    00600
       content rules_file
     end
 

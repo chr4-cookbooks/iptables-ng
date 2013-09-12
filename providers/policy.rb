@@ -22,7 +22,9 @@ action :set do
   rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
 
   r = file(rule_path) do
-    mode    00700
+    owner   'root'
+    group   'root'
+    mode    00600
     content "#{new_resource.policy}\n"
     action  :create
   end

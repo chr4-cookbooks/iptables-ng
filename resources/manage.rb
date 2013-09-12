@@ -20,5 +20,3 @@
 
 actions        :apply, :nothing
 default_action :nothing
-
-attribute :ip_version, kind_of: [ Array, Integer ], name_attribute: true
