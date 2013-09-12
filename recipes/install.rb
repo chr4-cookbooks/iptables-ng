@@ -51,6 +51,7 @@ node['iptables-ng']['rules'].each do |table, chains|
     iptables_ng_policy chain do
       table  table
       policy policy['default']
+      action :create_if_missing
     end
   end
 end

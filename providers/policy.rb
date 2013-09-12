@@ -22,6 +22,10 @@ action :create do
   edit_policy(:create)
 end
 
+action :create_if_missing do
+  edit_policy(:create_if_missing)
+end
+
 action :delete do
   edit_policy(:delete)
 end

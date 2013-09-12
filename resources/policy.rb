@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-actions        :create, :delete
+actions        :create, :create_if_missing, :delete
 default_action :create
 
 attribute :chain,  kind_of: String, name_attribute: true
