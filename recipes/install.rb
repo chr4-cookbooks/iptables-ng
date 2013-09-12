@@ -54,17 +54,3 @@ node['iptables-ng']['rules'].each do |table, chains|
     end
   end
 end
-
-
-# enable iptables service on boot time (if available)
-service node['iptables-ng']['service_ipv4'] do
-  supports status: true, restart: true
-  action   :enable
-  only_if  { node['iptables-ng']['service_ipv4'] }
-end
-
-service node['iptables-ng']['service_ipv6'] do
-  supports status: true, restart: true
-  action   :enable
-  only_if  { node['iptables-ng']['service_ipv6'] }
-end
