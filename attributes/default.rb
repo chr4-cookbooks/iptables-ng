@@ -21,11 +21,11 @@
 # Packages to install
 default['iptables-ng']['packages'] = case platform_family
 when 'debian'
-  [ 'iptables', 'iptables-persistent']
+  %w{iptables iptables-persistent}
 when 'rhel'
-  [ 'iptables', 'iptables-ipv6' ]
+  %w{iptables iptables-ipv6}
 else
-  [ 'iptables' ]
+  %w{iptables}
 end
 
 # Where the rules are stored and how they are executed
