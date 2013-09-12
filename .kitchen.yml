@@ -35,12 +35,32 @@ platforms:
     box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-5.9_provisionerless.box
 
 suites:
-- name: policy_create
+- name: policy_create_default
   run_list:
   - recipe[minitest-handler]
-  - recipe[iptables_ng_test::policy_create]
+  - recipe[iptables_ng_test::policy_create_default]
+- name: policy_create_custom
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::policy_create_custom]
+- name: policy_create_if_missing
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::policy_create_if_missing]
 
-- name: rule_create
+- name: rule_create_default
   run_list:
   - recipe[minitest-handler]
-  - recipe[iptables_ng_test::rule_create]
+  - recipe[iptables_ng_test::rule_create_default]
+- name: rule_create_custom
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::rule_create_custom]
+- name: rule_create_if_missing
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::rule_create_if_missing]
+- name: rule_delete
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::rule_delete]
