@@ -26,3 +26,12 @@ attribute :table,      kind_of: String,           default: 'filter'
 attribute :chain,      kind_of: String,           default: 'INPUT'
 attribute :rule,       kind_of: [Array, String],  default: []
 attribute :ip_version, kind_of: [Array, Integer], default: [4, 6]
+
+
+def initialize(*args)
+  super
+  @action = :create
+
+  # Include iptables-ng::install recipe
+  @run_context.include_recipe('iptables-ng::install')
+end
