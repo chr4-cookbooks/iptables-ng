@@ -21,13 +21,6 @@
 # This was implemented as a internal-only provider.
 # Apparently, calling a LWRP from a LWRP doesnt' really work with
 # subscribes / notifies. Therefore, using this workaround.
-
-# ruby_bock doesn't support chef resources, so defining them here
-iptables_scripts = {
-  4 => file(node['iptables-ng']['script_ipv4']) { action :nothing },
-  6 => file(node['iptables-ng']['script_ipv6']) { action :nothing },
-}
-
 ruby_block 'apply_rules' do
   block do
    [4, 6].each do |ip_version|
@@ -69,11 +62,12 @@ ruby_block 'apply_rules' do
         iptables_restore << "COMMIT\n"
       end
 
-      iptables_scripts[ip_version].owner('root')
-      iptables_scripts[ip_version].group('root')
-      iptables_scripts[ip_version].mode(00600)
-      iptables_scripts[ip_version].content(iptables_restore)
-      iptables_scripts[ip_version].run_action(:create)
+      r = Chef::Resource::File.new(node['iptables-ng']["script_ipv#{ip_version}"], run_context)
+      r.owner('root')
+      r.group('root')
+      r.mode(00600)
+      r.content(iptables_restore)
+      r.run_action(:create)
     end
   end
 
