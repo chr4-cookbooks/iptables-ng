@@ -34,7 +34,8 @@ def edit_policy(exec_action)
     group    'root'
     mode     00600
     content  "#{new_resource.policy}\n"
-    notifies :create, 'ruby_block[apply_rules]', :delayed
+    notifies :create, 'ruby_block[create_rules]', :delayed
+    notifies :create, 'ruby_block[restart_iptables]', :delayed
     action   :create
   end
 

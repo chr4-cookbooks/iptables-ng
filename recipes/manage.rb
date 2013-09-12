@@ -21,7 +21,7 @@
 # This was implemented as a internal-only provider.
 # Apparently, calling a LWRP from a LWRP doesnt' really work with
 # subscribes / notifies. Therefore, using this workaround.
-ruby_block 'apply_rules' do
+ruby_block 'create_rules' do
   block do
    [4, 6].each do |ip_version|
       rules = {}
@@ -74,10 +74,14 @@ ruby_block 'apply_rules' do
     end
   end
 
-  # create iptables restore scripts unless they exist, else wait for something to change
-  unless ::File.exists?(node['iptables-ng']['script_ipv4']) and ::File.exists?(node['iptables-ng']['script_ipv6'])
-    action :create
-  else
-    action :nothing
+  action :nothing
+end
+
+ruby_block 'restart_iptables' do
+  block do
+    r = Chef::Resource::IptablesNgService.new('apply', run_context)
+    r.run_action(:restart)
   end
+
+  action :nothing
 end

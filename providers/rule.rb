@@ -47,7 +47,8 @@ def edit_rule(exec_action)
       group    'root'
       mode     00600
       content  rule_file
-      notifies :create, 'ruby_block[apply_rules]', :delayed
+      notifies :create, 'ruby_block[create_rules]', :delayed
+      notifies :create, 'ruby_block[restart_iptables]', :delayed
 
       if exec_action == :delete
         action :delete
