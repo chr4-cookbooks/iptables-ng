@@ -34,8 +34,13 @@ end
 
 ruby_block 'restart_iptables' do
   block do
-    r = Chef::Resource::IptablesNgService.new('apply', run_context)
-    r.run_action(:restart)
+    class Chef::Resource::RubyBlock
+      include Iptables::Manage
+    end
+
+    [4, 6].each do |ip_version|
+      restart_service(ip_version)
+    end
   end
 
   action :nothing
