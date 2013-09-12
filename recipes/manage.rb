@@ -35,6 +35,9 @@ ruby_block 'apply_rules' do
         table, chain, filename = path.split('/')[3..5]
         rule = ::File.basename(filename)
 
+        # IPv6 doesn't support nat
+        next if table == 'nat' and ip_version == 6
+
         # Create hashes unless they already exist, and add the rule
         rules[table] ||= {}
         rules[table][chain] ||= {}

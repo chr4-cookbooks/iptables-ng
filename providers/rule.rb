@@ -34,6 +34,9 @@ end
 def edit_rule(exec_action)
   # Create rule for given ip_versions
   Array(new_resource.ip_version).each do |ip_version|
+    # IPv6 doesn't support nat
+    next if new_resource.table == 'nat' and ip_version == 6
+
     rule_file = ''
     Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
 
