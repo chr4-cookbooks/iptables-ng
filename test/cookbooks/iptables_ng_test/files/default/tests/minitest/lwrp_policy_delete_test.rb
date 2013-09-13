@@ -1,6 +1,6 @@
 require File.expand_path('../support/helpers', __FILE__)
 
-describe 'iptables-ng::policy-create' do
+describe 'iptables-ng::lwrp_policy_create' do
   include Helpers::TestHelpers
 
   it 'should delete default FORWARD policy' do

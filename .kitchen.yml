@@ -34,33 +34,61 @@ platforms:
     box: opscode-centos-5.9
     box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-5.9_provisionerless.box
 
-suites:
-- name: policy_create_default
-  run_list:
-  - recipe[minitest-handler]
-  - recipe[iptables_ng_test::policy_create_default]
-- name: policy_create_custom
-  run_list:
-  - recipe[minitest-handler]
-  - recipe[iptables_ng_test::policy_create_custom]
-- name: policy_create_if_missing
-  run_list:
-  - recipe[minitest-handler]
-  - recipe[iptables_ng_test::policy_create_if_missing]
 
-- name: rule_create_default
+suites:
+- name: lwrp_policy_create_default
   run_list:
   - recipe[minitest-handler]
-  - recipe[iptables_ng_test::rule_create_default]
-- name: rule_create_custom
+  - recipe[iptables_ng_test::lwrp_policy_create_default]
+- name: lwrp_policy_create_custom
   run_list:
   - recipe[minitest-handler]
-  - recipe[iptables_ng_test::rule_create_custom]
-- name: rule_create_if_missing
+  - recipe[iptables_ng_test::lwrp_policy_create_custom]
+- name: lwrp_policy_create_if_missing
   run_list:
   - recipe[minitest-handler]
-  - recipe[iptables_ng_test::rule_create_if_missing]
-- name: rule_delete
+  - recipe[iptables_ng_test::lwrp_policy_create_if_missing]
+
+- name: lwrp_rule_create_default
   run_list:
   - recipe[minitest-handler]
-  - recipe[iptables_ng_test::rule_delete]
+  - recipe[iptables_ng_test::lwrp_rule_create_default]
+- name: lwrp_rule_create_custom
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::lwrp_rule_create_custom]
+- name: lwrp_rule_create_if_missing
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::lwrp_rule_create_if_missing]
+- name: lwrp_rule_delete
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::lwrp_rule_delete]
+
+- name: recipe_default
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::recipe_default]
+  attributes:
+    iptables-ng:
+      rules:
+        filter:
+          INPUT:
+            ssh: '--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT'
+          OUTPUT:
+            testrule: '--protocol icmp --jump ACCEPT'
+          FORWARD:
+            default: 'DROP [0:0]'
+        nat:
+          POSTROUTING:
+            nat_test: '--protocol tcp -j ACCEPT'
+        mangle:
+          FORWARD:
+            default: 'DROP [0:0]'
+
+- name: recipe_install
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::recipe_install]
+

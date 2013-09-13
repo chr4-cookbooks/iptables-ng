@@ -1,14 +1,10 @@
 require File.expand_path('../support/helpers', __FILE__)
 
-describe 'iptables-ng::rule-delete' do
+describe 'iptables-ng::lwrp_policy_create_if_missing' do
   include Helpers::TestHelpers
 
-  it 'should not set HTTP rule' do
-    file('/etc/iptables.d/filter/INPUT/http.rule_v4').wont_exist
-  end
-
-  it 'should not set HTTP ip6tables rule' do
-    file('/etc/iptables.d/filter/INPUT/http.rule_v6').wont_exist
+  it 'should not default FORWARD policy to DROP' do
+    file('/etc/iptables.d/filter/FORWARD/default').wont_include('DROP [0:0]')
   end
 
   it 'should enable iptables serices' do
@@ -18,9 +14,9 @@ describe 'iptables-ng::rule-delete' do
 
   it 'should apply the specified iptables rules' do
     ipv4 = shell_out('iptables -L -n')
-    ipv4.stdout.wont_include('tcp dpt:80 state NEW')
+    ipv4.stdout.must_include('Chain FORWARD (policy ACCEPT)')
 
     ipv6 = shell_out('ip6tables -L -n')
-    ipv6.stdout.wont_include('tcp dpt:80 state NEW')
+    ipv6.stdout.must_include('Chain FORWARD (policy ACCEPT)')
   end
 end

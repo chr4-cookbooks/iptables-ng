@@ -1,6 +1,6 @@
 require File.expand_path('../support/helpers', __FILE__)
 
-describe 'iptables-ng::rule-create-custom' do
+describe 'iptables-ng::lwrp_create_custom' do
   include Helpers::TestHelpers
 
   it 'should set custom iptables rule' do
