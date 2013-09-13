@@ -24,8 +24,8 @@ default_action :create
 attribute :name,       kind_of: String, name_attribute: true
 attribute :chain,      kind_of: String, default: 'INPUT',  equal_to: %w{INPUT OUTPUT FORWARD PREROUTING POSTROUTING}
 attribute :table,      kind_of: String, default: 'filter', equal_to: %w{filter nat mangle raw}
-attribute :rule,       kind_of: [ Array, String ],  default: [ ]
-attribute :ip_version, kind_of: [ Array, Integer ], default: [4, 6]
+attribute :rule,       kind_of: [ Array, String ],  default: []
+attribute :ip_version, kind_of: [ Array, Integer ], default: [4, 6], equal_to: [ [4, 6], 4, 6 ]
 
 
 def initialize(*args)
