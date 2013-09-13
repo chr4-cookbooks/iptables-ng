@@ -21,6 +21,7 @@
 # This was implemented as a internal-only provider.
 # Apparently, calling a LWRP from a LWRP doesnt' really work with
 # subscribes / notifies. Therefore, using this workaround.
+
 module Iptables
   module Manage
     def create_iptables_rules(ip_version)

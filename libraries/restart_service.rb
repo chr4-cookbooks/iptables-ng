@@ -21,10 +21,11 @@
 # This was implemented as a internal-only provider.
 # Apparently, calling a LWRP from a LWRP doesnt' really work with
 # subscribes / notifies. Therefore, using this workaround.
+
 module Iptables
   module Manage
     def restart_service(ip_version)
-      # restart iptables service if available
+      # Restart iptables service if available
       if node['iptables-ng']["service_ipv#{ip_version}"]
 
         # Do not restart twice if the command is the same for IPv4 and IPv6
@@ -35,7 +36,8 @@ module Iptables
           service.run_action(:enable)
           service.run_action(:restart)
         end
-      # if no service is available, apply the rules manually
+
+      # If no service is available, apply the rules manually
       else
         Chef::Log.info 'applying rules manually, as no service is specified'
         Chef::Resource::Execute.new("iptables-restore for ipv#{ip_version}", run_context).tap do |execute|

@@ -18,6 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# This recipe only creates ruby_blocks that are called later by the LWRPs
+# Do not use it by its own
+
 ruby_block 'create_rules' do
   block do
     class Chef::Resource::RubyBlock

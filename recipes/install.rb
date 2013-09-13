@@ -20,17 +20,16 @@
 
 include_recipe 'iptables-ng::manage'
 
-# make sure iptables is installed
+# Make sure iptables is installed
 Array(node['iptables-ng']['packages']).each { |pkg| package pkg }
 
-# make sure ufw is not installed on ubuntu/debian, as it might interfere
+# Make sure ufw is not installed on Ubuntu/Debian, as it might interfere
 package 'ufw' do
   action :remove
   only_if { node['platform_family'] == 'debian' }
 end
 
-
-# create directories
+# Create directories
 directory '/etc/iptables.d' do
   mode   00700
 end
@@ -46,9 +45,9 @@ node['iptables-ng']['rules'].each do |table, chains|
     end
   end
 
-  # Apply default policies
   chains.each do |chain, policy|
     iptables_ng_policy "default-#{chain}" do
+  # Create default policies unless they exist
       chain  chain
       table  table
       policy policy['default']
