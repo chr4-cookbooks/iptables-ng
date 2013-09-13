@@ -4,11 +4,11 @@ describe 'iptables-ng::lwrp_create_custom' do
   include Helpers::TestHelpers
 
   it 'should set custom iptables rule' do
-    file('/etc/iptables.d/nat/OUTPUT/custom.rule_v4').must_include('--protocol icmp --jump ACCEPT')
+    file('/etc/iptables.d/nat/OUTPUT/custom-output.rule_v4').must_include('--protocol icmp --jump ACCEPT')
   end
 
   it 'should not set custom ip6tables rule for nat chain' do
-    file('/etc/iptables.d/nat/OUTPUT/custom.rule_v6').wont_exist
+    file('/etc/iptables.d/nat/OUTPUT/custom-output.rule_v6').wont_exist
   end
 
   it 'should enable iptables serices' do

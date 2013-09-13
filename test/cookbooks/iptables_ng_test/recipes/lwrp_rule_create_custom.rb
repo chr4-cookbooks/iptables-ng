@@ -1,6 +1,6 @@
-iptables_ng_rule 'output-rule' do
+iptables_ng_rule 'custom-output' do
   chain  'OUTPUT'
-  table  'mangle'
+  table  'nat'
   rule   '--protocol icmp --jump ACCEPT'
   action :create
 end
