@@ -19,7 +19,7 @@
 #
 
 actions        :create, :create_if_missing, :delete
-default_action :delete
+default_action :create
 
 attribute :name,       kind_of: String, name_attribute: true
 attribute :chain,      kind_of: String, default: 'INPUT',  equal_to: %w{INPUT OUTPUT FORWARD PREROUTING POSTROUTING}
