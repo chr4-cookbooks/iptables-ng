@@ -65,6 +65,10 @@ suites:
   run_list:
   - recipe[minitest-handler]
   - recipe[iptables_ng_test::lwrp_rule_delete]
+- name: lwrp_rule_check_order
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::lwrp_rule_check_order]
 
 - name: recipe_default
   run_list:
