@@ -65,12 +65,13 @@ module Iptables
         iptables_restore << "COMMIT\n"
       end
 
-      r = Chef::Resource::File.new(node['iptables-ng']["script_ipv#{ip_version}"], run_context)
-      r.owner('root')
-      r.group('root')
-      r.mode(00600)
-      r.content(iptables_restore)
-      r.run_action(:create)
+      Chef::Resource::File.new(node['iptables-ng']["script_ipv#{ip_version}"], run_context).tap do |file|
+        file.owner('root')
+        file.group('root')
+        file.mode(00600)
+        file.content(iptables_restore)
+        file.run_action(:create)
+      end
     end
 
 
@@ -81,18 +82,19 @@ module Iptables
         # Do not restart twice if the command is the same for IPv4 and IPv6
         return if node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] and ip_version == 6
 
-        r = Chef::Resource::Service.new(node['iptables-ng']["service_ipv#{ip_version}"], run_context)
-        r.supports(status: true, restart: true)
-        r.run_action(:enable)
-        r.run_action(:restart)
-
+        Chef::Resource::Service.new(node['iptables-ng']["service_ipv#{ip_version}"], run_context).tap do |service|
+          service.supports(status: true, restart: true)
+          service.run_action(:enable)
+          service.run_action(:restart)
+        end
       # if no service is available, apply the rules manually
       else
         Chef::Log.info 'applying rules manually, as no service is specified'
-        r = Chef::Resource::Execute.new("iptables-restore for ipv#{ip_version}", run_context)
-        r.command("iptables-restore < #{node['iptables-ng']['script_ipv4']}") if ip_version == 4
-        r.command("ip6tables-restore < #{node['iptables-ng']['script_ipv6']}") if ip_version == 6
-        r.run_action(:run)
+        Chef::Resource::Execute.new("iptables-restore for ipv#{ip_version}", run_context).tap do |execute|
+          execute.command("iptables-restore < #{node['iptables-ng']['script_ipv4']}") if ip_version == 4
+          execute.command("ip6tables-restore < #{node['iptables-ng']['script_ipv6']}") if ip_version == 6
+          execute.run_action(:run)
+        end
       end
     end
   end
