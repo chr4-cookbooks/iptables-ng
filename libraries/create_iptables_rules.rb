@@ -60,7 +60,7 @@ module Iptables
 
         # Apply rules for this chain, but sort before adding
         all_chain_rules.each do |chain, chain_rules|
-          chain_rules.values.sort.each { |r| iptables_restore << "#{r.chomp}\n" }
+          chain_rules.sort.each { |r| iptables_restore << "#{r.last.chomp}\n" }
         end
 
         iptables_restore << "COMMIT\n"
