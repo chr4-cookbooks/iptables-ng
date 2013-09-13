@@ -17,3 +17,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+include_recipe 'iptables-ng::install'
+
+# Apply rules from node attributes
+node['iptables-ng']['rules'].each do |table, chains|
+  chains.each do |chain, p|
+    # policy is read only, duplicate it
+    policy = p.dup
+
+    # Apply chain policy
+    iptables_ng_policy "attribute-policy-#{chain}" do
+      chain  chain
+      table  table
+      policy policy.delete('default')
+    end
+
+    # Apply rules
+    policy.each do |name, rule|
+      iptables_ng_rule "attribute-rule-#{table}-#{chain}-#{name}" do
+        chain chain
+        table table
+        rule  rule
+      end
+    end
+  end
+end
