@@ -27,8 +27,14 @@ describe 'iptables-ng::install' do
     ipv4 = shell_out('iptables -L -n |wc -l')
     ipv4.stdout.must_include('8')
 
+    # RHEL uses a kernel <= 2.6.35, which doesn't have the INPUT chain in nat table
     ipv4 = shell_out('iptables -L -n -t nat |wc -l')
-    ipv4.stdout.must_include('11')
+    if node['platform_family'] == 'rhel'
+      ipv4.stdout.must_include('8')
+    else
+      ipv4.stdout.must_include('11')
+    end
+
 
     ipv4 = shell_out('iptables -L -n -t mangle |wc -l')
     ipv4.stdout.must_include('14')
@@ -63,7 +69,9 @@ describe 'iptables-ng::install' do
 
   it 'should apply default policies in nat table' do
     ipv4 = shell_out('iptables -L -n -t nat')
-    ipv4.stdout.must_include('Chain INPUT (policy ACCEPT)')
+
+    # RHEL uses a kernel <= 2.6.35, which doesn't have the INPUT chain in nat table
+    ipv4.stdout.must_include('Chain INPUT (policy ACCEPT)') unless node['platform_family'] == 'rhel'
     ipv4.stdout.must_include('Chain OUTPUT (policy ACCEPT)')
     ipv4.stdout.must_include('Chain PREROUTING (policy ACCEPT)')
     ipv4.stdout.must_include('Chain POSTROUTING (policy ACCEPT)')
