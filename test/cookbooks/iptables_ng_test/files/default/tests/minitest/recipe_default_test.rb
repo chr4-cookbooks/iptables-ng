@@ -27,8 +27,9 @@ describe 'iptables-ng::default' do
     ipv4 = shell_out('iptables -L -n')
     ipv4.stdout.must_match(/ACCEPT\s+icmp/)
 
+    # Older RHEL (5.x) doesn't lookup protocol name for ICMP properly
     ipv6 = shell_out('ip6tables -L -n')
-    ipv6.stdout.must_match(/ACCEPT\s+icmp/)
+    ipv6.stdout.must_match(/ACCEPT\s+(icmp|1)/)
   end
 
 
