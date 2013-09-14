@@ -178,7 +178,7 @@ iptables_ng_rule 'ssh' do
   rule [ '--source 192.168.1.0/24 --protocol tcp --dport 80 --match state --state NEW --jump ACCEPT',
          '--source 192.168.1.0/24 --protocol tcp --dport 443 --match state --state NEW --jump ACCEPT' ]
 
-  # As the source specified above is IPv4
+  # As the source specified above is ipv4
   # This rule cannot be applied to ip6tables.
   # Therefore, setting ip_version to 4
   ip_version 4

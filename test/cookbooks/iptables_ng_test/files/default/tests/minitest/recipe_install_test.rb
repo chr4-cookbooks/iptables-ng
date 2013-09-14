@@ -23,7 +23,7 @@ describe 'iptables-ng::install' do
   end
 
 
-  it 'should not install other iptables rules' do
+  it 'should not apply other iptables rules' do
     ipv4 = shell_out('iptables -L -n |wc -l')
     ipv4.stdout.must_include('8')
 
@@ -37,7 +37,7 @@ describe 'iptables-ng::install' do
     ipv4.stdout.must_include('5')
   end
 
-  it 'should not install other ip6tables rules' do
+  it 'should not apply other ip6tables rules' do
     ipv6 = shell_out('ip6tables -L -n |wc -l')
     ipv6.stdout.must_include('8')
 
@@ -49,7 +49,7 @@ describe 'iptables-ng::install' do
   end
 
 
-  it 'should apply SSH iptables policies in filter table' do
+  it 'should apply default policies in filter table' do
     ipv4 = shell_out('iptables -L -n')
     ipv4.stdout.must_include('Chain INPUT (policy ACCEPT)')
     ipv4.stdout.must_include('Chain OUTPUT (policy ACCEPT)')
@@ -61,7 +61,7 @@ describe 'iptables-ng::install' do
     ipv6.stdout.must_include('Chain FORWARD (policy ACCEPT)')
   end
 
-  it 'should apply SSH iptables policies in nat table' do
+  it 'should apply default policies in nat table' do
     ipv4 = shell_out('iptables -L -n -t nat')
     ipv4.stdout.must_include('Chain INPUT (policy ACCEPT)')
     ipv4.stdout.must_include('Chain OUTPUT (policy ACCEPT)')
@@ -69,7 +69,7 @@ describe 'iptables-ng::install' do
     ipv4.stdout.must_include('Chain POSTROUTING (policy ACCEPT)')
   end
 
-  it 'should apply SSH iptables policies in mangle table' do
+  it 'should apply default policies in mangle table' do
     ipv4 = shell_out('iptables -L -n -t mangle')
     ipv4.stdout.must_include('Chain INPUT (policy ACCEPT)')
     ipv4.stdout.must_include('Chain OUTPUT (policy ACCEPT)')
@@ -85,7 +85,7 @@ describe 'iptables-ng::install' do
     ipv6.stdout.must_include('Chain POSTROUTING (policy ACCEPT)')
   end
 
-  it 'should apply SSH iptables policies in raw table' do
+  it 'should apply default policies in raw table' do
     ipv4 = shell_out('iptables -L -n -t raw')
     ipv4.stdout.must_include('Chain OUTPUT (policy ACCEPT)')
     ipv4.stdout.must_include('Chain PREROUTING (policy ACCEPT)')
