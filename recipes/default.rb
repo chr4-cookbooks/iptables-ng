@@ -35,7 +35,7 @@ node['iptables-ng']['rules'].each do |table, chains|
 
     # Apply rules
     policy.each do |name, rule|
-      iptables_ng_rule "attribute-rule-#{table}-#{chain}-#{name}" do
+      iptables_ng_rule "#{name}-#{table}-#{chain}-attribute-rule" do
         chain chain
         table table
         rule  rule
