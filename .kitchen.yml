@@ -79,14 +79,17 @@ suites:
       rules:
         filter:
           INPUT:
-            ssh: '--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT'
+            ssh:
+              rule: '--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT'
           OUTPUT:
-            testrule: '--protocol icmp --jump ACCEPT'
+              testrule:
+                rule: '--protocol icmp --jump ACCEPT'
           FORWARD:
             default: 'DROP [0:0]'
         nat:
           POSTROUTING:
-            nat_test: '--protocol tcp -j ACCEPT'
+            nat_test:
+              rule: '--protocol tcp -j ACCEPT'
         mangle:
           FORWARD:
             default: 'DROP [0:0]'
