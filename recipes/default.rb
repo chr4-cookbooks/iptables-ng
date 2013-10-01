@@ -34,11 +34,12 @@ node['iptables-ng']['rules'].each do |table, chains|
     end
 
     # Apply rules
-    policy.each do |name, rule|
+    policy.each do |name, r|
       iptables_ng_rule "#{name}-#{table}-#{chain}-attribute-rule" do
-        chain chain
-        table table
-        rule  rule
+        chain      chain
+        table      table
+        rule       r['rule']
+        ip_version r['ip_version'] if r['ip_version']
       end
     end
   end
