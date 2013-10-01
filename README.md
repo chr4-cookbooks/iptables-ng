@@ -92,7 +92,8 @@ To allow only SSH for incoming connections, add this to your node configuration
         "filter": {
           "INPUT": {
             "default": "DROP [0:0]",
-            "ssh": "--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT"
+            "ssh":
+              "rule": "--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT"
           }
         }
       }
@@ -102,6 +103,14 @@ To allow only SSH for incoming connections, add this to your node configuration
     "recipe[iptables-ng]"
   ]
 }
+```
+
+In case you need a rule for one specific ip version, you can set the "ip_version" attribute.
+
+```json
+"ssh":
+  "rule": "--protocol tcp --source 1.2.3.4 --dport 22 --match state --state NEW --jump ACCEPT"
+  "ip_version": 4
 ```
 
 ## install
