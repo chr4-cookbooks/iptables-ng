@@ -3,6 +3,20 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
-0.1.0
+1.1.0
+-----
+
+- Support for ip_version parameter in attributes. See README for details.
+
+  If you use attributes to configure iptables_ng, you need to migrate
+
+  ```node['iptables-ng']['rules']['filter']['INPUT']['rej'] = 'myrule'```
+
+  to 
+
+  ```node['iptables-ng']['rules']['filter']['INPUT']['rej']['rule'] = 'myrule'```
+
+
+1.0.0
 -----
 - [Chris Aumann] - Initial release of iptables-ng
