@@ -81,6 +81,9 @@ suites:
           INPUT:
             ssh:
               rule: '--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT'
+            ipv4_only:
+              rule: '--protocol tcp --source 1.2.3.4 --dport 123 --jump ACCEPT'
+              ip_version: 4
           OUTPUT:
               testrule:
                 rule: '--protocol icmp --jump ACCEPT'

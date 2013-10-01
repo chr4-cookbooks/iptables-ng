@@ -77,6 +77,20 @@ describe 'iptables-ng::default' do
   end
 
 
+  it 'should create ipv4_only iptables rule' do
+    file('/etc/iptables.d/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v4').must_include('--protocol tcp --source 1.2.3.4 --dport 123 --jump ACCEPT')
+  end
+
+  it 'should not create ipv4_only ip6tables rule' do
+    file('/etc/iptables.d/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v6').wont_exist
+  end
+
+  it 'should apply ipv4_only iptables rule' do
+    ipv4 = shell_out('iptables -L -n')
+    ipv4.stdout.must_include('tcp dpt:123')
+  end
+
+
   it 'should enable iptables serices' do
     service(node['iptables-ng']['service_ipv4']).must_be_enabled if node['iptables-ng']['service_ipv4']
     service(node['iptables-ng']['service_ipv6']).must_be_enabled if node['iptables-ng']['service_ipv6']
