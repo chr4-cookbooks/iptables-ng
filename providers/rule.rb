@@ -38,7 +38,10 @@ def edit_rule(exec_action)
     next if new_resource.table == 'nat' and ip_version == 6
 
     rule_file = ''
-    Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
+    Array(new_resource.rule).each { |r|
+      r = eval '"' + r + '"'    # expand any expressions
+      rule_file << "--append #{new_resource.chain} #{r.chomp}\n"
+    }
 
     rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/#{new_resource.name}.rule_v#{ip_version}"
 
