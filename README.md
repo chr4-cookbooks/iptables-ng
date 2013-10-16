@@ -61,14 +61,21 @@ node['iptables-ng']['rules']['filter']['INPUT']['default'] = 'DROP [0:0]'
 And also add rules for a chain (this example allows SSH)
 
 ```ruby
-node['iptables-ng']['rules']['filter']['INPUT']['ssh'] = '--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT'
+node['iptables-ng']['rules']['filter']['INPUT']['ssh']['rule'] = '--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT'
 ```
 
 You can prioritize your rules, too. This example will make sure that the 'ssh' rule is created before the 'http' rule
 
 ```ruby
-node['iptables-ng']['rules']['filter']['INPUT']['10-ssh']
-node['iptables-ng']['rules']['filter']['INPUT']['90-http']
+node['iptables-ng']['rules']['filter']['INPUT']['10-ssh']['rule'] = 'this rule is first'
+node['iptables-ng']['rules']['filter']['INPUT']['90-http']['rule'] = 'this rule is applied later'
+```
+
+Also, it's possible to only apply a rule for a certian ip version.
+
+```ruby
+node['iptables-ng']['rules']['filter']['INPUT']['10-ssh']['rule'] = '--protocol tcp --source 1.2.3.4 --dport 22 --match state --state NEW --jump ACCEPT'
+node['iptables-ng']['rules']['filter']['INPUT']['10-ssh']['ip_version'] = 4
 ```
 
 
