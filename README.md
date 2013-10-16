@@ -1,6 +1,6 @@
 # iptables-ng Cookbook
 
-This cookbook maintans and installs iptables and ip6tables rules, trying to keep as close to the way the used distribution maintains their rules.
+This cookbook maintains and installs iptables and ip6tables rules, trying to keep as close to the way the used distribution maintains their rules.
 
 Contrary to other iptables cookbooks, this cookbook installs iptables and maintains rules using the distributions default configuration files and services (for Debian and Ubuntu, iptables-persistent is used). If the distribution has no service for iptables, it falls back to iptables-restore.
 
