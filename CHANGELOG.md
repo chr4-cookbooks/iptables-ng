@@ -3,6 +3,11 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+1.1.1
+-----
+
+- Fixes duplicate resource name warnings [CHEF-3694], Thanks [James FitzGibbon](http://github.com/jf647)
+
 1.1.0
 -----
 
