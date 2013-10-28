@@ -40,7 +40,17 @@ def edit_rule(exec_action)
     rule_file = ''
     Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
 
+    rule_dir = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}"
     rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/#{new_resource.name}.rule_v#{ip_version}"
+
+    if not ::File.directory?(rule_dir)
+      directory rule_dir do
+        owner     'root'
+        group     'root'
+        mode      00700
+        recursive true
+      end
+    end
 
     r = file rule_path do
       owner    'root'
