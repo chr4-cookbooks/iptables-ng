@@ -59,7 +59,13 @@ module Iptables
         end
 
         # Apply rules for this chain, but sort before adding
-        all_chain_rules.each do |chain, chain_rules|
+        builtin_names = ['INPUT','OUTPUT','FORWARD','PREROUTING','POSTROUTING']
+        chains = all_chain_rules.keys
+        user_chains = chains.reject{|c| builtin_names.include?(c)}.sort
+        builtin_chains = chains.reject{|c| not builtin_names.include?(c)}.sort
+        sorted_chains = user_chains + builtin_chains
+        sorted_chains.each do |chain|
+          chain_rules = all_chain_rules[chain]
           chain_rules.sort.each { |r| iptables_restore << "#{r.last.chomp}\n" }
         end
 
