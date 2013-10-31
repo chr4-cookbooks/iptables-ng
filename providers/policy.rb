@@ -31,6 +31,20 @@ action :delete do
 end
 
 def edit_policy(exec_action)
+
+  rule_dir = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}"
+  
+  dir_action = exec_action
+  if :create_if_missing == exec_action
+      dir_action = :create
+  end
+  d = directory rule_dir do
+    owner 'root'
+    group 'root'
+    mode 00700
+    action dir_action
+  end
+
   rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
 
   r = file rule_path do

@@ -22,11 +22,12 @@ actions        :create, :create_if_missing, :delete
 default_action :create
 
 attribute :name,       kind_of: String, name_attribute: true
-attribute :chain,      kind_of: String, default: 'INPUT',  equal_to: %w{INPUT OUTPUT FORWARD PREROUTING POSTROUTING}
+# linux/netfilter/x_tables.h doesn't restrict chains very tightly.  Just a string token
+# with a max length of XT_EXTENSION_MAXLEN (29 in all 3.x headers I could find)
+attribute :chain,      kind_of: String, default: 'INPUT',  regex: /^\w{1,29}$/
 attribute :table,      kind_of: String, default: 'filter', equal_to: %w{filter nat mangle raw}
 attribute :rule,       kind_of: [ Array, String ],  default: []
 attribute :ip_version, kind_of: [ Array, Integer ], default: [4, 6], equal_to: [ [4, 6], 4, 6 ]
-
 
 def initialize(*args)
   super
