@@ -41,7 +41,7 @@ def edit_rule(exec_action)
     Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
 
     rule_dir = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}"
-    
+
     dir_action = exec_action
     if :create_if_missing == exec_action
         dir_action = :create

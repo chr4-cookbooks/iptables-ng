@@ -33,7 +33,7 @@ end
 def edit_policy(exec_action)
 
   rule_dir = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}"
-  
+
   dir_action = exec_action
   if :create_if_missing == exec_action
       dir_action = :create
