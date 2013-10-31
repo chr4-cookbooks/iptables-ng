@@ -46,7 +46,7 @@ node['iptables-ng']['rules'].each do |table, chains|
   end
 
   # Create default policies unless they exist
-  chains.each do |chain, p|
+  chains.each do |chain, policy|
     iptables_ng_policy "default-policy-#{table}-#{chain}" do
       chain  chain
       table  table
