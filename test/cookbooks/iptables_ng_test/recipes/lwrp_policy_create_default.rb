@@ -1,5 +1,4 @@
-iptables_ng_policy 'policy-create-default' do
-  chain  'FORWARD'
+iptables_ng_policy 'FORWARD' do
   policy 'DROP [0:0]'
   action :create
 end
