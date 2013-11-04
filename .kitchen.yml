@@ -44,18 +44,6 @@ suites:
   run_list:
   - recipe[minitest-handler]
   - recipe[iptables_ng_test::lwrp_policy_create_custom]
-- name: lwrp_policy_create_custom_chain
-  run_list:
-  - recipe[minitest-handler]
-  - recipe[iptables_ng_test::lwrp_policy_create_custom_chain]
-- name: lwrp_policy_create_invalid_custom_chain
-  run_list:
-  - recipe[minitest-handler]
-  - recipe[iptables_ng_test::lwrp_policy_create_invalid_custom_chain]
-- name: lwrp_policy_create_toolong_custom_chain
-  run_list:
-  - recipe[minitest-handler]
-  - recipe[iptables_ng_test::lwrp_policy_create_toolong_custom_chain]
 - name: lwrp_policy_create_if_missing
   run_list:
   - recipe[minitest-handler]
