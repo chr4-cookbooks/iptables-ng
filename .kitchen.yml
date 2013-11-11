@@ -36,18 +36,22 @@ platforms:
 
 
 suites:
-- name: lwrp_policy_create_default
+- name: lwrp_chain_create_default
   run_list:
   - recipe[minitest-handler]
-  - recipe[iptables_ng_test::lwrp_policy_create_default]
-- name: lwrp_policy_create_custom
+  - recipe[iptables_ng_test::lwrp_chain_create_default]
+- name: lwrp_chain_create_custom
   run_list:
   - recipe[minitest-handler]
-  - recipe[iptables_ng_test::lwrp_policy_create_custom]
-- name: lwrp_policy_create_if_missing
+  - recipe[iptables_ng_test::lwrp_chain_create_custom]
+- name: lwrp_chain_create_if_missing
   run_list:
   - recipe[minitest-handler]
-  - recipe[iptables_ng_test::lwrp_policy_create_if_missing]
+  - recipe[iptables_ng_test::lwrp_chain_create_if_missing]
+- name: lwrp_chain_create_empty
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::lwrp_chain_create_empty]
 
 - name: lwrp_rule_create_default
   run_list:
@@ -57,6 +61,18 @@ suites:
   run_list:
   - recipe[minitest-handler]
   - recipe[iptables_ng_test::lwrp_rule_create_custom]
+- name: lwrp_rule_create_custom_chain
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::lwrp_rule_create_custom_chain]
+- name: lwrp_rule_create_invalid_custom_chain
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::lwrp_rule_create_invalid_custom_chain]
+- name: lwrp_rule_create_toolong_custom_chain
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::lwrp_rule_create_toolong_custom_chain]
 - name: lwrp_rule_create_if_missing
   run_list:
   - recipe[minitest-handler]

@@ -39,15 +39,9 @@ node['iptables-ng']['rules'].each do |table, chains|
     mode 00700
   end
 
-  chains.keys.each do |chain|
-    directory "/etc/iptables.d/#{table}/#{chain}" do
-      mode 00700
-    end
-  end
-
   # Create default policies unless they exist
   chains.each do |chain, policy|
-    iptables_ng_policy "default-policy-#{table}-#{chain}" do
+    iptables_ng_chain "default-policy-#{table}-#{chain}" do
       chain  chain
       table  table
       policy policy['default']

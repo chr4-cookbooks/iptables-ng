@@ -134,25 +134,32 @@ It's recommended to configure iptables-ng using LWRPs in your (wrapper) cookbook
 All providers take care that iptables is installed (they include the install recipe before running), so you can just use them without worrying whether everything is installed correctly.
 
 
-## iptables_ng_policy
+## iptables_ng_chain
 
-This provider sets the default policy of a chain.
+This provider creates chains and adds their default policies.
 
 Example: Set the default policy of the filter INPUT chain to ACCEPT:
 
 ```ruby
-iptables_ng_policy 'INPUT' do
+iptables_ng_chain 'INPUT' do
   policy 'ACCEPT [0:0]'
 end
+```
+
+Example: Create a custom chain:
+
+```ruby
+iptables_ng_chain 'MYCHAIN'
 ```
 
 The following additional attributes are supported:
 
 ```ruby
-iptables_ng_policy 'name' do
+iptables_ng_chain 'name' do
   chain  'INPUT'       # The chain to set the policy for (name_attribute)
   table  'filter'      # The table to use (defaults to 'filter')
-  policy 'DROP [0:0]'  # The policy to use (required)
+  policy 'DROP [0:0]'  # The policy to use (defaults to `ACCEPT [0:0]` for
+                       # build-in chains, to `- [0:0]` for custom ones
 
   action :create       # Supported actions: :create, :create_if_missing, :delete
                        # Default action: :create
