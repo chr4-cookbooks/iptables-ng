@@ -27,7 +27,7 @@ node['iptables-ng']['rules'].each do |table, chains|
     policy = p.dup
 
     # Apply chain policy
-    iptables_ng_policy "attribute-policy-#{chain}" do
+    iptables_ng_chain "attribute-policy-#{chain}" do
       chain  chain
       table  table
       policy policy.delete('default')

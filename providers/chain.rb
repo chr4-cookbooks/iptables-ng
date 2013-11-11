@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: iptables-ng
-# Provider:: policy
+# Provider:: chain
 #
 # Copyright 2012, Chris Aumann
 #
@@ -19,18 +19,25 @@
 #
 
 action :create do
-  edit_policy(:create)
+  edit_chain(:create)
 end
 
 action :create_if_missing do
-  edit_policy(:create_if_missing)
+  edit_chain(:create_if_missing)
 end
 
 action :delete do
-  edit_policy(:delete)
+  edit_chain(:delete)
 end
 
-def edit_policy(exec_action)
+def edit_chain(exec_action)
+  # only default chains can have a policy
+  if %w{INPUT OUTPUT FORWARD PREROUTING POSTROUTING}.include? new_resource.chain
+    policy = new_resource.policy
+  else
+    policy = '- [0:0]'
+  end
+
   directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
     owner  'root'
     group  'root'
@@ -44,7 +51,7 @@ def edit_policy(exec_action)
     owner    'root'
     group    'root'
     mode     00600
-    content  "#{new_resource.policy}\n"
+    content  "#{policy}\n"
     notifies :create, 'ruby_block[create_rules]', :delayed
     notifies :create, 'ruby_block[restart_iptables]', :delayed
     action   exec_action
