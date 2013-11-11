@@ -149,7 +149,7 @@ end
 Example: Create a custom chain:
 
 ```ruby
-iptables_ng_chain 'MYCHAIN' do
+iptables_ng_chain 'MYCHAIN'
 ```
 
 The following additional attributes are supported:
@@ -158,7 +158,8 @@ The following additional attributes are supported:
 iptables_ng_chain 'name' do
   chain  'INPUT'       # The chain to set the policy for (name_attribute)
   table  'filter'      # The table to use (defaults to 'filter')
-  policy 'DROP [0:0]'  # The policy to use (required)
+  policy 'DROP [0:0]'  # The policy to use (defaults to `ACCEPT [0:0]` for
+                       # build-in chains, to `- [0:0]` for custom ones
 
   action :create       # Supported actions: :create, :create_if_missing, :delete
                        # Default action: :create
