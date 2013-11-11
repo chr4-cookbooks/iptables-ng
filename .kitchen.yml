@@ -48,6 +48,10 @@ suites:
   run_list:
   - recipe[minitest-handler]
   - recipe[iptables_ng_test::lwrp_chain_create_if_missing]
+- name: lwrp_chain_create_empty
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[iptables_ng_test::lwrp_chain_create_empty]
 
 - name: lwrp_rule_create_default
   run_list:
