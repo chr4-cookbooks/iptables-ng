@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: iptables
-# Resource:: policy
+# Resource:: chain
 #
 # Copyright 2012, Chris Aumann
 #
@@ -23,7 +23,7 @@ default_action :create
 
 # linux/netfilter/x_tables.h doesn't restrict chains very tightly.  Just a string token
 # with a max length of XT_EXTENSION_MAXLEN (29 in all 3.x headers I could find)
-attribute :chain,  kind_of: String, default: 'INPUT',  regex: /^\w{1,29}$/
+attribute :chain,  kind_of: String, name_attribute: true,  regex: /^\w{1,29}$/
 attribute :table,  kind_of: String, default: 'filter', equal_to: %w{filter nat mangle raw}
 attribute :policy, kind_of: String, default: 'ACCEPT [0:0]'
 

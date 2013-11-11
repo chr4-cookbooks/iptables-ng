@@ -1,6 +1,6 @@
 require File.expand_path('../support/helpers', __FILE__)
 
-describe 'iptables-ng::lwrp_policy_create_if_missing' do
+describe 'iptables-ng::lwrp_chain_create_if_missing' do
   include Helpers::TestHelpers
 
   it 'should not default FORWARD policy to DROP' do
