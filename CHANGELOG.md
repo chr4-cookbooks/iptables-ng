@@ -3,6 +3,12 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.0.0
+-----
+
+- Support custom chains
+- Rename/Migrate iptables_ng_policy provider to iptables_ng_chain
+
 1.1.1
 -----
 
@@ -17,7 +23,7 @@ This file is used to list changes made in each version of the iptables-ng cookbo
 
   ```node['iptables-ng']['rules']['filter']['INPUT']['rej'] = 'myrule'```
 
-  to 
+  to
 
   ```node['iptables-ng']['rules']['filter']['INPUT']['rej']['rule'] = 'myrule'```
 
