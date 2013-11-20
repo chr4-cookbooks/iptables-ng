@@ -32,7 +32,7 @@ module Iptables
         return if node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] && ip_version == 6
 
         Chef::Resource::Service.new(node['iptables-ng']["service_ipv#{ip_version}"], run_context).tap do |service|
-          service.supports(status: true, restart: true)
+          service.supports(:status => true, :restart => true)
           service.run_action(:enable)
           service.run_action(:restart)
         end
