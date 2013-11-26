@@ -21,6 +21,11 @@
 # Which IP versions to manage rules for
 default['iptables-ng']['enabled_ip_versions'] = [4, 6]
 
+# Which tables to manage:
+# When using containered setup (OpenVZ, Docker, LXC) it might might be
+# necessary to remove the "nat" and "raw" tables.
+default['iptables-ng']['enabled_tables'] = %w{nat filter mangle raw}
+
 # Packages to install
 default['iptables-ng']['packages'] = case node['platform_family']
 when 'debian'
