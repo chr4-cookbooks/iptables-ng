@@ -32,6 +32,11 @@ end
 
 
 def edit_rule(exec_action)
+
+  # Based on https://github.com/behanceops/chef/wiki/Security-Groups,
+  #   we are no longer running iptables on AWS
+  if node['be']['location'] == 'aws' then return end
+
   # Create rule for given ip_versions
   Array(new_resource.ip_version).each do |ip_version|
     # ipv6 doesn't support nat
