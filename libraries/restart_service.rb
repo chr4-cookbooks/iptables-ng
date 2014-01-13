@@ -25,25 +25,49 @@
 module Iptables
   module Manage
     def restart_service(ip_version)
-      # Restart iptables service if available
-      if node['iptables-ng']["service_ipv#{ip_version}"]
 
-        # Do not restart twice if the command is the same for ipv4 and ipv6
-        return if node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] and ip_version == 6
+      # Based on https://github.com/behanceops/chef/wiki/Security-Groups,
+      #   we are no longer running iptables on AWS
+      if node['be']['location'] == 'aws' then
 
+        Chef::Log.info "Disabling iptables, since we are on AWS"
+
+        # Removing the default reject * rule
+        rc = Chef::Util::FileEdit.new("/etc/sysconfig/iptables")
+        rc.search_file_delete_line( /REJECT/ )
+        rc.write_file
+
+        # Stop and disable the service
         Chef::Resource::Service.new(node['iptables-ng']["service_ipv#{ip_version}"], run_context).tap do |service|
-          service.supports(status: true, restart: true)
-          service.run_action(:enable)
-          service.run_action(:restart)
+          service.supports(status: true)
+          service.run_action(:disable)
+          service.run_action(:stop)
         end
 
-      # If no service is available, apply the rules manually
+      # Restart iptables service if available
       else
-        Chef::Log.info 'applying rules manually, as no service is specified'
-        Chef::Resource::Execute.new("iptables-restore for ipv#{ip_version}", run_context).tap do |execute|
-          execute.command("iptables-restore < #{node['iptables-ng']['script_ipv4']}") if ip_version == 4
-          execute.command("ip6tables-restore < #{node['iptables-ng']['script_ipv6']}") if ip_version == 6
-          execute.run_action(:run)
+
+        if node['iptables-ng']["service_ipv#{ip_version}"]
+
+          Chef::Log.info "Running iptables"
+
+          # Do not restart twice if the command is the same for ipv4 and ipv6
+          return if node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] and ip_version == 6
+
+          Chef::Resource::Service.new(node['iptables-ng']["service_ipv#{ip_version}"], run_context).tap do |service|
+            service.supports(status: true, restart: true)
+            service.run_action(:enable)
+            service.run_action(:restart)
+          end
+
+        # If no service is available, apply the rules manually
+        else
+          Chef::Log.info 'applying rules manually, as no service is specified'
+          Chef::Resource::Execute.new("iptables-restore for ipv#{ip_version}", run_context).tap do |execute|
+            execute.command("iptables-restore < #{node['iptables-ng']['script_ipv4']}") if ip_version == 4
+            execute.command("ip6tables-restore < #{node['iptables-ng']['script_ipv6']}") if ip_version == 6
+            execute.run_action(:run)
+          end
         end
       end
     end
