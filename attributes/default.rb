@@ -74,3 +74,5 @@ else
   default['iptables-ng']['script_ipv4'] = '/etc/iptables-rules.ipt'
   default['iptables-ng']['script_ipv6'] = '/etc/ip6tables-rules.ipt'
 end
+
+default['iptables-ng']['data_bag'] = "iptables-ng"
