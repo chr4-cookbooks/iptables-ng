@@ -18,6 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# Which IP versions to manage rules for
+default['iptables-ng']['enabled_ip_versions'] = [4, 6]
+
 # Packages to install
 default['iptables-ng']['packages'] = case node['platform_family']
 when 'debian'

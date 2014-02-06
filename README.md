@@ -32,6 +32,9 @@ depends 'iptables-ng'
 While iptables-ng tries to automatically determine the correct settings and defaults for your distribution, it might be necessary to adapt them in certian cases. You can configure the behaviour of iptables-ng using the following attributes:
 
 ```ruby
+# The ip versions to manage iptables for
+node['iptables-ng']['enabled_ip_versions'] = [4, 6]
+
 # An array of packages to install.
 # This should install iptables and ip6tables,
 # as well as a system service that takes care of reloading the rules
@@ -186,7 +189,7 @@ iptables_ng_rule 'custom' do
   chain      'INPUT'      # Chain to use. Defaults to 'INPUT'
   table      'filter'     # Table to use. Defaults to 'filter'
   ip_version 4            # Integer or Array of IP versions to create the rules for.
-                          # Defaults to [4, 6]
+                          # Defaults to node['iptables-ng']['enabled_ip_versions']
   rule       '-j ACCEPT'  # String or Array containing the rule(s). (Required)
 
   action :create          # Supported actions: :create, :create_if_missing, :delete
