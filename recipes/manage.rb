@@ -27,7 +27,7 @@ ruby_block 'create_rules' do
       include Iptables::Manage
     end
 
-    [4, 6].each do |ip_version|
+    node['iptables-ng']['enabled_ip_versions'].each do |ip_version|
       create_iptables_rules(ip_version)
     end
   end
@@ -41,7 +41,7 @@ ruby_block 'restart_iptables' do
       include Iptables::Manage
     end
 
-    [4, 6].each do |ip_version|
+    node['iptables-ng']['enabled_ip_versions'].each do |ip_version|
       restart_service(ip_version)
     end
   end
