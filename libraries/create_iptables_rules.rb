@@ -50,7 +50,11 @@ module Iptables
         iptables_restore << "*#{table}\n"
 
         # Get default policies and rules for this chain
-        default_policies = chains.inject({}) {|new_chain, rule| new_chain[rule[0]] = rule[1].select{|k, v| k == 'default'}; new_chain }
+        # 
+        # ruby 1.8: Hash#select returns an array of key value pairs, not a Hash
+        default_policies = chains.inject({}) {|new_chain, rule| new_chain[rule[0]] = Hash[rule[1].select{|k, v| k == 'default'}]; new_chain }
+
+        # ruby 1.8: Hash#reject, on the other hand, returns a hash
         all_chain_rules  = chains.inject({}) {|new_chain, rule| new_chain[rule[0]] = rule[1].reject{|k, v| k == 'default'}; new_chain }
 
         # Apply default policies first
