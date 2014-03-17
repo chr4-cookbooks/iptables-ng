@@ -76,3 +76,4 @@ else
 end
 
 default['iptables-ng']['data_bag'] = "iptables-ng"
+default["iptables-ng"]["secret"] = nil

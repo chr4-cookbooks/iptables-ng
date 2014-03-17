@@ -1,10 +1,10 @@
 rules = Mash.new
 bag = node['iptables-ng']['data_bag']
 
-node["iptables-ng"]["data_bags"].each do |item|
+Array(node['iptables-ng']['data_bags']).each do |item|
   bag_item  = begin
-    if node["iptables-ng"]["secret"]
-      secret = Chef::EncryptedDataBagItem.load_secret(node["iptables-ng"]["secret"])
+    if node['iptables-ng"]["secret']
+      secret = Chef::EncryptedDataBagItem.load_secret(node['iptables-ng']['secret'])
       Chef::EncryptedDataBagItem.load(bag, item, secret)
     else
       data_bag_item(bag, item)
@@ -14,8 +14,7 @@ node["iptables-ng"]["data_bags"].each do |item|
     Hash.new
   end
 
-  rules = Chef::Mixin::DeepMerge.merge(rules, bag_item["rules"])
-
+  rules = Chef::Mixin::DeepMerge.merge(rules, bag_item['rules'])
 end
 
 node.set['iptables-ng']['rules'] = rules
