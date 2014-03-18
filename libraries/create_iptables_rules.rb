@@ -50,8 +50,8 @@ module Iptables
         iptables_restore << "*#{table}\n"
 
         # Get default policies and rules for this chain
-        default_policies = chains.inject({}) {|new_chain, rule| new_chain[rule[0]] = rule[1].select{|k, v| k == 'default'}; new_chain }
-        all_chain_rules  = chains.inject({}) {|new_chain, rule| new_chain[rule[0]] = rule[1].reject{|k, v| k == 'default'}; new_chain }
+        default_policies = chains.inject({}) { |new_chain, rule| new_chain[rule[0]] = rule[1].select { |k, v| k == 'default' }; new_chain }
+        all_chain_rules  = chains.inject({}) { |new_chain, rule| new_chain[rule[0]] = rule[1].reject { |k, v| k == 'default' }; new_chain }
 
         # Apply default policies first
         default_policies.each do |chain, policy|
