@@ -37,7 +37,7 @@ module Iptables
         rule = ::File.basename(filename)
 
         # ipv6 doesn't support nat
-        next if table == 'nat' and ip_version == 6
+        next if table == 'nat' && ip_version == 6
 
         # Create hashes unless they already exist, and add the rule
         rules[table] ||= {}

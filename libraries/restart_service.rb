@@ -29,7 +29,7 @@ module Iptables
       if node['iptables-ng']["service_ipv#{ip_version}"]
 
         # Do not restart twice if the command is the same for ipv4 and ipv6
-        return if node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] and ip_version == 6
+        return if node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] && ip_version == 6
 
         Chef::Resource::Service.new(node['iptables-ng']["service_ipv#{ip_version}"], run_context).tap do |service|
           service.supports(status: true, restart: true)
