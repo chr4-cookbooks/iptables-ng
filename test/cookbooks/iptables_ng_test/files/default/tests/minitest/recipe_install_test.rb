@@ -24,17 +24,19 @@ describe 'iptables-ng::install' do
 
 
   it 'should not apply other iptables rules' do
+    # Parse kernel version from uname
+    kernel_version = shell_out('uname -r').stdout.split('-').first
+
     ipv4 = shell_out('iptables -L -n |wc -l')
     ipv4.stdout.must_include('8')
 
-    # RHEL uses a kernel <= 2.6.35, which doesn't have the INPUT chain in nat table
+    # kernel <= 2.6.35 doesn't have the INPUT chain in nat table
     ipv4 = shell_out('iptables -L -n -t nat |wc -l')
-    if node['platform_family'] == 'rhel'
-      ipv4.stdout.must_include('8')
-    else
+    if Gem::Version.new(kernel_version) > Gem::Version.new('2.6.35')
       ipv4.stdout.must_include('11')
+    else
+      ipv4.stdout.must_include('8')
     end
-
 
     ipv4 = shell_out('iptables -L -n -t mangle |wc -l')
     ipv4.stdout.must_include('14')
@@ -68,10 +70,15 @@ describe 'iptables-ng::install' do
   end
 
   it 'should apply default policies in nat table' do
+    # Parse kernel version from uname
+    kernel_version = shell_out('uname -r').stdout.split('-').first
+
     ipv4 = shell_out('iptables -L -n -t nat')
 
-    # RHEL uses a kernel <= 2.6.35, which doesn't have the INPUT chain in nat table
-    ipv4.stdout.must_include('Chain INPUT (policy ACCEPT)') unless node['platform_family'] == 'rhel'
+    # kernel <= 2.6.35 doesn't have the INPUT chain in nat table
+    if Gem::Version.new(kernel_version) > Gem::Version.new('2.6.35')
+      ipv4.stdout.must_include('Chain INPUT (policy ACCEPT)')
+    end
     ipv4.stdout.must_include('Chain OUTPUT (policy ACCEPT)')
     ipv4.stdout.must_include('Chain PREROUTING (policy ACCEPT)')
     ipv4.stdout.must_include('Chain POSTROUTING (policy ACCEPT)')
