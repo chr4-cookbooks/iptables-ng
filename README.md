@@ -39,7 +39,7 @@ node['iptables-ng']['enabled_ip_versions'] = [4, 6]
 # This should install iptables and ip6tables,
 # as well as a system service that takes care of reloading the rules
 # On Debian and Ubuntu, iptables-persistent is used by default.
-node['iptables-ng']['packages'] = [ 'iptables' ]
+node['iptables-ng']['packages'] = ['iptables']
 
 # The name of the service that will be used to restart iptables
 # If this is left empty, iptables-ng will fall back to iptables-restore
@@ -201,8 +201,8 @@ Example: Allow HTTP and HTTPS for a specific IP range only
 
 ```ruby
 iptables_ng_rule 'ssh' do
-  rule [ '--source 192.168.1.0/24 --protocol tcp --dport 80 --match state --state NEW --jump ACCEPT',
-         '--source 192.168.1.0/24 --protocol tcp --dport 443 --match state --state NEW --jump ACCEPT' ]
+  rule ['--source 192.168.1.0/24 --protocol tcp --dport 80 --match state --state NEW --jump ACCEPT',
+        '--source 192.168.1.0/24 --protocol tcp --dport 443 --match state --state NEW --jump ACCEPT']
 
   # As the source specified above is ipv4
   # This rule cannot be applied to ip6tables.
