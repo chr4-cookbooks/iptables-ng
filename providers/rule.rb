@@ -30,7 +30,6 @@ action :delete do
   edit_rule(:delete)
 end
 
-
 def edit_rule(exec_action)
   # Create rule for given ip_versions
   Array(new_resource.ip_version).each do |ip_version|
@@ -64,5 +63,3 @@ def edit_rule(exec_action)
 
   # TODO: link to .rule for rhel compatibility?
 end
-
-

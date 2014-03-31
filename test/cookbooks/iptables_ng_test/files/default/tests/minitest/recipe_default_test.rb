@@ -32,7 +32,6 @@ describe 'iptables-ng::default' do
     ipv6.stdout.must_match(/ACCEPT\s+(icmp|1)/)
   end
 
-
   it 'should set default mangle FORARD policy to DROP' do
     file('/etc/iptables.d/mangle/FORWARD/default').must_include('DROP [0:0]')
   end
@@ -44,7 +43,6 @@ describe 'iptables-ng::default' do
     ipv6 = shell_out('ip6tables -t mangle -L -n')
     ipv6.stdout.must_include('Chain FORWARD (policy DROP)')
   end
-
 
   it 'should create nat POSTROUTING iptables rule' do
     file('/etc/iptables.d/nat/POSTROUTING/nat_test-nat-POSTROUTING-attribute-rule.rule_v4').must_include('--protocol tcp -j ACCEPT')
@@ -58,7 +56,6 @@ describe 'iptables-ng::default' do
     ipv4 = shell_out('iptables -t nat -L -n')
     ipv4.stdout.must_match(/ACCEPT\s+tcp/)
   end
-
 
   it 'should create SSH iptables rule' do
     file('/etc/iptables.d/filter/INPUT/ssh-filter-INPUT-attribute-rule.rule_v4').must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
@@ -76,7 +73,6 @@ describe 'iptables-ng::default' do
     ipv6.stdout.must_include('tcp dpt:22 state NEW')
   end
 
-
   it 'should create ipv4_only iptables rule' do
     file('/etc/iptables.d/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v4').must_include('--protocol tcp --source 1.2.3.4 --dport 123 --jump ACCEPT')
   end
@@ -89,7 +85,6 @@ describe 'iptables-ng::default' do
     ipv4 = shell_out('iptables -L -n')
     ipv4.stdout.must_include('tcp dpt:123')
   end
-
 
   it 'should enable iptables serices' do
     service(node['iptables-ng']['service_ipv4']).must_be_enabled if node['iptables-ng']['service_ipv4']

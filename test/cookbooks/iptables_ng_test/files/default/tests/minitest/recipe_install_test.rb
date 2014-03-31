@@ -22,7 +22,6 @@ describe 'iptables-ng::install' do
     file('/etc/iptables.d/raw/PREROUTING/default').must_include('ACCEPT [0:0]')
   end
 
-
   it 'should not apply other iptables rules' do
     # Parse kernel version from uname
     kernel_version = shell_out('uname -r').stdout.split('-').first
@@ -55,7 +54,6 @@ describe 'iptables-ng::install' do
     ipv6 = shell_out('ip6tables -L -n -t raw |wc -l')
     ipv6.stdout.must_include('5')
   end
-
 
   it 'should apply default policies in filter table' do
     ipv4 = shell_out('iptables -L -n')
@@ -109,7 +107,6 @@ describe 'iptables-ng::install' do
     ipv6.stdout.must_include('Chain OUTPUT (policy ACCEPT)')
     ipv6.stdout.must_include('Chain PREROUTING (policy ACCEPT)')
   end
-
 
   it 'should enable iptables serices' do
     service(node['iptables-ng']['service_ipv4']).must_be_enabled if node['iptables-ng']['service_ipv4']

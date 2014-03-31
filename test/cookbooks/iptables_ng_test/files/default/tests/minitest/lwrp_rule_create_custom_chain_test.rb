@@ -4,7 +4,7 @@ describe 'iptables-ng::lwrp_create_custom_chain' do
   include Helpers::TestHelpers
 
   it 'should create the custom chain directory' do
-      directory('/etc/iptables.d/nat/FOO').must_exist
+    directory('/etc/iptables.d/nat/FOO').must_exist
   end
 
   it 'should set custom iptables rule' do

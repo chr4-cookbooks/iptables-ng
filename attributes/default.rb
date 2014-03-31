@@ -54,7 +54,6 @@ when 'ubuntu'
   default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules.v4'
   default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
 
-
 when 'redhat', 'centos', 'scientific', 'amazon', 'fedora'
   default['iptables-ng']['service_ipv4'] = 'iptables'
   default['iptables-ng']['service_ipv6'] = 'ip6tables'
