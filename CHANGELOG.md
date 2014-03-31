@@ -3,6 +3,13 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.1.0
+-----
+
+- Add rubocup
+- Add attribute `node['iptables-ng']['enabled_ip_versions']`
+
+
 2.0.0
 -----
 
