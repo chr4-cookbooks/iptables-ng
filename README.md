@@ -137,7 +137,7 @@ It's recommended to configure iptables-ng using LWRPs in your (wrapper) cookbook
 All providers take care that iptables is installed (they include the install recipe before running), so you can just use them without worrying whether everything is installed correctly.
 
 
-## iptables_ng_chain
+## iptables\_ng\_chain
 
 This provider creates chains and adds their default policies.
 
@@ -169,7 +169,7 @@ iptables_ng_chain 'name' do
 end
 ```
 
-## iptables_ng_rule
+## iptables\_ng\_rule
 
 This provider adds iptables rules
 
@@ -224,7 +224,7 @@ Furthermore, due to the lack of Opscode kitchen boxes, there are not tests for A
 You fixed a bug, or added a new feature? Yippie!
 
 1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
+2. Create a named feature branch (like `add\_component\_x`)
 3. Write you change
 4. Write tests for your change (if applicable)
 5. Run the tests, ensuring they all pass

@@ -7,7 +7,7 @@ This file is used to list changes made in each version of the iptables-ng cookbo
 -----
 
 - Support custom chains
-- Rename/Migrate iptables_ng_policy provider to iptables_ng_chain
+- Rename/Migrate iptables\_ng\_policy provider to iptables\_ng\_chain
 
 1.1.1
 -----
@@ -17,9 +17,9 @@ This file is used to list changes made in each version of the iptables-ng cookbo
 1.1.0
 -----
 
-- Support for ip_version parameter in attributes. See README for details.
+- Support for ip\_version parameter in attributes. See README for details.
 
-  If you use attributes to configure iptables_ng, you need to migrate
+  If you use attributes to configure iptables\_ng, you need to migrate
 
   ```node['iptables-ng']['rules']['filter']['INPUT']['rej'] = 'myrule'```
 
