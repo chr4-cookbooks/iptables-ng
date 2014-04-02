@@ -19,15 +19,15 @@
 #
 
 action :create do
-  edit_rule(:create)
+  new_resource.updated_by_last_action(true) if edit_rule(:create)
 end
 
 action :create_if_missing do
-  edit_rule(:create_if_missing)
+  new_resource.updated_by_last_action(true) if edit_rule(:create_if_missing)
 end
 
 action :delete do
-  edit_rule(:delete)
+  new_resource.updated_by_last_action(true) if edit_rule(:delete)
 end
 
 def edit_rule(exec_action)
@@ -58,7 +58,7 @@ def edit_rule(exec_action)
       action   exec_action
     end
 
-    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
+    r.updated_by_last_action?
   end
 
   # TODO: link to .rule for rhel compatibility?
