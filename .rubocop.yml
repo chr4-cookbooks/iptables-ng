@@ -15,3 +15,6 @@ Documentation:
 
 ClassAndModuleChildren:
   Enabled: false
+
+SingleSpaceBeforeFirstArg:
+  Enabled: false
