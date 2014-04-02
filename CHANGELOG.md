@@ -3,6 +3,12 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.1.1
+-----
+
+- Fix an issue with `node['iptables-ng']['enabled_ip_versions']`, Thanks [Bob Ziuchkovski](https://github.com/ziuchkovski)
+- Add Travis with rubocup and foodcritic checks
+
 2.1.0
 -----
 
