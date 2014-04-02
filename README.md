@@ -1,5 +1,7 @@
 # iptables-ng Cookbook
 
+[![Build Status](https://travis-ci.org/chr4-cookbooks/iptables-ng.svg?branch=master)](https://travis-ci.org/chr4-cookbooks/iptables-ng)
+
 This cookbook maintains and installs iptables and ip6tables rules, trying to keep as close to the way the used distribution maintains their rules.
 
 Contrary to other iptables cookbooks, this cookbook installs iptables and maintains rules using the distributions default configuration files and services (for Debian and Ubuntu, iptables-persistent is used). If the distribution has no service for iptables, it falls back to iptables-restore.
