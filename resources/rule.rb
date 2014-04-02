@@ -27,7 +27,7 @@ attribute :name,       kind_of: String, name_attribute: true
 attribute :chain,      kind_of: String, default: 'INPUT',  regex: /^[\w-]{1,29}$/
 attribute :table,      kind_of: String, default: 'filter', equal_to: %w(filter nat mangle raw)
 attribute :rule,       kind_of: [Array, String],  default: []
-attribute :ip_version, kind_of: [Array, Integer], default: node['iptables-ng']['enabled_ip_versions'], equal_to: [[4, 6], 4, 6]
+attribute :ip_version, kind_of: [Array, Integer], default: node['iptables-ng']['enabled_ip_versions'], equal_to: [[4, 6], [4], [6], 4, 6]
 
 def initialize(*args)
   super
