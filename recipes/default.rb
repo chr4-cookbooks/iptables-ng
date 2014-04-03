@@ -22,17 +22,20 @@ include_recipe 'iptables-ng::install'
 
 # Apply rules from node attributes
 node['iptables-ng']['rules'].each do |table, chains|
+
+  next unless chains
+
   chains.each do |chain, p|
     # policy is read only, duplicate it
     policy = p.dup
-
+    
     # Apply chain policy
     iptables_ng_chain "attribute-policy-#{chain}" do
       chain  chain
       table  table
       policy policy.delete('default')
     end
-
+    
     # Apply rules
     policy.each do |name, r|
       iptables_ng_rule "#{name}-#{table}-#{chain}-attribute-rule" do
@@ -44,3 +47,4 @@ node['iptables-ng']['rules'].each do |table, chains|
     end
   end
 end
+
