@@ -3,6 +3,12 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.0
+-----
+
+- Add support for `node['iptables-ng']['enabled_tables']`
+
+
 2.1.1
 -----
 
