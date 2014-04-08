@@ -2,6 +2,10 @@
 driver:
   name: vagrant
 
+driver_config:
+  customize:
+    memory: 512
+
 provisioner:
   name: chef_solo
   require_chef_omnibus: latest
