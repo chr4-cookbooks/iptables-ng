@@ -40,7 +40,7 @@ module Iptables
         next if table == 'nat' && ip_version == 6
 
         # Skip deactivated tables
-        next if not node['iptables-ng']['enabled_tables'].include?(table)
+        next unless node['iptables-ng']['enabled_tables'].include?(table)
 
         # Create hashes unless they already exist, and add the rule
         rules[table] ||= {}

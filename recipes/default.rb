@@ -23,7 +23,7 @@ include_recipe 'iptables-ng::install'
 # Apply rules from node attributes
 node['iptables-ng']['rules'].each do |table, chains|
   # Skip deactivated tables
-  next if not node['iptables-ng']['enabled_tables'].include?(table)
+  next unless node['iptables-ng']['enabled_tables'].include?(table)
 
   chains.each do |chain, p|
     # policy is read only, duplicate it
