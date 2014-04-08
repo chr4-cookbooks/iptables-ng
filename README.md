@@ -37,6 +37,11 @@ While iptables-ng tries to automatically determine the correct settings and defa
 # The ip versions to manage iptables for
 node['iptables-ng']['enabled_ip_versions'] = [4, 6]
 
+# Which tables to manage:
+# When using containered setup (OpenVZ, Docker, LXC) it might might be
+# necessary to remove the "nat" and "raw" tables.
+node['iptables-ng']['enabled_tables'] = %w{nat filter mangle raw}
+
 # An array of packages to install.
 # This should install iptables and ip6tables,
 # as well as a system service that takes care of reloading the rules
