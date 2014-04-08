@@ -35,6 +35,9 @@ directory '/etc/iptables.d' do
 end
 
 node['iptables-ng']['rules'].each do |table, chains|
+  # Skip deactivated tables
+  next if not node['iptables-ng']['enabled_tables'].include?(table)
+
   directory "/etc/iptables.d/#{table}" do
     mode 00700
   end
