@@ -3,7 +3,7 @@ bag = node['iptables-ng']['data_bag']
 
 Array(node['iptables-ng']['data_bags']).each do |item|
   bag_item  = begin
-    if node['iptables-ng"]["secret']
+    if node['iptables-ng']['secret']
       secret = Chef::EncryptedDataBagItem.load_secret(node['iptables-ng']['secret'])
       Chef::EncryptedDataBagItem.load(bag, item, secret)
     else
