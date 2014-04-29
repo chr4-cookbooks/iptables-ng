@@ -65,6 +65,7 @@ module Iptables
 
         # Apply default policies first
         default_policies.each do |chain, policy|
+          policy.has_key?('default') || policy['default'] = '- [0:0]'
           iptables_restore << ":#{chain} #{policy['default'].chomp}\n"
         end
 
