@@ -54,12 +54,12 @@ module Iptables
 
         # Get default policies and rules for this chain
         default_policies = chains.reduce({}) do |new_chain, rule|
-          new_chain[rule[0]] = rule[1].select { |k, v| k == 'default' }
+          new_chain[rule[0]] = rule[1].select { |k, _| k == 'default' }
           new_chain
         end
 
         all_chain_rules  = chains.reduce({}) do |new_chain, rule|
-          new_chain[rule[0]] = rule[1].reject { |k, v| k == 'default' }
+          new_chain[rule[0]] = rule[1].reject { |k, _| k == 'default' }
           new_chain
         end
 
@@ -69,7 +69,7 @@ module Iptables
         end
 
         # Apply rules for this chain, but sort before adding
-        all_chain_rules.each do |chain, chain_rules|
+        all_chain_rules.each do |_chain, chain_rules|
           chain_rules.sort.each { |r| iptables_restore << "#{r.last.chomp}\n" }
         end
 
