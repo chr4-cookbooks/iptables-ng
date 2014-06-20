@@ -33,9 +33,7 @@ when 'debian'
 when 'rhel'
   %w(iptables iptables-ipv6)
 when 'fedora'
-  if node['platform_version'].to_i > 18
-    %w(iptables iptables-services)
-  end
+  %w(iptables iptables-services) if node['platform_version'].to_i > 18
 else
   %w(iptables)
 end
