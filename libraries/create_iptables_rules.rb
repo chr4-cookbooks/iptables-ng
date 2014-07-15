@@ -53,14 +53,12 @@ module Iptables
         iptables_restore << "*#{table}\n"
 
         # Get default policies and rules for this chain
-        default_policies = chains.reduce({}) do |new_chain, rule|
+        default_policies = chains.each_with_object({}) do |rule, new_chain|
           new_chain[rule[0]] = rule[1].select { |k, _| k == 'default' }
-          new_chain
         end
 
-        all_chain_rules  = chains.reduce({}) do |new_chain, rule|
+        all_chain_rules  = chains.each_with_object({}) do |rule, new_chain|
           new_chain[rule[0]] = rule[1].reject { |k, _| k == 'default' }
-          new_chain
         end
 
         # Apply default policies first
