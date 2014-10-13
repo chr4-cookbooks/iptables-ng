@@ -1,0 +1,18 @@
+{
+  "iptables-ng": {
+    "rules": {
+      "filter": {
+        "INPUT": {
+          "default": "DROP [0:0]",
+          "test1": {
+            "rule": "--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT"
+          },
+          "test2": {
+            "rule": "--protocol tcp --dport 80 --match state --state NEW --jump DROP",
+            "ip_version": 4
+          }
+        }
+      }
+    }
+  }
+}
