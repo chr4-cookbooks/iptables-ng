@@ -243,4 +243,4 @@ Contributions of any sort are very welcome!
 
 # License and Authors
 
-Authors: Chris Aumann
+Authors: Chris Aumann, Dan Fruehauf
