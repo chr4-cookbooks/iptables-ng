@@ -213,8 +213,21 @@ iptables_ng_rule 'ssh' do
   rule ['--source 192.168.1.0/24 --protocol tcp --dport 80 --match state --state NEW --jump ACCEPT',
         '--source 192.168.1.0/24 --protocol tcp --dport 443 --match state --state NEW --jump ACCEPT']
 
-  # As the source specified above is ipv4
-  # This rule cannot be applied to ip6tables.
+  # As the source specified above is ipv4, this rule cannot be applied to ip6tables.
+  # Therefore, setting ip_version to 4
+  ip_version 4
+end
+```
+
+Example: Use the same rule for an array of IPs
+
+```ruby
+ips = %w(10.10.10.1 123.123.123.123 192.168.1.0/24)
+
+iptables_ng_rule 'multiple_source_addresses' do
+  rule ips.map { |ip| "--source #{ip} --jump ACCEPT" }
+
+  # As the source specified above is ipv4, this rule cannot be applied to ip6tables.
   # Therefore, setting ip_version to 4
   ip_version 4
 end
