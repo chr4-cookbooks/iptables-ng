@@ -31,7 +31,11 @@ default['iptables-ng']['packages'] = case node['platform_family']
 when 'debian'
   %w(iptables iptables-persistent)
 when 'rhel'
-  %w(iptables iptables-ipv6)
+  if node['platform_version'].to_f >= 7.0
+    %w( iptables iptables-services )
+  else
+    %w( iptables iptables-ipv6 )
+  end
 else
   %w(iptables)
 end
