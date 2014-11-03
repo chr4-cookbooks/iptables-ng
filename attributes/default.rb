@@ -32,9 +32,9 @@ when 'debian'
   %w(iptables iptables-persistent)
 when 'rhel'
   if node['platform_version'].to_f >= 7.0
-    %w( iptables iptables-services )
+    %w(iptables iptables-services)
   else
-    %w( iptables iptables-ipv6 )
+    %w(iptables iptables-ipv6)
   end
 else
   %w(iptables)
