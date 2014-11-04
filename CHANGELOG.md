@@ -3,6 +3,12 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.1
+-----
+
+- Add support for RHEL 7 compatible distributions
+
+
 2.2.0
 -----
 
