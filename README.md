@@ -14,7 +14,7 @@ It uses the directory ```/etc/iptables.d``` to store and maintain its rules. I'm
 
 The following distribution are best supported, but as this recipe falls back to a generic iptables restore script in case the system is unknown, it should work with every linux distribution supporting iptables.
 
-* Ubuntu 12.04, 12.10, 13.04
+* Ubuntu 10.04, 12.04, 14.04, 14.10
 * Debian 7 (6 should work, too)
 * RHEL 5.9, 6.x, 7.x
 * Gentoo
