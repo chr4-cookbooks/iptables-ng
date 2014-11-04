@@ -16,7 +16,7 @@ The following distribution are best supported, but as this recipe falls back to 
 
 * Ubuntu 12.04, 12.10, 13.04
 * Debian 7 (6 should work, too)
-* RHEL 5.9, 6.x
+* RHEL 5.9, 6.x, 7.x
 * Gentoo
 * Archlinux
 
