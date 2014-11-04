@@ -257,4 +257,4 @@ Contributions of any sort are very welcome!
 # License and Authors
 
 Authors: Chris Aumann
-Contributors: Dan Fruehauf
+Contributors: Dan Fruehauf, Nathan Williams
