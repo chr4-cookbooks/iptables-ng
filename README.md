@@ -260,4 +260,4 @@ Contributions of any sort are very welcome!
 
 Authors: Chris Aumann
 
-Contributors: Dan Fruehauf, Nathan Williams
+Contributors: Dan Fruehauf, Nathan Williams, Christian Graf
