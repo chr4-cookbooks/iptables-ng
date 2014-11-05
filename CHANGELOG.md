@@ -3,6 +3,11 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.2
+-----
+
+- Fix an issue with init-script name on Ubuntu >= 14.10 (was renamed to netfilter-persistent)
+
 2.2.1
 -----
 
