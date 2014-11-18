@@ -43,6 +43,7 @@ node['iptables-ng']['rules'].each do |table, chains|
         table      table
         rule       r['rule']
         ip_version r['ip_version'] if r['ip_version']
+        action     r['action'].to_sym if r['action']
       end
     end
   end

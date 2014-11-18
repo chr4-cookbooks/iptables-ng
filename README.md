@@ -134,6 +134,15 @@ In case you need a rule for one specific ip version, you can set the "ip_version
 }
 ```
 
+You can also delete old rules by specifying a custom action.
+
+```json
+"ssh": {
+  "action": "delete"
+}
+```
+
+
 ## install
 
 The installs recipe installs iptables packages, makes sure that ```/etc/iptables.d``` is created and sets all default policies to "ACCEPT", unless they are already configured.
