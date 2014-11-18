@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Set up default rules
+# Set up default policies
 default['iptables-ng']['rules']['filter']['INPUT']['default'] = 'ACCEPT [0:0]'
 default['iptables-ng']['rules']['filter']['OUTPUT']['default'] = 'ACCEPT [0:0]'
 default['iptables-ng']['rules']['filter']['FORWARD']['default'] = 'ACCEPT [0:0]'
