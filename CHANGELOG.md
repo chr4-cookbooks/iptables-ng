@@ -3,6 +3,12 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.3
+-----
+
+- Add posibility to add an "action" when configuring iptables rules via attributes. See README for
+  details
+
 2.2.2
 -----
 
