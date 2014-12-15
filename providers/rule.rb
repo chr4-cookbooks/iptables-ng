@@ -19,23 +19,20 @@
 #
 
 action :create do
-  new_resource.updated_by_last_action(true) if edit_rule(:create)
+  edit_rule(:create)
 end
 
 action :create_if_missing do
-  new_resource.updated_by_last_action(true) if edit_rule(:create_if_missing)
+  edit_rule(:create_if_missing)
 end
 
 action :delete do
-  new_resource.updated_by_last_action(true) if edit_rule(:delete)
+  edit_rule(:delete)
 end
 
 def edit_rule(exec_action)
   # Create rule for given ip_versions
   Array(new_resource.ip_version).each do |ip_version|
-    # ipv6 doesn't support nat
-    next if new_resource.table == 'nat' && ip_version == 6
-
     rule_file = ''
     Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
 
@@ -58,7 +55,7 @@ def edit_rule(exec_action)
       action   exec_action
     end
 
-    r.updated_by_last_action?
+    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 
   # TODO: link to .rule for rhel compatibility?
