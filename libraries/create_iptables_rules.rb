@@ -36,8 +36,10 @@ module Iptables
         table, chain, filename = path.split('/')[3..5]
         rule = ::File.basename(filename)
 
-        # ipv6 doesn't support nat
-        next if table == 'nat' && ip_version == 6
+        # Skip nat table if ip6tables doesn't support it
+        next if table == 'nat' &&
+                node['iptables-ng']['ip6tables_nat_support'] == false &&
+                ip_version == 6
 
         # Skip deactivated tables
         next unless node['iptables-ng']['enabled_tables'].include?(table)

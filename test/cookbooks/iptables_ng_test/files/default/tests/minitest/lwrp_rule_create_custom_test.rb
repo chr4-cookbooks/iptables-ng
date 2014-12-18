@@ -1,14 +1,18 @@
 require File.expand_path('../support/helpers', __FILE__)
 
-describe 'iptables-ng::lwrp_create_custom' do
+describe 'iptables-ng::lwrp_rule_create_custom' do
   include Helpers::TestHelpers
 
   it 'should set custom iptables rule' do
     file('/etc/iptables.d/nat/OUTPUT/custom-output.rule_v4').must_include('--protocol icmp --jump ACCEPT')
   end
 
-  it 'should not set custom ip6tables rule for nat chain' do
-    file('/etc/iptables.d/nat/OUTPUT/custom-output.rule_v6').wont_exist
+  it 'should only set custom ip6tables rule for nat chain if ip6tables_nat_support attribute is enabled' do
+    if node['iptables-ng']['ip6tables_nat_support']
+      file('/etc/iptables.d/nat/OUTPUT/custom-output.rule_v6').must_include('--protocol icmp --jump ACCEPT')
+    else
+      file('/etc/iptables.d/nat/OUTPUT/custom-output.rule_v6').wont_exist
+    end
   end
 
   it 'should enable iptables serices' do

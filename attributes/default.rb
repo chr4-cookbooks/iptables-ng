@@ -26,6 +26,13 @@ default['iptables-ng']['enabled_ip_versions'] = [4, 6]
 # necessary to remove the "nat" and "raw" tables.
 default['iptables-ng']['enabled_tables'] = %w(nat filter mangle raw)
 
+# Enable nat support for ipv6
+# Older distributions do not support ipv6 nat, but recent Ubuntu does
+default['iptables-ng']['ip6tables_nat_support'] = value_for_platform(
+  'ubuntu' => { '14.04' => true, '14.10' => true, 'default' => false },
+  'default' => false,
+)
+
 # Packages to install
 default['iptables-ng']['packages'] = case node['platform_family']
 when 'debian'
