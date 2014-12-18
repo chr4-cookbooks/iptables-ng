@@ -21,3 +21,6 @@ SingleSpaceBeforeFirstArg:
 
 AbcSize:
   Enabled: false
+
+TrailingComma:
+  EnforcedStyleForMultiline: comma
