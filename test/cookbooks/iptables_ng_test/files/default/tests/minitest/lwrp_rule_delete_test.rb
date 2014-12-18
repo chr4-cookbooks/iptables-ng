@@ -4,11 +4,11 @@ describe 'iptables-ng::lwrp_rule_delete' do
   include Helpers::TestHelpers
 
   it 'should not set HTTP rule' do
-    file('/etc/iptables.d/filter/INPUT/http.rule_v4').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/http.rule_v4").wont_exist
   end
 
   it 'should not set HTTP ip6tables rule' do
-    file('/etc/iptables.d/filter/INPUT/http.rule_v6').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/http.rule_v6").wont_exist
   end
 
   it 'should enable iptables serices' do

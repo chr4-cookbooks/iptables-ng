@@ -4,15 +4,15 @@ describe 'iptables-ng::lwrp_create_custom_chain' do
   include Helpers::TestHelpers
 
   it 'should create the custom chain directory' do
-    directory('/etc/iptables.d/nat/FOO').must_exist
+    directory("#{node['iptables-ng']['scratch_dir']}/nat/FOO").must_exist
   end
 
   it 'should set custom iptables rule' do
-    file('/etc/iptables.d/nat/FOO/custom-chain-output.rule_v4').must_include('--protocol icmp --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/nat/FOO/custom-chain-output.rule_v4").must_include('--protocol icmp --jump ACCEPT')
   end
 
   it 'should not set custom ip6tables rule for nat chain' do
-    file('/etc/iptables.d/nat/FOO/custom-chain-output.rule_v6').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/nat/FOO/custom-chain-output.rule_v6").wont_exist
   end
 
   it 'should enable iptables serices' do

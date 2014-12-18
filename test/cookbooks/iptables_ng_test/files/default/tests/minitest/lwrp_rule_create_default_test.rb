@@ -4,11 +4,11 @@ describe 'iptables-ng::lwrp_rule_create_default' do
   include Helpers::TestHelpers
 
   it 'should set SSH iptables rule' do
-    file('/etc/iptables.d/filter/INPUT/ssh.rule_v4').must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ssh.rule_v4").must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
   end
 
   it 'should set SSH ip6tables rule' do
-    file('/etc/iptables.d/filter/INPUT/ssh.rule_v6').must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ssh.rule_v6").must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
   end
 
   it 'should enable iptables serices' do

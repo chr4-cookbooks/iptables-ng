@@ -4,7 +4,7 @@ describe 'iptables-ng::lwrp_create_invalid_custom_chain' do
   include Helpers::TestHelpers
 
   it 'should not create a rule when the chain name is invalid' do
-    file('/etc/iptables.d/nat/FOO/custom-chain-invalid-output.rule_v4').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/nat/FOO/custom-chain-invalid-output.rule_v4").wont_exist
   end
 
   it 'should enable iptables serices' do

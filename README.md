@@ -8,7 +8,7 @@ Contrary to other iptables cookbooks, this cookbook installs iptables and mainta
 
 It provides LWRPs as well as recipes which can handle iptables rules set in the nodes attributes.
 
-It uses the directory ```/etc/iptables.d``` to store and maintain its rules. I'm trying to be as compatible as much as possible to all distributions out there.
+It uses the directory ```#{node['iptables-ng']['scratch_dir']}``` (/etc/iptables.d by default) to store and maintain its rules. I'm trying to be as compatible as much as possible to all distributions out there.
 
 ## Requirements
 
@@ -145,7 +145,7 @@ You can also delete old rules by specifying a custom action.
 
 ## install
 
-The installs recipe installs iptables packages, makes sure that ```/etc/iptables.d``` is created and sets all default policies to "ACCEPT", unless they are already configured.
+The install recipe installs iptables packages, makes sure that ```#{node['iptables-ng']['scratch_dir']}``` (/etc/iptables.d by default) is created and sets all default policies to "ACCEPT", unless they are already configured.
 
 On Debian and Ubuntu systems, it also removes the "ufw" package, as it might interferre with this cookbook.
 

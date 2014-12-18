@@ -29,10 +29,10 @@ module Iptables
 
       # Retrieve all iptables rules for this ip_version,
       # as well as default policies
-      Dir["/etc/iptables.d/*/*/*.rule_v#{ip_version}",
-          '/etc/iptables.d/*/*/default'].each do |path|
+      Dir["#{node['iptables-ng']['scratch_dir']}/*/*/*.rule_v#{ip_version}",
+          "#{node['iptables-ng']['scratch_dir']}/*/*/default"].each do |path|
 
-        # /etc/iptables.d/#{table}/#{chain}/#{rule}.rule_v#{ip_version}
+        # #{node['iptables-ng']['scratch_dir']}/#{table}/#{chain}/#{rule}.rule_v#{ip_version}
         table, chain, filename = path.split('/')[3..5]
         rule = ::File.basename(filename)
 

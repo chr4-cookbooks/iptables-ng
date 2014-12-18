@@ -4,7 +4,7 @@ describe 'iptables-ng::lwrp_chain_create_default' do
   include Helpers::TestHelpers
 
   it 'should set default FORWARD policy to DROP' do
-    file('/etc/iptables.d/filter/FORWARD/default').must_include('DROP [0:0]')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/FORWARD/default").must_include('DROP [0:0]')
   end
 
   it 'should enable iptables serices' do

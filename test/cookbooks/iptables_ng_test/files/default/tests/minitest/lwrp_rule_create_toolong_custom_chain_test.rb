@@ -4,7 +4,7 @@ describe 'iptables-ng::lwrp_create_toolong_custom_chain' do
   include Helpers::TestHelpers
 
   it 'should not create a rule when the chain name is too long' do
-    file('/etc/iptables.d/nat/FOO/custom-chain-toolong-output.rule_v4').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/nat/FOO/custom-chain-toolong-output.rule_v4").wont_exist
   end
 
   it 'should enable iptables serices' do

@@ -4,7 +4,7 @@ describe 'iptables-ng::lwrp_chaincreate_custom' do
   include Helpers::TestHelpers
 
   it 'should set default mangle FORARD policy to DROP' do
-    file('/etc/iptables.d/mangle/FORWARD/default').must_include('DROP [0:0]')
+    file("#{node['iptables-ng']['scratch_dir']}/mangle/FORWARD/default").must_include('DROP [0:0]')
   end
 
   it 'should enable iptables serices' do
