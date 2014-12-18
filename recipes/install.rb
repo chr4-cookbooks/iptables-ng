@@ -30,7 +30,7 @@ package 'ufw' do
 end
 
 # Create directories
-directory '/etc/iptables.d' do
+directory "#{node['iptables-ng']['scratch_dir']}" do
   mode   00700
 end
 
@@ -38,7 +38,7 @@ node['iptables-ng']['rules'].each do |table, chains|
   # Skip deactivated tables
   next unless node['iptables-ng']['enabled_tables'].include?(table)
 
-  directory "/etc/iptables.d/#{table}" do
+  directory "#{node['iptables-ng']['scratch_dir']}/#{table}" do
     mode 00700
   end
 

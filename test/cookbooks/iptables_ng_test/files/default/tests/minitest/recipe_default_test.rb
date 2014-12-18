@@ -4,7 +4,7 @@ describe 'iptables-ng::default' do
   include Helpers::TestHelpers
 
   it 'should set default filter FORWARD policy to DROP' do
-    file('/etc/iptables.d/filter/FORWARD/default').must_include('DROP [0:0]')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/FORWARD/default").must_include('DROP [0:0]')
   end
 
   it 'should apply default filter FORWARD policy' do
@@ -16,11 +16,11 @@ describe 'iptables-ng::default' do
   end
 
   it 'should create iptables OUTPUT test_rule' do
-    file('/etc/iptables.d/filter/OUTPUT/testrule-filter-OUTPUT-attribute-rule.rule_v4').must_include('--protocol icmp --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/OUTPUT/testrule-filter-OUTPUT-attribute-rule.rule_v4").must_include('--protocol icmp --jump ACCEPT')
   end
 
   it 'should create ip6tables OUTPUT test_rule' do
-    file('/etc/iptables.d/filter/OUTPUT/testrule-filter-OUTPUT-attribute-rule.rule_v6').must_include('--protocol icmp --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/OUTPUT/testrule-filter-OUTPUT-attribute-rule.rule_v6").must_include('--protocol icmp --jump ACCEPT')
   end
 
   it 'should apply iptables OUTPUT test_rule' do
@@ -33,7 +33,7 @@ describe 'iptables-ng::default' do
   end
 
   it 'should set default mangle FORARD policy to DROP' do
-    file('/etc/iptables.d/mangle/FORWARD/default').must_include('DROP [0:0]')
+    file("#{node['iptables-ng']['scratch_dir']}/mangle/FORWARD/default").must_include('DROP [0:0]')
   end
 
   it 'should apply default mangle FORARD policy' do
@@ -45,11 +45,11 @@ describe 'iptables-ng::default' do
   end
 
   it 'should create nat POSTROUTING iptables rule' do
-    file('/etc/iptables.d/nat/POSTROUTING/nat_test-nat-POSTROUTING-attribute-rule.rule_v4').must_include('--protocol tcp -j ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/nat/POSTROUTING/nat_test-nat-POSTROUTING-attribute-rule.rule_v4").must_include('--protocol tcp -j ACCEPT')
   end
 
   it 'should not create custom ip6tables rule for nat chain' do
-    file('/etc/iptables.d/nat/POSTROUTING/nat_test-nat-POSTROUTING-attribute-rule.rule_v6').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/nat/POSTROUTING/nat_test-nat-POSTROUTING-attribute-rule.rule_v6").wont_exist
   end
 
   it 'should apply nat POSTROUTING iptables rule' do
@@ -58,11 +58,11 @@ describe 'iptables-ng::default' do
   end
 
   it 'should create SSH iptables rule' do
-    file('/etc/iptables.d/filter/INPUT/ssh-filter-INPUT-attribute-rule.rule_v4').must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ssh-filter-INPUT-attribute-rule.rule_v4").must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
   end
 
   it 'should create SSH ip6tables rule' do
-    file('/etc/iptables.d/filter/INPUT/ssh-filter-INPUT-attribute-rule.rule_v6').must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ssh-filter-INPUT-attribute-rule.rule_v6").must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
   end
 
   it 'should apply SSH iptables rule' do
@@ -74,11 +74,11 @@ describe 'iptables-ng::default' do
   end
 
   it 'should create ipv4_only iptables rule' do
-    file('/etc/iptables.d/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v4').must_include('--protocol tcp --source 1.2.3.4 --dport 123 --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v4").must_include('--protocol tcp --source 1.2.3.4 --dport 123 --jump ACCEPT')
   end
 
   it 'should not create ipv4_only ip6tables rule' do
-    file('/etc/iptables.d/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v6').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v6").wont_exist
   end
 
   it 'should apply ipv4_only iptables rule' do

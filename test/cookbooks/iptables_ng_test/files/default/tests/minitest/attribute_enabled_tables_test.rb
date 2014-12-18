@@ -4,31 +4,31 @@ describe 'iptables-ng::default' do
   include Helpers::TestHelpers
 
   it 'should not create default mangle FORARD policy' do
-    file('/etc/iptables.d/mangle/FORWARD/default').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/mangle/FORWARD/default").wont_exist
   end
 
   it 'should not create default nat FORARD policy' do
-    file('/etc/iptables.d/nat/FORWARD/default').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/nat/FORWARD/default").wont_exist
   end
 
   it 'should not create default raw FORARD policy' do
-    file('/etc/iptables.d/raw/default').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/raw/default").wont_exist
   end
 
   it 'should not create iptables OUTPUT test_rule' do
-    file('/etc/iptables.d/filter/OUTPUT/testrule-filter-OUTPUT-attribute-rule.rule_v4').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/filter/OUTPUT/testrule-filter-OUTPUT-attribute-rule.rule_v4").wont_exist
   end
 
   it 'should not create ip6tables OUTPUT test_rule' do
-    file('/etc/iptables.d/filter/OUTPUT/testrule-filter-OUTPUT-attribute-rule.rule_v6').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/filter/OUTPUT/testrule-filter-OUTPUT-attribute-rule.rule_v6").wont_exist
   end
 
   it 'should create SSH iptables rule' do
-    file('/etc/iptables.d/filter/INPUT/ssh-filter-INPUT-attribute-rule.rule_v4').must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ssh-filter-INPUT-attribute-rule.rule_v4").must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
   end
 
   it 'should create SSH ip6tables rule' do
-    file('/etc/iptables.d/filter/INPUT/ssh-filter-INPUT-attribute-rule.rule_v6').must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ssh-filter-INPUT-attribute-rule.rule_v6").must_include('--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT')
   end
 
   it 'should apply SSH iptables rule' do
@@ -40,11 +40,11 @@ describe 'iptables-ng::default' do
   end
 
   it 'should create ipv4_only iptables rule' do
-    file('/etc/iptables.d/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v4').must_include('--protocol tcp --source 1.2.3.4 --dport 123 --jump ACCEPT')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v4").must_include('--protocol tcp --source 1.2.3.4 --dport 123 --jump ACCEPT')
   end
 
   it 'should not create ipv4_only ip6tables rule' do
-    file('/etc/iptables.d/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v6').wont_exist
+    file("#{node['iptables-ng']['scratch_dir']}/filter/INPUT/ipv4_only-filter-INPUT-attribute-rule.rule_v6").wont_exist
   end
 
   it 'should apply ipv4_only iptables rule' do

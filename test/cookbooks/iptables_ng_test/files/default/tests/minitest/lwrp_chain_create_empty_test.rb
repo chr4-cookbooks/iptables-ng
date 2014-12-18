@@ -4,7 +4,7 @@ describe 'iptables-ng::lwrp_chain_create_empty' do
   include Helpers::TestHelpers
 
   it 'should create empty custom chain' do
-    file('/etc/iptables.d/filter/EMPTY/default').must_include('- [0:0]')
+    file("#{node['iptables-ng']['scratch_dir']}/filter/EMPTY/default").must_include('- [0:0]')
   end
 
   it 'should enable iptables serices' do

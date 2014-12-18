@@ -40,6 +40,9 @@ else
   %w(iptables)
 end
 
+#Where to store rules as they are being built
+default['iptables-ng']['scratch_dir'] = '/etc/iptables.d'
+
 # Where the rules are stored and how they are executed
 case node['platform']
 when 'debian'
