@@ -1,6 +1,6 @@
 require File.expand_path('../support/helpers', __FILE__)
 
-describe 'iptables-ng::lwrp_chaincreate_custom' do
+describe 'iptables-ng::lwrp_chain_create_custom' do
   include Helpers::TestHelpers
 
   it 'should set default mangle FORARD policy to DROP' do
