@@ -32,7 +32,7 @@ end
 
 def edit_chain(exec_action)
   # only default chains can have a policy
-  if %w(INPUT OUTPUT FORWARD PREROUTING POSTROUTING).include? new_resource.chain
+  if %w(INPUT OUTPUT FORWARD PREROUTING POSTROUTING).include?(new_resource.chain)
     policy = new_resource.policy
   else
     policy = '- [0:0]'
