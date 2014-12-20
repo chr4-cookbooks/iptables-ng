@@ -38,6 +38,14 @@ def edit_rule(exec_action)
             node['iptables-ng']['ip6tables_nat_support'] == false &&
             ip_version == 6
 
+    # Create chain if it doesn't exist
+    iptables_ng_chain new_resource.chain do
+      chain  new_resource.chain
+      table  new_resource.table
+      action :create_if_missing
+      not_if { exec_action == :delete }
+    end
+
     rule_file = ''
     Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
 
