@@ -3,6 +3,15 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.4
+-----
+
+- Check whether name attribute in rule provider is valid
+- Fix an issue with resource notification in rule provider
+- Fix an issue with nat table on ipv6 not properly skipped on systems without ip6tables nat support
+- Add `node['iptables-ng']['ip6tables_nat_support']` attribute, default to true on recent Ubuntu
+  versions
+
 2.2.3
 -----
 
