@@ -56,7 +56,6 @@ describe 'iptables-ng::default' do
     end
   end
 
-
   it 'should apply nat POSTROUTING iptables rule' do
     ipv4 = shell_out('iptables -t nat -L -n')
     ipv4.stdout.must_match(/ACCEPT\s+tcp/)
