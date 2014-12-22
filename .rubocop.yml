@@ -24,3 +24,6 @@ AbcSize:
 
 TrailingComma:
   EnforcedStyleForMultiline: comma
+
+EmptyLinesAroundBlockBody:
+  Enabled: false
