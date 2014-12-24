@@ -38,7 +38,10 @@ default['iptables-ng']['packages'] = case node['platform_family']
 when 'debian'
   %w(iptables iptables-persistent)
 when 'rhel'
-  if node['platform_version'].to_f >= 7.0
+  if node['platform'] == 'amazon'
+    # Amazon Linux doesn't include "iptables-services" or "iptables-ipv6"
+    %w(iptables)
+  elsif node['platform_version'].to_f >= 7.0
     %w(iptables iptables-services)
   else
     %w(iptables iptables-ipv6)
