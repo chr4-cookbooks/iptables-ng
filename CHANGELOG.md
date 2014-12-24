@@ -3,6 +3,11 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.5
+-----
+
+- Only install `iptables` package on Amazon Linux
+
 2.2.4
 -----
 
