@@ -3,6 +3,11 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.6
+-----
+
+- Add possibility to disable the reload or restore of iptables at the end of a chef run
+
 2.2.5
 -----
 
