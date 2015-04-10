@@ -26,6 +26,11 @@ default['iptables-ng']['enabled_ip_versions'] = [4, 6]
 # necessary to remove the "nat" and "raw" tables.
 default['iptables-ng']['enabled_tables'] = %w(nat filter mangle raw)
 
+# Configure whether the service should be managed by Chef
+# /!\ Be careful when using this feature as it might leave your server in an inconsistent state.
+# See https://github.com/chr4-cookbooks/iptables-ng/pull/42 for more details.
+default['iptables-ng']['managed_service'] = true
+
 # Enable nat support for ipv6
 # Older distributions do not support ipv6 nat, but recent Ubuntu does
 default['iptables-ng']['ip6tables_nat_support'] = value_for_platform(
