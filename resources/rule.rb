@@ -38,3 +38,17 @@ def initialize(*args)
   # Include iptables-ng::install recipe
   @run_context.include_recipe('iptables-ng::install')
 end
+
+def path_for_chain
+  "/etc/iptables.d/#{table}/#{chain}"
+end
+
+def path_for_ip_version(version)
+  "#{path_for_chain}/#{name}.rule_v#{version}"
+end
+
+def paths
+  Array(ip_version).map do |version|
+    path_for_ip_version version
+  end
+end

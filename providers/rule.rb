@@ -49,9 +49,7 @@ def edit_rule(exec_action)
     rule_file = ''
     Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
 
-    rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/#{new_resource.name}.rule_v#{ip_version}"
-
-    r = file rule_path do
+    r = file new_resource.path_for_ip_version(ip_version) do
       owner    'root'
       group    node['root_group']
       mode     00600
