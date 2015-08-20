@@ -59,7 +59,7 @@ module Iptables
           new_chain[rule[0]] = rule[1].select { |k, _| k == 'default' }
         end
 
-        all_chain_rules  = chains.each_with_object({}) do |rule, new_chain|
+        all_chain_rules = chains.each_with_object({}) do |rule, new_chain|
           new_chain[rule[0]] = rule[1].reject { |k, _| k == 'default' }
         end
 

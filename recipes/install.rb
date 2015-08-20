@@ -31,7 +31,7 @@ end
 
 # Create directories
 directory '/etc/iptables.d' do
-  mode   00700
+  mode 00700
 end
 
 node['iptables-ng']['rules'].each do |table, chains|
