@@ -39,7 +39,7 @@ class Chef::Provider
 
         path = ::File.join(
           Chef::Config[:file_cache_path] || '/tmp',
-          "#{r.class.to_s.tr(':','')}.#{r.name}.cfg"
+          "#{r.class.to_s.tr(':', '')}.#{r.name}.cfg"
         )
 
         f = file path do
