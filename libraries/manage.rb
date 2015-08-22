@@ -63,10 +63,8 @@ module Iptables
         end
 
         # Append config for table-appropriate rules
-        vt_rules = v_rules.select { |r| r.table == table }
-
-        vt_rules.sort { |a, b| a.name <=> b.name }.each do |vr|
-          config << vr.to_s
+        v_rules.select { |r| r.table == table }.each do |tr|
+          config << tr.to_s
         end
 
         config << "COMMIT\n"
