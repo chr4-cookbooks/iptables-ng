@@ -10,7 +10,7 @@ provisioner:
   name: chef_zero
 
 platforms:
-- name: ubuntu-14.10
+- name: ubuntu-15.04
 - name: ubuntu-14.04
 - name: ubuntu-12.04
 - name: debian-8.1
