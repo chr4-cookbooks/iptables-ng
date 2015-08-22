@@ -18,12 +18,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-include_recipe 'iptables-ng::manage'
-
 # Make sure iptables is installed
 Array(node['iptables-ng']['packages']).each { |pkg| package pkg }
 
-# Make sure ufw is not installed on Ubuntu/Debian, as it might interfere
+# Make sure ufw is not installed on Debian family,
+# as it might interfere with our rule management.
 package 'ufw' do
   action :remove
   only_if { node['platform_family'] == 'debian' }
