@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 ip = node['iptables-ng']
 tables = ip['enabled_tables'].dup
 
@@ -35,6 +36,6 @@ ruby_block 'restart_iptables' do
       Iptables::Manage.restart_service(version, ip, run_context)
     end
   end
-  only_if { node['iptables-ng']['managed_service'] }
+  only_if { ip['managed_service'] }
   action :nothing
 end
