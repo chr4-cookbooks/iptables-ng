@@ -30,9 +30,9 @@ class Chef::Resource
     default_action :create
 
     attribute :chain,  kind_of: String, name_attribute: true,
-                       regex: IptablesNG::Helpers.chain_name_regexp
+                       regex: Iptables::Helpers.chain_name_regexp
     attribute :table,  kind_of: String, default: 'filter',
-                       equal_to: IptablesNG::Helpers::TABLES
+                       equal_to: Iptables::Helpers::TABLES
     attribute :policy, kind_of: String, default: '- [0:0]'
 
     def to_s

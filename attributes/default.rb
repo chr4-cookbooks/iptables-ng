@@ -25,7 +25,7 @@ default['iptables-ng'].tap do |ip|
   # Which tables to manage:
   # When using containered setup (OpenVZ, Docker, LXC) it might might be
   # necessary to remove the "nat" and "raw" tables.
-  ip['enabled_tables'] = IptablesNG::Helpers::TABLES
+  ip['enabled_tables'] = Iptables::Helpers::TABLES
 
   # Configure whether the service should be managed by Chef
   # /!\ Be careful when using this feature as it might leave your server in an inconsistent state.

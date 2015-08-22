@@ -20,31 +20,24 @@
 ip = node['iptables-ng']
 tables = ip['enabled_tables'].dup
 
-Array(ip['enabled_ip_versions']).sort.each do |ip_version|
-  if ip_version == 6
+Array(ip['enabled_ip_versions']).sort.each do |version|
+  if version == 6
     tables.delete('nat') unless ip['ip6tables_nat_support']
   end
 
-  file ip["script_ipv#{ip_version}"] do
-    content IptablesNG::Helpers.config(
-      ip_version, tables, run_context
-    ).join("\n")
+  file ip["script_ipv#{version}"] do
+    content Iptables::Manage.create_config(version, tables, run_context)
     notifies :run, 'ruby_block[restart_iptables]', :delayed
   end
 end
 
 ruby_block 'restart_iptables' do
   block do
-    class Chef::Resource::RubyBlock
-      include Iptables::Manage
-    end
-
     if node['iptables-ng']['managed_service']
-      Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-        restart_service(ip_version)
+      Array(node['iptables-ng']['enabled_ip_versions']).sort.each do |version|
+        Iptables::Manage.restart_service(version, ip, run_context)
       end
     end
   end
-
   action :nothing
 end

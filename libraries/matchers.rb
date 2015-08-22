@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: iptables-ng
-# Library:: mattchers
+# Library:: matchers
 #
 # Copyright 2014, Dan Fruehauf
 #
@@ -20,15 +20,15 @@
 
 # Matchers for chefspec
 if defined?(ChefSpec)
-  def create_iptables_ng_rule(resource_name)
-    ChefSpec::Matchers::ResourceMatcher.new(:iptables_ng_rule, :create, resource_name)
-  end
+  %w( rule chain ).each do |r|
+    ChefSpec.define_matcher("iptables_ng_#{r}".to_sym)
 
-  def create_iptables_ng_chain(resource_name)
-    ChefSpec::Matchers::ResourceMatcher.new(:iptables_ng_chain, :create, resource_name)
-  end
-
-  def create_if_missing_iptables_ng_chain(resource_name)
-    ChefSpec::Matchers::ResourceMatcher.new(:iptables_ng_chain, :create_if_missing, resource_name)
+    %w( create delete ).each do |a|
+      define_method("#{a}_iptables_ng_#{r}".to_sym) do |resource_name|
+        ChefSpec::Matchers::ResourceMatcher.new(
+          "iptables_ng_#{r}".to_sym, a, resource_name
+        )
+      end
+    end
   end
 end
