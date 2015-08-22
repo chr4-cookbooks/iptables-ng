@@ -28,27 +28,3 @@ package 'ufw' do
   action :remove
   only_if { node['platform_family'] == 'debian' }
 end
-
-# Create directories
-directory '/etc/iptables.d' do
-  mode 00700
-end
-
-node['iptables-ng']['rules'].each do |table, chains|
-  # Skip deactivated tables
-  next unless node['iptables-ng']['enabled_tables'].include?(table)
-
-  directory "/etc/iptables.d/#{table}" do
-    mode 00700
-  end
-
-  # Create default policies unless they exist
-  chains.each do |chain, policy|
-    iptables_ng_chain "default-policy-#{table}-#{chain}" do
-      chain  chain
-      table  table
-      policy policy['default']
-      action :create_if_missing
-    end
-  end
-end

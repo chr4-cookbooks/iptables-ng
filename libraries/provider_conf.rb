@@ -34,6 +34,9 @@ class Chef::Provider
     [ :create, :delete ].each do |a|
       action a do
         r = new_resource
+
+        include_recipe 'iptables-ng::install' unless a == :delete
+
         path = ::File.join(Chef::Config[:file_cache_path] || '/tmp', r.name)
 
         f = file path do
