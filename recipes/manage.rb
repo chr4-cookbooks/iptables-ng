@@ -18,11 +18,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ip = node['iptables-ng']
+tables = ip['enabled_tables'].dup
 
-Array(ip['enabled_ip_versions']).each do |ip_version|
+Array(ip['enabled_ip_versions']).sort.each do |ip_version|
+  if ip_version == 6
+    tables.delete('nat') unless ip['ip6tables_nat_support']
+  end
+
   file ip["script_ipv#{ip_version}"] do
     content IptablesNG::Helpers.config(
-      ip_version, ip['enabled_tables'], run_context
+      ip_version, tables, run_context
     ).join("\n")
     notifies :run, 'ruby_block[restart_iptables]', :delayed
   end
