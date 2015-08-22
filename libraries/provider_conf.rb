@@ -37,7 +37,10 @@ class Chef::Provider
 
         include_recipe 'iptables-ng::install' unless a == :delete
 
-        path = ::File.join(Chef::Config[:file_cache_path] || '/tmp', r.name)
+        path = ::File.join(
+          Chef::Config[:file_cache_path] || '/tmp',
+          "#{r.class.to_s.tr(':','')}.#{r.name}.cfg"
+        )
 
         f = file path do
           content r.to_s
