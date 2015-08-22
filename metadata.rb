@@ -6,8 +6,9 @@ description      'Installs/Configures iptables-ng'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '2.2.7'
 
-%w(ubuntu debian
-   redhat centos amazon suse scientific
-   fedora gentoo arch).each do |os|
+%w(
+  ubuntu debian redhat centos amazon
+  suse scientific fedora gentoo arch
+).each do |os|
   supports os
 end
