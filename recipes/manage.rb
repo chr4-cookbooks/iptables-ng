@@ -31,11 +31,10 @@ end
 
 ruby_block 'restart_iptables' do
   block do
-    if node['iptables-ng']['managed_service']
-      Array(node['iptables-ng']['enabled_ip_versions']).sort.each do |version|
-        Iptables::Manage.restart_service(version, ip, run_context)
-      end
+    Array(node['iptables-ng']['enabled_ip_versions']).sort.each do |version|
+      Iptables::Manage.restart_service(version, ip, run_context)
     end
   end
+  only_if { node['iptables-ng']['managed_service'] }
   action :nothing
 end
