@@ -32,7 +32,7 @@ default['iptables-ng']['enabled_tables'] = %w(nat filter mangle raw)
 default['iptables-ng']['managed_service'] = true
 
 # Configure whether to automatically clean up unused rules
-default['iptables-ng']['cleanup_old_rules'] = false
+default['iptables-ng']['cleanup_old_attribute_rules'] = false
 
 # Enable nat support for ipv6
 # Older distributions do not support ipv6 nat, but recent Ubuntu does
