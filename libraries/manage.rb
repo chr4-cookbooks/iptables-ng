@@ -24,6 +24,10 @@ module Iptables
   module Manage
     module_function
 
+    def actionable(resources = [])
+      resources.reject { |r| r.action == :delete || r.should_skip?(r.action) }
+    end
+
     # rubocop: disable AbcSize
     # rubocop: disable MethodLength
     def create_config(version, tables, run_context)
@@ -32,43 +36,31 @@ module Iptables
         '# Manual changes will be overwritten!'
       ]
 
-      # Select actionable chains from resource collection
-      curr_chains = Iptables::Helpers.chains(run_context).reject do |c|
-        c.action == :create && c.should_skip?(c.action)
-      end
-
-      # Selection actionable rules from resource collection
-      curr_rules = Iptables::Helpers.rules(run_context).reject do |r|
-        r.action == :create && r.should_skip?(c.action)
-      end
-
+      # Select actionable chains & rules from resource collection
       # Sort chains to reduce unnecessary reloads
-      # Sort rules to give user control over priority
-      curr_chains.sort! { |a, b| a.name <=> b.name }
-      curr_rules.sort! { |a, b| a.name <=> b.name }
+      curr_chains = actionable(Iptables::Helpers.chains(run_context))
+                      .sort { |a, b| a.name <=> b.name }
 
-      # Capture version-specific rules
-      v_rules = curr_rules.select do |r|
-        Array(r.ip_version).include?(version)
-      end
+      # Sort rules to give user control over priority
+      curr_rules = actionable(Iptables::Helpers.rules(run_context))
+                     .select { |r| Array(r.ip_version).include?(version) }
+                     .sort { |a, b| a.name <=> b.name }
 
       # Configure table rules
       tables.each do |table|
         # Initialize table
         config << "*#{table}"
 
-        # Append config for table-appropriate chains
-        curr_chains.select { |c| c.table == table }.each do |c|
-          config << c.to_s
-        end
-
-        # Append config for table-appropriate rules
-        v_rules.select { |r| r.table == table }.each do |tr|
-          config << tr.to_s
+        # Append config for table-appropriate chains & rules
+        [curr_chains, curr_rules].each do |rc|
+          rc.select { |r| r.table == table }.each do |c|
+            config << c.to_s
+          end
         end
 
         config << "COMMIT\n"
       end
+
       config.join("\n")
     end
 
