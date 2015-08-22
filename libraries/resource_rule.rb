@@ -42,7 +42,7 @@ class Chef::Resource
                            equal_to: [[4, 6], [4], [6], 4, 6]
 
     def to_s
-      "-A #{chain} #{rule}"
+      Array(rule).map { |r| "-A #{chain} #{r}" }.join("\n")
     end
   end
 end
