@@ -36,7 +36,7 @@ class Chef::Resource
                       regex: Iptables::Helpers.chain_name_regexp
     attribute :table, kind_of: String, default: 'filter',
                       equal_to: Iptables::Helpers::TABLES
-    attribute :rule,  kind_of: [Array, String],  default: []
+    attribute :rule, kind_of: [Array, String], default: []
     attribute :ip_version, kind_of: [Array, Integer], default: [4, 6],
                            equal_to: [4, 6, [4], [6], [4, 6], [6, 4]]
 
