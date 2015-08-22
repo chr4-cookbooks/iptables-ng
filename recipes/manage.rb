@@ -20,9 +20,8 @@
 
 ruby_block 'create_rules' do
   block do
-    class Chef::Resource::RubyBlock
-      include Iptables::Manage
-    end
+    chains = IptablesNGHelpers.chains(run_context)
+    rules = IptablesNGHelpers.rules(run_context)
 
     Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
       create_iptables_rules(ip_version)
