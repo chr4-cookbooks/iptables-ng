@@ -35,10 +35,9 @@ class Chef::Resource
     attribute :chain, kind_of: String, default: 'INPUT',
                       regex: IptablesNG::Helpers.chain_name_regexp
     attribute :table, kind_of: String, default: 'filter',
-                      equal_to: IptablesNG::Helpers.tables
+                      equal_to: IptablesNG::Helpers::TABLES
     attribute :rule,  kind_of: [Array, String],  default: []
-    attribute :ip_version, kind_of: [Array, Integer],
-                           default: node['iptables-ng']['enabled_ip_versions'],
+    attribute :ip_version, kind_of: [Array, Integer], default: [4,6],
                            equal_to: [[4, 6], [4], [6], 4, 6]
 
     def to_s

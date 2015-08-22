@@ -32,7 +32,7 @@ class Chef::Resource
     attribute :chain,  kind_of: String, name_attribute: true,
                        regex: IptablesNG::Helpers.chain_name_regexp
     attribute :table,  kind_of: String, default: 'filter',
-                       equal_to: IptablesNG::Helpers.tables
+                       equal_to: IptablesNG::Helpers::TABLES
     attribute :policy, kind_of: String, default: '- [0:0]'
 
     def to_s

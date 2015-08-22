@@ -16,11 +16,20 @@ platforms:
 - name: debian-8.1
 - name: debian-7.2.0
 - name: debian-6.0.8
-- name: centos-7.0
+- name: centos-7.1
 - name: centos-6.5
 - name: centos-5.10
 
 suites:
+  - name: testing
+    run_list:
+      recipe[iptables-ng]
+    attributes:
+      iptables-ng:
+        rules:
+          filter:
+            FORWARD:
+              default: 'DROP [0:0]'
   - name: lwrp_chain_create_default
     run_list:
     - recipe[minitest-handler]

@@ -17,18 +17,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+ip = node['iptables-ng']
 
-ruby_block 'create_rules' do
-  block do
-    chains = IptablesNGHelpers.chains(run_context)
-    rules = IptablesNGHelpers.rules(run_context)
-
-    Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-      create_iptables_rules(ip_version)
-    end
+Array(ip['enabled_ip_versions']).each do |ip_version|
+  file ip["script_ipv#{ip_version}"] do
+    content IptablesNG::Helpers.config(
+      ip_version, ip['enabled_tables'], run_context
+    ).join("\n")
+    notifies :run, 'ruby_block[restart_iptables]', :delayed
   end
-
-  action :nothing
 end
 
 ruby_block 'restart_iptables' do
