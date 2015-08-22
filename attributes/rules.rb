@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: iptables-ng
-# Attributes:: default-rules
+# Attributes:: rules
 #
 # Copyright 2012, Chris Aumann
 #
@@ -19,19 +19,35 @@
 #
 
 # Set up default policies
-default['iptables-ng']['rules']['filter']['INPUT']['default'] = 'ACCEPT [0:0]'
-default['iptables-ng']['rules']['filter']['OUTPUT']['default'] = 'ACCEPT [0:0]'
-default['iptables-ng']['rules']['filter']['FORWARD']['default'] = 'ACCEPT [0:0]'
+default['iptables-ng'].tap do |ip|
+  ip['rules'].tap do |rules|
+    # Configure filter table chain policies
+    rules['filter'].tap do |filter|
+      filter['INPUT']['default'] = 'ACCEPT [0:0]'
+      filter['OUTPUT']['default'] = 'ACCEPT [0:0]'
+      filter['FORWARD']['default'] = 'ACCEPT [0:0]'
+    end
 
-default['iptables-ng']['rules']['nat']['OUTPUT']['default'] = 'ACCEPT [0:0]'
-default['iptables-ng']['rules']['nat']['PREROUTING']['default'] = 'ACCEPT [0:0]'
-default['iptables-ng']['rules']['nat']['POSTROUTING']['default'] = 'ACCEPT [0:0]'
+    # Configure nat table chain policies
+    rules['nat'].tap do |nat|
+      nat['OUTPUT']['default'] = 'ACCEPT [0:0]'
+      nat['PREROUTING']['default'] = 'ACCEPT [0:0]'
+      nat['POSTROUTING']['default'] = 'ACCEPT [0:0]'
+    end
 
-default['iptables-ng']['rules']['mangle']['INPUT']['default'] = 'ACCEPT [0:0]'
-default['iptables-ng']['rules']['mangle']['OUTPUT']['default'] = 'ACCEPT [0:0]'
-default['iptables-ng']['rules']['mangle']['FORWARD']['default'] = 'ACCEPT [0:0]'
-default['iptables-ng']['rules']['mangle']['PREROUTING']['default'] = 'ACCEPT [0:0]'
-default['iptables-ng']['rules']['mangle']['POSTROUTING']['default'] = 'ACCEPT [0:0]'
+    # Configure mangle table chain policies
+    rules['mangle'].tap do |mangle|
+      mangle['INPUT']['default'] = 'ACCEPT [0:0]'
+      mangle['OUTPUT']['default'] = 'ACCEPT [0:0]'
+      mangle['FORWARD']['default'] = 'ACCEPT [0:0]'
+      mangle['PREROUTING']['default'] = 'ACCEPT [0:0]'
+      mangle['POSTROUTING']['default'] = 'ACCEPT [0:0]'
+    end
 
-default['iptables-ng']['rules']['raw']['OUTPUT']['default'] = 'ACCEPT [0:0]'
-default['iptables-ng']['rules']['raw']['PREROUTING']['default'] = 'ACCEPT [0:0]'
+    # Configure raw table chain policies
+    rules['raw'].tap do |raw|
+      raw['OUTPUT']['default'] = 'ACCEPT [0:0]'
+      raw['PREROUTING']['default'] = 'ACCEPT [0:0]'
+    end
+  end
+end
