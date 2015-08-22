@@ -28,7 +28,8 @@ default['iptables-ng'].tap do |ip|
   ip['enabled_tables'] = Iptables::Helpers::TABLES
 
   # Configure whether the service should be managed by Chef
-  # /!\ Be careful when using this feature as it might leave your server in an inconsistent state.
+  # /!\ Be careful when disabling this feature, as it
+  # /!\ might leave your server in an inconsistent state.
   # See https://github.com/chr4-cookbooks/iptables-ng/pull/42 for more details.
   ip['managed_service'] = true
 
@@ -36,7 +37,7 @@ default['iptables-ng'].tap do |ip|
   # Older distributions do not support ipv6 nat, but recent Ubuntu does
   ip['ip6tables_nat_support'] = value_for_platform(
     'ubuntu' => { '14.04' => true, '14.10' => true, 'default' => false },
-    'default' => false,
+    'default' => false
   )
 
   # Packages to install

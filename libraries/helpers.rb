@@ -25,7 +25,7 @@ module Iptables
     module_function
 
     # linux/netfilter/x_tables.h doesn't restrict chains very tightly,
-    # just a string token with a max length of XT_EXTENSION_MAXLEN 
+    # just a string token with a max length of XT_EXTENSION_MAXLEN
     # (29 in all 3.x headers I could find).
     def chain_name_regexp
       /^[-\w\.]+$/

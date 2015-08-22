@@ -31,7 +31,7 @@ class Chef::Provider
       true
     end
 
-    [ :create, :delete ].each do |a|
+    [:create, :delete].each do |a|
       action a do
         r = new_resource
 

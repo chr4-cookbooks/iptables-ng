@@ -24,6 +24,8 @@ module Iptables
   module Manage
     module_function
 
+    # rubocop: disable AbcSize
+    # rubocop: disable MethodLength
     def create_config(version, tables, run_context)
       config = [
         '# This file is managed by Chef.',
@@ -76,7 +78,7 @@ module Iptables
       # Restart iptables service if available
       if conf["service_ipv#{ip_version}"]
         # Do not restart twice if the command is the same for ipv4 and ipv6
-        return if conf['service_ipv4'] ==conf['service_ipv6'] && ip_version == 6
+        return if conf['service_ipv4'] == conf['service_ipv6'] && ip_version == 6 # rubocop: disable LineLength
 
         Chef::Resource::Service.new(
           conf["service_ipv#{ip_version}"],
@@ -93,11 +95,13 @@ module Iptables
           "iptables-restore for ipv#{ip_version}",
           run_context
         ).tap do |execute|
-          execute.command("iptables-restore < #{conf['script_ipv4']}") if ip_version == 4
-          execute.command("ip6tables-restore < #{conf['script_ipv6']}") if ip_version == 6
+          execute.command("iptables-restore < #{conf['script_ipv4']}") if ip_version == 4 # rubocop: disable LineLength
+          execute.command("ip6tables-restore < #{conf['script_ipv6']}") if ip_version == 6 # rubocop: disable LineLength
           execute.run_action(:run)
         end
       end
     end
+    # rubocop: enable AbcSize
+    # rubocop: enable MethodLength
   end
 end

@@ -21,9 +21,7 @@ ip = node['iptables-ng']
 tables = ip['enabled_tables'].dup
 
 Array(ip['enabled_ip_versions']).sort.each do |version|
-  if version == 6
-    tables.delete('nat') unless ip['ip6tables_nat_support']
-  end
+  tables.delete('nat') unless ip['ip6tables_nat_support'] if version == 6
 
   file ip["script_ipv#{version}"] do
     content Iptables::Manage.create_config(version, tables, run_context)
