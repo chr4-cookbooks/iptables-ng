@@ -39,12 +39,12 @@ module Iptables
       # Select actionable chains & rules from resource collection
       # Sort chains to reduce unnecessary reloads
       curr_chains = actionable(Iptables::Helpers.chains(run_context))
-                      .sort { |a, b| a.name <=> b.name }
+                    .sort { |a, b| a.name <=> b.name }
 
       # Sort rules to give user control over priority
       curr_rules = actionable(Iptables::Helpers.rules(run_context))
-                     .select { |r| Array(r.ip_version).include?(version) }
-                     .sort { |a, b| a.name <=> b.name }
+                   .select { |r| Array(r.ip_version).include?(version) }
+                   .sort { |a, b| a.name <=> b.name }
 
       # Configure table rules
       tables.each do |table|

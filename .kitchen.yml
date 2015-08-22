@@ -23,7 +23,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      recipe[iptables-ng]
+      - recipe[iptables-ng]
     attributes:
       iptables-ng:
         rules:
