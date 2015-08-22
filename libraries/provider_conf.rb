@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: iptables
-# Resource:: chain
+# Cookbook Name:: iptables-ng
+# Provider:: iptables_ng_conf
 #
 # Copyright 2012, Chris Aumann
 #
@@ -18,19 +18,31 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-actions        :create, :create_if_missing, :delete
-default_action :create
+require 'chef/provider/lwrp_base'
 
-# linux/netfilter/x_tables.h doesn't restrict chains very tightly.  Just a string token
-# with a max length of XT_EXTENSION_MAXLEN (29 in all 3.x headers I could find)
-attribute :chain,  kind_of: String, name_attribute: true, regex: /^[\w-]{1,29}$/
-attribute :table,  kind_of: String, default: 'filter', equal_to: %w(filter nat mangle raw)
-attribute :policy, kind_of: String, default: 'ACCEPT [0:0]'
+class Chef::Provider
+  class IptablesNGConf < Chef::Provider::LWRPBase
+    use_inline_resources
 
-def initialize(*args)
-  super
-  @action = :create
+    provides :iptables_ng_chain
+    provides :iptables_ng_rule
 
-  # Include iptables-ng::install recipe
-  @run_context.include_recipe('iptables-ng::install')
+    def whyrun_supported?
+      true
+    end
+
+    [ :create, :delete ].each do |a|
+      action a do
+        r = new_resource
+        path = ::File.join(Chef::Config[:file_cache_path] || '/tmp', r.name)
+
+        f = file path do
+          content r.to_s
+          action a
+        end
+
+        new_resource.updated_by_last_action(f.updated_by_last_action?)
+      end
+    end
+  end
 end
