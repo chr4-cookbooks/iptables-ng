@@ -23,7 +23,7 @@ if defined?(ChefSpec)
   %w( rule chain ).each do |r|
     ChefSpec.define_matcher("iptables_ng_#{r}".to_sym)
 
-    %w( create delete ).each do |a|
+    %w( create create_if_missing delete ).each do |a|
       define_method("#{a}_iptables_ng_#{r}".to_sym) do |resource_name|
         ChefSpec::Matchers::ResourceMatcher.new(
           "iptables_ng_#{r}".to_sym, a, resource_name
