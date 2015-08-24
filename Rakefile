@@ -16,5 +16,5 @@ rescue
   puts '>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
 end
 
-task :default => %w( rubocop foodcritic chefspec )
-task :all => %w( default kitchen:all )
+task default: %w( rubocop foodcritic chefspec )
+task all: %w( default kitchen:all )
