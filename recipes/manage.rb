@@ -18,35 +18,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# This recipe only creates ruby_blocks that are called later by the LWRPs
-# Do not use it by its own
+ip = node['iptables-ng']
+tables = ip['enabled_tables'].dup
 
-ruby_block 'create_rules' do
-  block do
-    class Chef::Resource::RubyBlock
-      include Iptables::Manage
-    end
+Array(ip['enabled_ip_versions']).sort.each do |version|
+  tables.delete('nat') unless ip['ip6tables_nat_support'] if version == 6
 
-    Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-      create_iptables_rules(ip_version)
-    end
+  file ip["script_ipv#{version}"] do
+    content Iptables::Manage.create_config(version, tables, run_context)
+    notifies :run, 'ruby_block[restart_iptables]', :delayed
   end
-
-  action :nothing
 end
 
 ruby_block 'restart_iptables' do
   block do
-    class Chef::Resource::RubyBlock
-      include Iptables::Manage
-    end
-
-    if node['iptables-ng']['managed_service']
-      Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-        restart_service(ip_version)
-      end
+    Array(node['iptables-ng']['enabled_ip_versions']).sort.each do |version|
+      Iptables::Manage.restart_service(version, ip, run_context)
     end
   end
-
+  only_if { ip['managed_service'] }
   action :nothing
 end

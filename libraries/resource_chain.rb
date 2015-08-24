@@ -18,19 +18,25 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-actions        :create, :create_if_missing, :delete
-default_action :create
+require 'chef/resource/lwrp_base'
+require_relative 'helpers'
 
-# linux/netfilter/x_tables.h doesn't restrict chains very tightly.  Just a string token
-# with a max length of XT_EXTENSION_MAXLEN (29 in all 3.x headers I could find)
-attribute :chain,  kind_of: String, name_attribute: true, regex: /^[\w-]{1,29}$/
-attribute :table,  kind_of: String, default: 'filter', equal_to: %w(filter nat mangle raw)
-attribute :policy, kind_of: String, default: 'ACCEPT [0:0]'
+class Chef::Resource
+  class IptablesNGChain < Chef::Resource::LWRPBase
+    self.resource_name = :iptables_ng_chain
+    provides :iptables_ng_chain
 
-def initialize(*args)
-  super
-  @action = :create
+    actions :create, :delete
+    default_action :create
 
-  # Include iptables-ng::install recipe
-  @run_context.include_recipe('iptables-ng::install')
+    attribute :chain,  kind_of: String, name_attribute: true,
+                       regex: Iptables::Helpers.chain_name_regexp
+    attribute :table,  kind_of: String, default: 'filter',
+                       equal_to: Iptables::Helpers::TABLES
+    attribute :policy, kind_of: String, default: '- [0:0]'
+
+    def to_s
+      ":#{chain} #{policy}"
+    end
+  end
 end

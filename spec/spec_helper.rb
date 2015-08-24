@@ -1,5 +1,7 @@
 require 'chefspec'
+require 'chefspec/berkshelf'
 
-RSpec.configure do |config|
-  config.expect_with(:rspec) { |c| c.syntax = :expect }
-end
+# Require all our libraries
+Dir.glob('libraries/*.rb').sort.each { |f| require File.expand_path(f) }
+
+ChefSpec::Coverage.start!
