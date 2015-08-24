@@ -14,9 +14,9 @@ It uses the directory ```/etc/iptables.d``` to store and maintain its rules. I'm
 
 The following distribution are best supported, but as this recipe falls back to a generic iptables restore script in case the system is unknown, it should work with every linux distribution supporting iptables.
 
-* Ubuntu 12.04, 12.10, 13.04
+* Ubuntu 10.04, 12.04, 14.04, 14.10
 * Debian 7 (6 should work, too)
-* RHEL 5.9, 6.x
+* RHEL 5.9, 6.x, 7.x
 * Gentoo
 * Archlinux
 
@@ -38,18 +38,20 @@ While iptables-ng tries to automatically determine the correct settings and defa
 node['iptables-ng']['enabled_ip_versions'] = [4, 6]
 
 # Which tables to manage:
-# When using containered setup (OpenVZ, Docker, LXC) it might might be
+# When using a containered setup (OpenVZ, Docker, LXC) it might might be
 # necessary to remove the "nat" and "raw" tables.
-node['iptables-ng']['enabled_tables'] = %w{nat filter mangle raw}
+node['iptables-ng']['enabled_tables'] = %w(nat filter mangle raw)
 
 # An array of packages to install.
 # This should install iptables and ip6tables,
 # as well as a system service that takes care of reloading the rules
 # On Debian and Ubuntu, iptables-persistent is used by default.
-node['iptables-ng']['packages'] = ['iptables']
+node['iptables-ng']['packages'] = %w(iptables)
 
 # The name of the service that will be used to restart iptables
-# If this is left empty, iptables-ng will fall back to iptables-restore
+# By default, the system service of your distribution is used, so don't worry about it unless you
+# have special requirements. If iptables-ng can't figure out the default service to use or these
+# attributes are set to nil, iptables-ng will fall back to "iptables-restore"
 node['iptables-ng']['service_ipv4'] = 'iptables-persistent'
 node['iptables-ng']['service_ipv6'] = 'iptables-persistent'
 
@@ -131,6 +133,15 @@ In case you need a rule for one specific ip version, you can set the "ip_version
   "ip_version": 4
 }
 ```
+
+You can also delete old rules by specifying a custom action.
+
+```json
+"ssh": {
+  "action": "delete"
+}
+```
+
 
 ## install
 
@@ -246,7 +257,7 @@ Furthermore, due to the lack of Opscode kitchen boxes, there are not tests for A
 You fixed a bug, or added a new feature? Yippie!
 
 1. Fork the repository on Github
-2. Create a named feature branch (like `add\_component\_x`)
+2. Create a named feature branch (like `add_component_x`)
 3. Write you change
 4. Write tests for your change (if applicable)
 5. Run the tests, ensuring they all pass
@@ -257,4 +268,5 @@ Contributions of any sort are very welcome!
 # License and Authors
 
 Authors: Chris Aumann
-Contributors: Dan Fruehauf
+
+Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot

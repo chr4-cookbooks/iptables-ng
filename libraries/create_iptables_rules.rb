@@ -36,8 +36,10 @@ module Iptables
         table, chain, filename = path.split('/')[3..5]
         rule = ::File.basename(filename)
 
-        # ipv6 doesn't support nat
-        next if table == 'nat' && ip_version == 6
+        # Skip nat table if ip6tables doesn't support it
+        next if table == 'nat' &&
+                node['iptables-ng']['ip6tables_nat_support'] == false &&
+                ip_version == 6
 
         # Skip deactivated tables
         next unless node['iptables-ng']['enabled_tables'].include?(table)
@@ -57,7 +59,7 @@ module Iptables
           new_chain[rule[0]] = rule[1].select { |k, _| k == 'default' }
         end
 
-        all_chain_rules  = chains.each_with_object({}) do |rule, new_chain|
+        all_chain_rules = chains.each_with_object({}) do |rule, new_chain|
           new_chain[rule[0]] = rule[1].reject { |k, _| k == 'default' }
         end
 
@@ -76,7 +78,7 @@ module Iptables
 
       Chef::Resource::File.new(node['iptables-ng']["script_ipv#{ip_version}"], run_context).tap do |file|
         file.owner('root')
-        file.group('root')
+        file.group(node['root_group'])
         file.mode(00600)
         file.content(iptables_restore)
         file.run_action(:create)

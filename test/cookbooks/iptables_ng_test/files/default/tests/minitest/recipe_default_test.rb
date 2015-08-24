@@ -48,8 +48,12 @@ describe 'iptables-ng::default' do
     file('/etc/iptables.d/nat/POSTROUTING/nat_test-nat-POSTROUTING-attribute-rule.rule_v4').must_include('--protocol tcp -j ACCEPT')
   end
 
-  it 'should not create custom ip6tables rule for nat chain' do
-    file('/etc/iptables.d/nat/POSTROUTING/nat_test-nat-POSTROUTING-attribute-rule.rule_v6').wont_exist
+  it 'should only set custom ip6tables rule for nat chain if ip6tables_nat_support attribute is enabled' do
+    if node['iptables-ng']['ip6tables_nat_support']
+      file('/etc/iptables.d/nat/POSTROUTING/nat_test-nat-POSTROUTING-attribute-rule.rule_v6').must_include('--protocol tcp -j ACCEPT')
+    else
+      file('/etc/iptables.d/nat/POSTROUTING/nat_test-nat-POSTROUTING-attribute-rule.rule_v6').wont_exist
+    end
   end
 
   it 'should apply nat POSTROUTING iptables rule' do

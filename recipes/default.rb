@@ -36,13 +36,29 @@ node['iptables-ng']['rules'].each do |table, chains|
       policy policy.delete('default')
     end
 
+    # Gather rules from filesystem to delete unused ones later
+    unused = Dir["/etc/iptables.d/#{table}/#{chain}/*-#{table}-#{chain}-attribute-rule.*"]
+
     # Apply rules
     policy.each do |name, r|
-      iptables_ng_rule "#{name}-#{table}-#{chain}-attribute-rule" do
+      res = iptables_ng_rule "#{name}-#{table}-#{chain}-attribute-rule" do
         chain      chain
         table      table
         rule       r['rule']
         ip_version r['ip_version'] if r['ip_version']
+        action     r['action'].to_sym if r['action']
+      end
+
+      # Remove from unused rules
+      unused -= res.paths
+    end
+
+    # Delete unused rules now
+    unused.each do |path|
+      file path do
+        notifies :create, 'ruby_block[create_rules]', :delayed
+        notifies :create, 'ruby_block[restart_iptables]', :delayed
+        action :delete
       end
     end
   end

@@ -19,38 +19,39 @@
 #
 
 action :create do
-  new_resource.updated_by_last_action(true) if edit_rule(:create)
+  edit_rule(:create)
 end
 
 action :create_if_missing do
-  new_resource.updated_by_last_action(true) if edit_rule(:create_if_missing)
+  edit_rule(:create_if_missing)
 end
 
 action :delete do
-  new_resource.updated_by_last_action(true) if edit_rule(:delete)
+  edit_rule(:delete)
 end
 
 def edit_rule(exec_action)
   # Create rule for given ip_versions
   Array(new_resource.ip_version).each do |ip_version|
-    # ipv6 doesn't support nat
-    next if new_resource.table == 'nat' && ip_version == 6
+    # Skip nat table if ip6tables doesn't support it
+    next if new_resource.table == 'nat' &&
+            node['iptables-ng']['ip6tables_nat_support'] == false &&
+            ip_version == 6
+
+    # Create chain if it doesn't exist
+    iptables_ng_chain "#{new_resource.chain}:#{new_resource.table}:#{new_resource.name}" do
+      chain  new_resource.chain
+      table  new_resource.table
+      action :create_if_missing
+      not_if { exec_action == :delete }
+    end
 
     rule_file = ''
     Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
 
-    directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
-      owner  'root'
-      group  'root'
-      mode   00700
-      not_if { exec_action == :delete }
-    end
-
-    rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/#{new_resource.name}.rule_v#{ip_version}"
-
-    r = file rule_path do
+    r = file new_resource.path_for_ip_version(ip_version) do
       owner    'root'
-      group    'root'
+      group    node['root_group']
       mode     00600
       content  rule_file
       notifies :create, 'ruby_block[create_rules]', :delayed
@@ -58,7 +59,7 @@ def edit_rule(exec_action)
       action   exec_action
     end
 
-    r.updated_by_last_action?
+    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 
   # TODO: link to .rule for rhel compatibility?

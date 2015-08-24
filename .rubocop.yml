@@ -18,3 +18,12 @@ ClassAndModuleChildren:
 
 SingleSpaceBeforeFirstArg:
   Enabled: false
+
+AbcSize:
+  Enabled: false
+
+TrailingComma:
+  EnforcedStyleForMultiline: comma
+
+EmptyLinesAroundBlockBody:
+  Enabled: false

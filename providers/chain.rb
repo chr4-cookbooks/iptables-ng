@@ -32,7 +32,7 @@ end
 
 def edit_chain(exec_action)
   # only default chains can have a policy
-  if %w(INPUT OUTPUT FORWARD PREROUTING POSTROUTING).include? new_resource.chain
+  if %w(INPUT OUTPUT FORWARD PREROUTING POSTROUTING).include?(new_resource.chain)
     policy = new_resource.policy
   else
     policy = '- [0:0]'
@@ -40,7 +40,7 @@ def edit_chain(exec_action)
 
   directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
     owner  'root'
-    group  'root'
+    group  node['root_group']
     mode   00700
     not_if { exec_action == :delete }
   end
@@ -49,7 +49,7 @@ def edit_chain(exec_action)
 
   r = file rule_path do
     owner    'root'
-    group    'root'
+    group    node['root_group']
     mode     00600
     content  "#{policy}\n"
     notifies :create, 'ruby_block[create_rules]', :delayed

@@ -3,6 +3,47 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.7
+-----
+
+- Add support for Debian Jessie
+
+2.2.6
+-----
+
+- Add possibility to disable the reload or restore of iptables at the end of a chef run
+
+2.2.5
+-----
+
+- Only install `iptables` package on Amazon Linux
+
+2.2.4
+-----
+
+- Check whether name attribute in rule provider is valid
+- Fix an issue with resource notification in rule provider
+- Fix an issue with nat table on ipv6 not properly skipped on systems without ip6tables nat support
+- Add `node['iptables-ng']['ip6tables_nat_support']` attribute, default to true on recent Ubuntu
+  versions
+
+2.2.3
+-----
+
+- Add posibility to add an "action" when configuring iptables rules via attributes. See README for
+  details
+
+2.2.2
+-----
+
+- Fix an issue with init-script name on Ubuntu >= 14.10 (was renamed to netfilter-persistent)
+
+2.2.1
+-----
+
+- Add support for RHEL 7 compatible distributions
+
+
 2.2.0
 -----
 

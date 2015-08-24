@@ -41,8 +41,10 @@ ruby_block 'restart_iptables' do
       include Iptables::Manage
     end
 
-    Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-      restart_service(ip_version)
+    if node['iptables-ng']['managed_service']
+      Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
+        restart_service(ip_version)
+      end
     end
   end
 

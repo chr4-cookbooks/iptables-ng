@@ -7,13 +7,13 @@ end
 
 group :unit do
   gem 'berkshelf'
-  gem 'chefspec', '~> 4.0.2'
+  gem 'chefspec'
 end
 
 group :kitchen_common do
-  gem 'test-kitchen', '~> 1.2'
+  gem 'test-kitchen'
 end
 
 group :kitchen_vagrant do
-  gem 'kitchen-vagrant', '~> 0.11'
+  gem 'kitchen-vagrant'
 end
