@@ -59,7 +59,7 @@ node['iptables-ng']['rules'].each do |table, chains|
         notifies :create, 'ruby_block[create_rules]', :delayed
         notifies :create, 'ruby_block[restart_iptables]', :delayed
         action :delete
-        only_if { node['iptables-ng']['cleanup_old_attribute_rules'] }
+        only_if { node['iptables-ng']['auto_prune_attribute_rules'] }
       end
     end
   end
