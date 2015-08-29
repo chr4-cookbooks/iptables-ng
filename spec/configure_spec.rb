@@ -25,13 +25,6 @@ describe 'iptables-ng::configure' do
       )
   end
 
-  it 'should create directory for chains' do
-    expect(chef_run).to create_directory('/etc/iptables.d/filter')
-    expect(chef_run).to create_directory('/etc/iptables.d/nat')
-    expect(chef_run).to create_directory('/etc/iptables.d/mangle')
-    expect(chef_run).to create_directory('/etc/iptables.d/raw')
-  end
-
   it 'should apply default policies' do
     expect(chef_run).to create_iptables_ng_chain('default-policy-filter-INPUT')
     expect(chef_run).to create_iptables_ng_chain('default-policy-filter-OUTPUT')
