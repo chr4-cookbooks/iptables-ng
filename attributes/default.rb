@@ -31,6 +31,9 @@ default['iptables-ng']['enabled_tables'] = %w(nat filter mangle raw)
 # See https://github.com/chr4-cookbooks/iptables-ng/pull/42 for more details.
 default['iptables-ng']['managed_service'] = true
 
+# Configure whether to automatically clean up unused rules
+default['iptables-ng']['auto_prune_attribute_rules'] = false
+
 # Enable nat support for ipv6
 # Older distributions do not support ipv6 nat, but recent Ubuntu does
 default['iptables-ng']['ip6tables_nat_support'] = value_for_platform(
