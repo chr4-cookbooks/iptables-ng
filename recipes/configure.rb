@@ -18,19 +18,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Create scratch dir
-directory '/etc/iptables.d' do
-  mode 00700
-end
-
 # Apply rules from node attributes
 node['iptables-ng']['rules'].each do |table_name, chains|
   # Skip deactivated tables
   next unless node['iptables-ng']['enabled_tables'].include?(table_name)
-
-  directory "/etc/iptables.d/#{table_name}" do
-    mode 00700
-  end
 
   chains.each do |chain_name, p|
     # policy is read only, duplicate it

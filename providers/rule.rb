@@ -19,10 +19,14 @@
 #
 
 action :create do
+  Iptables::Helpers.create_scratch_directory(run_context)
+  Iptables::Helpers.create_table_directory(new_resource.table, run_context)
   edit_rule(:create)
 end
 
 action :create_if_missing do
+  Iptables::Helpers.create_scratch_directory(run_context)
+  Iptables::Helpers.create_table_directory(new_resource.table, run_context)
   edit_rule(:create_if_missing)
 end
 

@@ -19,10 +19,14 @@
 #
 
 action :create do
+  Iptables::Helpers.create_scratch_directory(run_context)
+  Iptables::Helpers.create_table_directory(new_resource.table, run_context)
   new_resource.updated_by_last_action(true) if edit_chain(:create)
 end
 
 action :create_if_missing do
+  Iptables::Helpers.create_scratch_directory(run_context)
+  Iptables::Helpers.create_table_directory(new_resource.table, run_context)
   new_resource.updated_by_last_action(true) if edit_chain(:create_if_missing)
 end
 
