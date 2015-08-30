@@ -26,14 +26,16 @@ module Iptables
 
     module_function
 
-    def create_scratch_directory(run_context)
-      Chef::Resource::Directory.new(SCRATCH_DIRECTORY, run_context)
-        .run_action(:create)
+    def create_scratch_directory(resource, run_context)
+      r = Chef::Resource::Directory.new("scratch-#{resource.object_id}", run_context)
+      r.path SCRATCH_DIRECTORY
+      r.run_action(:create)
     end
 
-    def create_table_directory(table, run_context)
-      Chef::Resource::Directory.new(::File.join(SCRATCH_DIRECTORY, table), run_context)
-        .run_action(:create)
+    def create_table_directory(resource, run_context)
+      r = Chef::Resource::Directory.new("table-scratch-#{resource.object_id}", run_context)
+      r.path ::File.join(SCRATCH_DIRECTORY, resource.table)
+      r.run_action(:create)
     end
   end
 end
