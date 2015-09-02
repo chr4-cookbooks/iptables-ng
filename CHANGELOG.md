@@ -3,6 +3,11 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.8
+-----
+
+- Add `node['iptables-ng']['auto_prune_attribute_rules']` attribute to remove unused/ old rules created by attributes automatically
+
 2.2.7
 -----
 
