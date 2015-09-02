@@ -19,10 +19,14 @@
 #
 
 action :create do
+  Iptables::Helpers.create_scratch_directory(new_resource, run_context)
+  Iptables::Helpers.create_table_directory(new_resource, run_context)
   new_resource.updated_by_last_action(true) if edit_chain(:create)
 end
 
 action :create_if_missing do
+  Iptables::Helpers.create_scratch_directory(new_resource, run_context)
+  Iptables::Helpers.create_table_directory(new_resource, run_context)
   new_resource.updated_by_last_action(true) if edit_chain(:create_if_missing)
 end
 
@@ -38,16 +42,16 @@ def edit_chain(exec_action)
     policy = '- [0:0]'
   end
 
-  directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
+  directory "chain-scratch-#{new_resource.object_id}" do
+    path "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}"
     owner  'root'
     group  node['root_group']
     mode   00700
     not_if { exec_action == :delete }
   end
 
-  rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
-
-  r = file rule_path do
+  r = file "#{new_resource.chain}-default-#{new_resource.object_id}" do
+    path "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
     owner    'root'
     group    node['root_group']
     mode     00600

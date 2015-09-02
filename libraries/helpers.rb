@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: iptables-ng
-# Recipe:: default
+# Module:: Iptables::Helpers
 #
 # Copyright 2013, Chris Aumann
 #
@@ -18,6 +18,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-%w( install manage configure ).each do |r|
-  include_recipe "#{cookbook_name}::#{r}"
+require 'chef/resource/directory'
+
+module Iptables
+  module Helpers
+    SCRATCH_DIRECTORY ||= '/etc/iptables.d'
+
+    module_function
+
+    def create_scratch_directory(resource, run_context)
+      r = Chef::Resource::Directory.new("scratch-#{resource.object_id}", run_context)
+      r.path SCRATCH_DIRECTORY
+      r.run_action(:create)
+    end
+
+    def create_table_directory(resource, run_context)
+      r = Chef::Resource::Directory.new("table-scratch-#{resource.object_id}", run_context)
+      r.path ::File.join(SCRATCH_DIRECTORY, resource.table)
+      r.run_action(:create)
+    end
+  end
 end
