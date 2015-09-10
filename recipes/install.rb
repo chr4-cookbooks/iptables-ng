@@ -22,8 +22,8 @@ include_recipe 'iptables-ng::manage'
 
 # Make sure iptables is installed
 Array(node['iptables-ng']['packages']).each do |pkg|
-  # If RHEL 7+ run systemctl daemon-reload to ensure the new services are picked up
-  if node['platform_family'] == 'rhel' && node['platform_version'].to_f >= 7.0
+  # Check to see if we're using systemd so we run systemctl daemon-reload to pick up new services
+  if IO.read('/proc/1/comm').chomp == 'systemd'
     package pkg do
       notifies :run, 'execute[systemctl daemon-reload]', :immediately
     end
