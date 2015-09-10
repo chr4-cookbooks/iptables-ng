@@ -21,7 +21,20 @@
 include_recipe 'iptables-ng::manage'
 
 # Make sure iptables is installed
-Array(node['iptables-ng']['packages']).each { |pkg| package pkg }
+Array(node['iptables-ng']['packages']).each do |pkg|
+  # If RHEL 7+ run systemctl daemon-reload to ensure the new services are picked up
+  if node['platform_family'] == 'rhel' && node['platform_version'].to_f >= 7.0
+    package pkg do
+      notifies :run, 'execute[systemctl daemon-reload]', :immediately
+    end
+  else
+    package pkg
+  end
+end
+
+execute 'systemctl daemon-reload' do
+  action :nothing
+end
 
 # Make sure ufw is not installed on Ubuntu/Debian, as it might interfere
 package 'ufw' do
