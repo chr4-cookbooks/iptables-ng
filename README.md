@@ -31,7 +31,7 @@ depends 'iptables-ng'
 
 ### General configuration (services, paths)
 
-While iptables-ng tries to automatically determine the correct settings and defaults for your distribution, it might be necessary to adapt them in certian cases. You can configure the behaviour of iptables-ng using the following attributes:
+While iptables-ng tries to automatically determine the correct settings and defaults for your distribution, it might be necessary to adapt them in certain cases. You can configure the behaviour of iptables-ng using the following attributes:
 
 ```ruby
 # The ip versions to manage iptables for
@@ -83,7 +83,7 @@ node['iptables-ng']['rules']['filter']['INPUT']['10-ssh']['rule'] = 'this rule i
 node['iptables-ng']['rules']['filter']['INPUT']['90-http']['rule'] = 'this rule is applied later'
 ```
 
-Also, it's possible to only apply a rule for a certian ip version.
+Also, it's possible to only apply a rule for a certain ip version.
 
 ```ruby
 node['iptables-ng']['rules']['filter']['INPUT']['10-ssh']['rule'] = '--protocol tcp --source 1.2.3.4 --dport 22 --match state --state NEW --jump ACCEPT'
