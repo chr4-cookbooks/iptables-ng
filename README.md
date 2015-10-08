@@ -8,7 +8,7 @@ Contrary to other iptables cookbooks, this cookbook installs iptables and mainta
 
 It provides LWRPs as well as recipes which can handle iptables rules set in the nodes attributes.
 
-It uses the directory ```/etc/iptables.d``` to store and maintain its rules. I'm trying to be as compatible as much as possible to all distributions out there.
+It uses the directory `/etc/iptables.d` to store and maintain its rules. I'm trying to be as compatible as much as possible to all distributions out there.
 
 ## Requirements
 
@@ -20,7 +20,7 @@ The following distribution are best supported, but as this recipe falls back to 
 * Gentoo
 * Archlinux
 
-No external dependencies. Just add this line to your ```metadata.rb``` and you're good to go!
+No external dependencies. Just add this line to your `metadata.rb` and you're good to go!
 
 ```ruby
 depends 'iptables-ng'
@@ -152,7 +152,7 @@ You can also delete old rules by specifying a custom action.
 
 ## install
 
-The installs recipe installs iptables packages, makes sure that ```/etc/iptables.d``` is created and sets all default policies to "ACCEPT", unless they are already configured.
+The installs recipe installs iptables packages, makes sure that `/etc/iptables.d` is created and sets all default policies to "ACCEPT", unless they are already configured.
 
 On Debian and Ubuntu systems, it also removes the "ufw" package, as it might interferre with this cookbook.
 
