@@ -24,20 +24,21 @@
 
 module Iptables
   module Manage
+    # rubocop: disable CyclomaticComplexity
     def conditionally_restart_service(ip_version, run_context)
-      our_resources = run_context.resources.select do |r|
+      our_resources = run_context.resource_collection.select do |r|
         r.is_a?(Chef::Resource::IptablesNgRule) || r.is_a?(Chef::Resource::IptablesNgChain)
       end
 
       return unless our_resources.any?(&:updated_by_last_action?)
 
       # Restart iptables service if available
-      if node['iptables-ng']["service_ipv#{ip_version}"]
+      if run_context.node['iptables-ng']["service_ipv#{ip_version}"]
 
         # Do not restart twice if the command is the same for ipv4 and ipv6
-        return if node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] && ip_version == 6
+        return if run_context.node['iptables-ng']['service_ipv4'] == run_context.node['iptables-ng']['service_ipv6'] && ip_version == 6
 
-        Chef::Resource::Service.new(node['iptables-ng']["service_ipv#{ip_version}"], run_context).tap do |service|
+        Chef::Resource::Service.new(run_context.node['iptables-ng']["service_ipv#{ip_version}"], run_context).tap do |service|
           service.supports(status: true, restart: true)
           service.run_action(:enable)
           service.run_action(:restart)
@@ -47,11 +48,14 @@ module Iptables
       else
         Chef::Log.info 'applying rules manually, as no service is specified'
         Chef::Resource::Execute.new("iptables-restore for ipv#{ip_version}", run_context).tap do |execute|
-          execute.command("iptables-restore < #{node['iptables-ng']['script_ipv4']}") if ip_version == 4
-          execute.command("ip6tables-restore < #{node['iptables-ng']['script_ipv6']}") if ip_version == 6
+          execute.command("iptables-restore < #{run_context.node['iptables-ng']['script_ipv4']}") if ip_version == 4
+          execute.command("ip6tables-restore < #{run_context.node['iptables-ng']['script_ipv6']}") if ip_version == 6
           execute.run_action(:run)
         end
       end
     end
+    # rubocop: enable CyclomaticComplexity
+
+    module_function :conditionally_restart_service
   end
 end
