@@ -35,18 +35,24 @@ ruby_block 'create_rules' do
   action :nothing
 end
 
-ruby_block 'restart_iptables' do
-  block do
-    class Chef::Resource::RubyBlock
-      include Iptables::Manage
-    end
+modern_and_paranoid = node['iptables-ng']['safe_reload'] && Chef::VERSION.to_f >= 12.5
 
-    if node['iptables-ng']['managed_service']
+if modern_and_paranoid
+  Chef.event_handler do
+    on :converge_complete do
       Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-        restart_service(ip_version)
-      end
+        Iptables::Manage.conditionally_restart_service(ip_version, run_context)
+      end if node['iptables-ng']['managed_service']
     end
   end
+end
 
+ruby_block 'restart_iptables' do
+  block do
+    Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
+      Iptables::Manage.conditionally_restart_service(ip_version, run_context)
+    end if node['iptables-ng']['managed_service']
+  end
+  not_if { modern_and_paranoid }
   action :nothing
 end

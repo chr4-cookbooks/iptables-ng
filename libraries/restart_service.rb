@@ -24,7 +24,13 @@
 
 module Iptables
   module Manage
-    def restart_service(ip_version)
+    def conditionally_restart_service(ip_version, run_context)
+      our_resources = run_context.resources.select do |r|
+        r.is_a?(Chef::Resource::IptablesNgRule) || r.is_a?(Chef::Resource::IptablesNgChain)
+      end
+
+      return unless our_resources.any?(&:updated_by_last_action?)
+
       # Restart iptables service if available
       if node['iptables-ng']["service_ipv#{ip_version}"]
 
