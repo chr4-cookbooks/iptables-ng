@@ -24,6 +24,7 @@
 
 module Iptables
   module Manage
+    # rubocop: disable PerceivedComplexity
     # rubocop: disable CyclomaticComplexity
     def conditionally_restart_service(ip_version, run_context)
       our_resources = run_context.resource_collection.select do |r|
@@ -55,6 +56,7 @@ module Iptables
       end
     end
     # rubocop: enable CyclomaticComplexity
+    # rubocop: enable PerceivedComplexity
 
     module_function :conditionally_restart_service
   end
