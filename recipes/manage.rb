@@ -41,7 +41,7 @@ if modern_and_paranoid
   Chef.event_handler do
     on :converge_complete do
       Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-        Iptables::Manage.conditionally_restart_service(ip_version, run_context)
+        Iptables::Manage.conditionally_restart(ip_version, run_context)
       end if node['iptables-ng']['managed_service']
     end
   end
@@ -50,7 +50,7 @@ end
 ruby_block 'restart_iptables' do
   block do
     Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-      Iptables::Manage.conditionally_restart_service(ip_version, run_context)
+      Iptables::Manage.restart(ip_version, run_context)
     end if node['iptables-ng']['managed_service']
   end
   not_if { modern_and_paranoid }
