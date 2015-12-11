@@ -61,6 +61,6 @@ module Iptables
       end
     end
 
-    module_function :restart, :conditionally_restart
+    module_function :restart, :conditionally_restart, :restart_service, :apply_manually
   end
 end

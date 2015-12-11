@@ -38,11 +38,13 @@ end
 modern_and_paranoid = node['iptables-ng']['safe_reload'] && Chef::VERSION.to_f >= 12.5
 
 if modern_and_paranoid
+  require 'chef/event_dispatch/dsl'
+
   Chef.event_handler do
     on :converge_complete do
-      Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-        Iptables::Manage.conditionally_restart(ip_version, run_context)
-      end if node['iptables-ng']['managed_service']
+      Chef.run_context.node['iptables-ng']['enabled_ip_versions'].each do |ip_version|
+        Iptables::Manage.conditionally_restart(ip_version, Chef.run_context)
+      end if Chef.run_context.node['iptables-ng']['managed_service']
     end
   end
 end
