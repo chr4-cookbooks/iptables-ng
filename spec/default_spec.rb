@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'iptables-ng::default' do
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::ServerRunner.new do |node|
       node.automatic.merge!(JSON.parse(File.read('test/nodes/test.json')))
     end.converge(described_recipe)
   end
