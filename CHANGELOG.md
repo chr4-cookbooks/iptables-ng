@@ -8,7 +8,7 @@ This file is used to list changes made in each version of the iptables-ng cookbo
 
 - Revert `use_inline_resources`, was causing trouble
 
-2.2.9
+2.2.9 (broken, do not use!)
 -----
 
 - Fix code linting complaints (rubocop, foodcritc)
