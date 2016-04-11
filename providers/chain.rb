@@ -34,11 +34,12 @@ end
 
 def edit_chain(exec_action)
   # only default chains can have a policy
-  if %w(INPUT OUTPUT FORWARD PREROUTING POSTROUTING).include?(new_resource.chain)
-    policy = new_resource.policy
-  else
-    policy = '- [0:0]'
-  end
+  policy =
+    if %w(INPUT OUTPUT FORWARD PREROUTING POSTROUTING).include?(new_resource.chain)
+      new_resource.policy
+    else
+      '- [0:0]'
+    end
 
   directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
     owner  'root'
