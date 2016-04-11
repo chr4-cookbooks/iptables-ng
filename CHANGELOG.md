@@ -3,6 +3,12 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.9
+-----
+
+- Fix code linting complaints (rubocop, foodcritc)
+- Add `use_inline_resources` to providers
+
 2.2.8
 -----
 
