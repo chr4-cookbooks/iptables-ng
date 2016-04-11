@@ -16,13 +16,16 @@ Documentation:
 ClassAndModuleChildren:
   Enabled: false
 
-SingleSpaceBeforeFirstArg:
+SpaceBeforeFirstArg:
   Enabled: false
 
 AbcSize:
   Enabled: false
 
-TrailingComma:
+TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+
+TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
 EmptyLinesAroundBlockBody:
