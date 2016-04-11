@@ -3,6 +3,11 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.2.10
+------
+
+- Revert `use_inline_resources`, was causing trouble
+
 2.2.9
 -----
 
