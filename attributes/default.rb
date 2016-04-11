@@ -42,23 +42,25 @@ default['iptables-ng']['ip6tables_nat_support'] = value_for_platform(
 )
 
 # Packages to install
-default['iptables-ng']['packages'] = case node['platform_family']
-when 'debian'
-  %w(iptables iptables-persistent)
-when 'rhel'
-  if node['platform'] == 'amazon'
-    # Amazon Linux doesn't include "iptables-services" or "iptables-ipv6"
-    %w(iptables)
-  elsif node['platform_version'].to_f >= 7.0
-    %w(iptables iptables-services)
+default['iptables-ng']['packages'] =
+  case node['platform_family']
+  when 'debian'
+    %w(iptables iptables-persistent)
+  when 'rhel'
+    if node['platform'] == 'amazon'
+      # Amazon Linux doesn't include "iptables-services" or "iptables-ipv6"
+      %w(iptables)
+    elsif node['platform_version'].to_f >= 7.0
+      %w(iptables iptables-services)
+    else
+      %w(iptables iptables-ipv6)
+    end
   else
-    %w(iptables iptables-ipv6)
+    %w(iptables)
   end
-else
-  %w(iptables)
-end
 
 # Where the rules are stored and how they are executed
+# rubocop:disable Style/IdenticalConditionalBranches
 case node['platform']
 when 'debian'
   # Debian squeeze (and before) only support an outdated version
@@ -73,7 +75,6 @@ when 'debian'
   end
 
   if node['platform_version'].to_f < 7.0
-    # default['iptables-ng']['service_ipv4'] = 'iptables-persistent'
     default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules'
     default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
   else
@@ -114,3 +115,4 @@ else
   default['iptables-ng']['script_ipv4'] = '/etc/iptables-rules.ipt'
   default['iptables-ng']['script_ipv6'] = '/etc/ip6tables-rules.ipt'
 end
+# rubocop:enable Style/IdenticalConditionalBranches
