@@ -38,25 +38,26 @@ default['iptables-ng']['auto_prune_attribute_rules'] = false
 # Older distributions do not support ipv6 nat, but recent Ubuntu does
 default['iptables-ng']['ip6tables_nat_support'] = value_for_platform(
   'ubuntu' => { '14.04' => true, '14.10' => true, 'default' => false },
-  'default' => false,
+  'default' => false
 )
 
 # Packages to install
-default['iptables-ng']['packages'] = case node['platform_family']
-when 'debian'
-  %w(iptables iptables-persistent)
-when 'rhel'
-  if node['platform'] == 'amazon'
-    # Amazon Linux doesn't include "iptables-services" or "iptables-ipv6"
-    %w(iptables)
-  elsif node['platform_version'].to_f >= 7.0
-    %w(iptables iptables-services)
+default['iptables-ng']['packages'] =
+  case node['platform_family']
+  when 'debian'
+    %w(iptables iptables-persistent)
+  when 'rhel'
+    if node['platform'] == 'amazon'
+      # Amazon Linux doesn't include "iptables-services" or "iptables-ipv6"
+      %w(iptables)
+    elsif node['platform_version'].to_f >= 7.0
+      %w(iptables iptables-services)
+    else
+      %w(iptables iptables-ipv6)
+    end
   else
-    %w(iptables iptables-ipv6)
+    %w(iptables)
   end
-else
-  %w(iptables)
-end
 
 # Where the rules are stored and how they are executed
 case node['platform']
@@ -75,11 +76,10 @@ when 'debian'
   if node['platform_version'].to_f < 7.0
     # default['iptables-ng']['service_ipv4'] = 'iptables-persistent'
     default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules'
-    default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
   else
     default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules.v4'
-    default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
   end
+  default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
 
 when 'ubuntu'
   if node['platform_version'].to_f >= 14.10
