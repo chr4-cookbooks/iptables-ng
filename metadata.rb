@@ -6,7 +6,7 @@ description      'Installs/Configures iptables-ng'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 source_url       'https://github.com/chr4-cookbooks/iptables-ng' if respond_to?(:source_url)
 issues_url       'https://github.com/chr4-cookbooks/iptables-ng/issues' if respond_to?(:issues_url)
-version          '2.2.10'
+version          '2.2.11'
 
 %w(ubuntu debian
    redhat centos amazon suse scientific
