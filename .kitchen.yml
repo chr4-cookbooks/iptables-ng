@@ -63,22 +63,21 @@ suites:
     run_list:
     - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_rule_check_order]
-
   - name: recipe_default
     run_list:
     - recipe[minitest-handler]
     - recipe[iptables_ng_test::recipe_default]
     attributes:
       iptables-ng:
-        rules:
+        rules: &rules
           filter:
-            INPUT:
+            INPUT: &input
               ssh:
                 rule: '--protocol tcp --dport 22 --match state --state NEW --jump ACCEPT'
               ipv4_only:
                 rule: '--protocol tcp --source 1.2.3.4 --dport 123 --jump ACCEPT'
                 ip_version: 4
-            OUTPUT:
+            OUTPUT: &output
                 testrule:
                   rule: '--protocol icmp --jump ACCEPT'
             FORWARD:
@@ -90,7 +89,14 @@ suites:
           mangle:
             FORWARD:
               default: 'DROP [0:0]'
-
+  - name: safe_reload_off
+    run_list:
+    - recipe[minitest-handler]
+    - recipe[iptables_ng_test::recipe_default]
+    attributes:
+      iptables-ng:
+        rules: *rules
+        safe_reload: false
   - name: recipe_install
     run_list:
     - recipe[minitest-handler]

@@ -21,32 +21,37 @@
 # This recipe only creates ruby_blocks that are called later by the LWRPs
 # Do not use it by its own
 
-ruby_block 'create_rules' do
-  block do
-    class Chef::Resource::RubyBlock
-      include Iptables::Manage
-    end
+modern_and_paranoid = node['iptables-ng']['safe_reload'] && Chef::VERSION.to_f >= 12.5
 
-    Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-      create_iptables_rules(ip_version)
+if modern_and_paranoid
+  require 'chef/event_dispatch/dsl'
+
+  Chef.event_handler do
+    on :converge_complete do
+      Chef.run_context.node['iptables-ng']['enabled_ip_versions'].each do |ip_version|
+        Iptables::Manage.create_iptables_rules(ip_version, Chef.run_context)
+        Iptables::Manage.conditionally_restart(ip_version, Chef.run_context)
+      end if Chef.run_context.node['iptables-ng']['managed_service']
     end
   end
+end
 
+ruby_block 'create_rules' do
+  block do
+    Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
+      Iptables::Manage.create_iptables_rules(ip_version, run_context)
+    end
+  end
+  not_if { modern_and_paranoid }
   action :nothing
 end
 
 ruby_block 'restart_iptables' do
   block do
-    class Chef::Resource::RubyBlock
-      include Iptables::Manage
-    end
-
-    if node['iptables-ng']['managed_service']
-      Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
-        restart_service(ip_version)
-      end
-    end
+    Array(node['iptables-ng']['enabled_ip_versions']).each do |ip_version|
+      Iptables::Manage.restart(ip_version, run_context)
+    end if node['iptables-ng']['managed_service']
   end
-
+  not_if { modern_and_paranoid }
   action :nothing
 end

@@ -24,7 +24,7 @@
 
 module Iptables
   module Manage
-    def create_iptables_rules(ip_version)
+    def create_iptables_rules(ip_version, run_context)
       rules = {}
 
       # Retrieve all iptables rules for this ip_version,
@@ -38,11 +38,11 @@ module Iptables
 
         # Skip nat table if ip6tables doesn't support it
         next if table == 'nat' &&
-                node['iptables-ng']['ip6tables_nat_support'] == false &&
+                run_context.node['iptables-ng']['ip6tables_nat_support'] == false &&
                 ip_version == 6
 
         # Skip deactivated tables
-        next unless node['iptables-ng']['enabled_tables'].include?(table)
+        next unless run_context.node['iptables-ng']['enabled_tables'].include?(table)
 
         # Create hashes unless they already exist, and add the rule
         rules[table] ||= {}
@@ -76,13 +76,15 @@ module Iptables
         iptables_restore << "COMMIT\n"
       end
 
-      Chef::Resource::File.new(node['iptables-ng']["script_ipv#{ip_version}"], run_context).tap do |file|
+      Chef::Resource::File.new(run_context.node['iptables-ng']["script_ipv#{ip_version}"], run_context).tap do |file|
         file.owner('root')
-        file.group(node['root_group'])
+        file.group(run_context.node['root_group'])
         file.mode(00600)
         file.content(iptables_restore)
         file.run_action(:create)
       end
     end
+
+    module_function :create_iptables_rules
   end
 end

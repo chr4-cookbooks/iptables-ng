@@ -24,28 +24,43 @@
 
 module Iptables
   module Manage
-    def restart_service(ip_version)
-      # Restart iptables service if available
-      if node['iptables-ng']["service_ipv#{ip_version}"]
-
-        # Do not restart twice if the command is the same for ipv4 and ipv6
-        return if node['iptables-ng']['service_ipv4'] == node['iptables-ng']['service_ipv6'] && ip_version == 6
-
-        Chef::Resource::Service.new(node['iptables-ng']["service_ipv#{ip_version}"], run_context).tap do |service|
-          service.supports(status: true, restart: true)
-          service.run_action(:enable)
-          service.run_action(:restart)
-        end
-
-      # If no service is available, apply the rules manually
+    def restart(ip_version, run_context)
+      if run_context.node['iptables-ng']["service_ipv#{ip_version}"]
+        restart_service(ip_version, run_context)
       else
-        Chef::Log.info 'applying rules manually, as no service is specified'
-        Chef::Resource::Execute.new("iptables-restore for ipv#{ip_version}", run_context).tap do |execute|
-          execute.command("iptables-restore < #{node['iptables-ng']['script_ipv4']}") if ip_version == 4
-          execute.command("ip6tables-restore < #{node['iptables-ng']['script_ipv6']}") if ip_version == 6
-          execute.run_action(:run)
-        end
+        apply_manually(ip_version, run_context)
       end
     end
+
+    # Restart if any resources in provided run_context have been updated
+    def conditionally_restart(ip_version, run_context)
+      our_resources = run_context.resource_collection.select do |r|
+        r.is_a?(Chef::Resource::IptablesNgRule) || r.is_a?(Chef::Resource::IptablesNgChain)
+      end
+
+      restart(ip_version, run_context) if our_resources.any?(&:updated_by_last_action?)
+    end
+
+    def restart_service(ip_version, run_context)
+      # Do not restart twice if the command is the same for ipv4 and ipv6
+      return if run_context.node['iptables-ng']['service_ipv4'] == run_context.node['iptables-ng']['service_ipv6'] && ip_version == 6
+
+      Chef::Resource::Service.new(run_context.node['iptables-ng']["service_ipv#{ip_version}"], run_context).tap do |service|
+        service.supports(status: true, restart: true)
+        service.run_action(:enable)
+        service.run_action(:restart)
+      end
+    end
+
+    def apply_manually(ip_version, run_context)
+      Chef::Log.info 'applying rules manually, as no service is specified'
+      Chef::Resource::Execute.new("iptables-restore for ipv#{ip_version}", run_context).tap do |execute|
+        execute.command("iptables-restore < #{run_context.node['iptables-ng']['script_ipv4']}") if ip_version == 4
+        execute.command("ip6tables-restore < #{run_context.node['iptables-ng']['script_ipv6']}") if ip_version == 6
+        execute.run_action(:run)
+      end
+    end
+
+    module_function :restart, :conditionally_restart, :restart_service, :apply_manually
   end
 end

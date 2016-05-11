@@ -34,6 +34,10 @@ default['iptables-ng']['managed_service'] = true
 # Configure whether to automatically clean up unused rules
 default['iptables-ng']['auto_prune_attribute_rules'] = false
 
+# Configure whether to opt-in to safer restart behavior by skipping restarts
+# in case of converge failure. Only available on Chef client versions >= 12.5.
+default['iptables-ng']['safe_reload'] = true
+
 # Enable nat support for ipv6
 # Older distributions do not support ipv6 nat, but recent Ubuntu does
 default['iptables-ng']['ip6tables_nat_support'] = value_for_platform(
