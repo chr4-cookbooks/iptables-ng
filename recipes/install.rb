@@ -41,7 +41,7 @@ end
 
 # Create directories
 directory '/etc/iptables.d' do
-  mode 00700
+  mode 0o700
 end
 
 node['iptables-ng']['rules'].each do |table, chains|
@@ -49,7 +49,7 @@ node['iptables-ng']['rules'].each do |table, chains|
   next unless node['iptables-ng']['enabled_tables'].include?(table)
 
   directory "/etc/iptables.d/#{table}" do
-    mode 00700
+    mode 0o700
   end
 
   # Create default policies unless they exist

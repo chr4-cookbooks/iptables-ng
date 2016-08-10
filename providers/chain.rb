@@ -42,7 +42,7 @@ def edit_chain(exec_action)
   directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
     owner  'root'
     group  node['root_group']
-    mode   00700
+    mode   0o700
     not_if { exec_action == :delete }
   end
 
@@ -51,7 +51,7 @@ def edit_chain(exec_action)
   r = file rule_path do
     owner    'root'
     group    node['root_group']
-    mode     00600
+    mode     0o600
     content  "#{policy}\n"
     notifies :create, 'ruby_block[create_rules]', :delayed
     notifies :create, 'ruby_block[restart_iptables]', :delayed

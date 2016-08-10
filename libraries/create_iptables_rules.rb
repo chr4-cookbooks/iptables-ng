@@ -79,7 +79,7 @@ module Iptables
       Chef::Resource::File.new(node['iptables-ng']["script_ipv#{ip_version}"], run_context).tap do |file|
         file.owner('root')
         file.group(node['root_group'])
-        file.mode(00600)
+        file.mode(0o600)
         file.content(iptables_restore)
         file.run_action(:create)
       end

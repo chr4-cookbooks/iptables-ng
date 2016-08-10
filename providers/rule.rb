@@ -52,7 +52,7 @@ def edit_rule(exec_action)
     r = file new_resource.path_for_ip_version(ip_version) do
       owner    'root'
       group    node['root_group']
-      mode     00600
+      mode     0o600
       content  rule_file
       notifies :create, 'ruby_block[create_rules]', :delayed
       notifies :create, 'ruby_block[restart_iptables]', :delayed
