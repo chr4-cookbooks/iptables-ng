@@ -10,6 +10,22 @@ It provides LWRPs as well as recipes which can handle iptables rules set in the 
 
 It uses the directory `/etc/iptables.d` to store and maintain its rules. I'm trying to be as compatible as much as possible to all distributions out there.
 
+
+This cookbook is supposed to be able to:
+
+- Configure iptables rules in a consistent and nice way for all distributions
+- Be configured by using LWRPs only
+- Be configured by using node attributes only
+- Respect the way the currently used distribution stores their rules
+- Provide a good-to-read and good-to-maintain way of deploying complex iptables rulesets
+- Provide a way of specifying the order of the iptables rules, in case needed
+- Only run iptables-restore once during a chef run, and only if something was actually changed
+- Support both, ipv6 as well as ipv4
+- Be able to assemble iptables rules from different recipes (and even cookbooks), so you can set your iptables rule where you actually configure the service
+
+I also wrote a [blog post](https://chr4.org/blog/2013/09/13/iptables-ng-cookbook-for-chef) providing further insights.
+
+
 ## Requirements
 
 The following distribution are best supported, but as this recipe falls back to a generic iptables restore script in case the system is unknown, it should work with every linux distribution supporting iptables.
