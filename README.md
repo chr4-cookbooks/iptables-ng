@@ -279,6 +279,11 @@ Authors: Chris Aumann
 Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot
 
 
+## Other licenses than GPLv3
+
+In case you can't use the provided license for some reason, feel free to contact me.
+
+
 Copyright (C) 2015  Chris Aumann
 
 This program is free software: you can redistribute it and/or modify
