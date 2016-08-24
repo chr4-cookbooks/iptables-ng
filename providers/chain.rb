@@ -40,7 +40,7 @@ def edit_chain(exec_action)
     end
 
   begin
-    run_context.resource_collection.find(:directory => "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}")
+    run_context.resource_collection.find(directory: "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}")
   rescue
     directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
       owner  'root'
@@ -53,7 +53,7 @@ def edit_chain(exec_action)
   rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
 
   begin
-    r = run_context.resource_collection.find(:file => rule_path)
+    r = run_context.resource_collection.find(file: rule_path)
     r.content = "#{policy}\n"
     r.updated_by_last_action?
   rescue
