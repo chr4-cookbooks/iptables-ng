@@ -41,7 +41,7 @@ def edit_chain(exec_action)
 
   begin
     run_context.resource_collection.find(directory: "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}")
-  rescue
+  rescue Chef::Exceptions::ResourceNotFound
     directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
       owner  'root'
       group  node['root_group']
@@ -56,7 +56,7 @@ def edit_chain(exec_action)
     r = run_context.resource_collection.find(file: rule_path)
     r.content = "#{policy}\n"
     r.updated_by_last_action?
-  rescue
+  rescue Chef::Exceptions::ResourceNotFound
     r = file rule_path do
       owner    'root'
       group    node['root_group']
