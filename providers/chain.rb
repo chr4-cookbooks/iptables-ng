@@ -39,24 +39,33 @@ def edit_chain(exec_action)
       '- [0:0]'
     end
 
-  directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
-    owner  'root'
-    group  node['root_group']
-    mode   0o700
-    not_if { exec_action == :delete }
+  begin
+    run_context.resource_collection.find(:directory => "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}")
+  rescue
+    directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
+      owner  'root'
+      group  node['root_group']
+      mode   0o700
+      not_if { exec_action == :delete }
+    end
   end
 
   rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
 
-  r = file rule_path do
-    owner    'root'
-    group    node['root_group']
-    mode     0o600
-    content  "#{policy}\n"
-    notifies :create, 'ruby_block[create_rules]', :delayed
-    notifies :create, 'ruby_block[restart_iptables]', :delayed
-    action   exec_action
+  begin
+    r = run_context.resource_collection.find(:file => rule_path)
+    r.content = "#{policy}\n"
+    r.updated_by_last_action?
+  rescue
+    r = file rule_path do
+      owner    'root'
+      group    node['root_group']
+      mode     0o600
+      content  "#{policy}\n"
+      notifies :create, 'ruby_block[create_rules]', :delayed
+      notifies :create, 'ruby_block[restart_iptables]', :delayed
+      action   exec_action
+    end
+    r.updated_by_last_action?
   end
-
-  r.updated_by_last_action?
 end
