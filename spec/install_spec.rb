@@ -10,7 +10,7 @@ describe 'iptables-ng::install' do
     end
 
     it 'should remove ufw' do
-      expect(chef_run).to remove_package('ufw')
+      expect(chef_run).to remove_package('iptables-ng::install - ufw package')
     end
   end
 
