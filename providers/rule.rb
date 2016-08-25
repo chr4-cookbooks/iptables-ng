@@ -39,11 +39,15 @@ def edit_rule(exec_action)
             ip_version == 6
 
     # Create chain if it doesn't exist
-    iptables_ng_chain "#{new_resource.chain}:#{new_resource.table}:#{new_resource.name}" do
-      chain  new_resource.chain
-      table  new_resource.table
-      action :create_if_missing
-      not_if { exec_action == :delete }
+    begin
+      run_context.resource_collection.find(iptables_ng_chain: "#{new_resource.chain}:#{new_resource.table}:#{new_resource.name}")
+    rescue Chef::Exceptions::ResourceNotFound
+      iptables_ng_chain "#{new_resource.chain}:#{new_resource.table}:#{new_resource.name}" do
+        chain  new_resource.chain
+        table  new_resource.table
+        action :create_if_missing
+        not_if { exec_action == :delete }
+      end
     end
 
     rule_file = ''
