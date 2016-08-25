@@ -292,7 +292,7 @@ Contributions of any sort are very welcome!
 
 Authors: Chris Aumann
 
-Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot
+Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot, Sten Spans
 
 
 ## Other licenses than GPLv3
