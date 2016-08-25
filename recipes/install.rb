@@ -22,19 +22,22 @@ include_recipe 'iptables-ng::manage'
 
 # Make sure iptables is installed
 Array(node['iptables-ng']['packages']).each do |pkg|
-  package pkg do
-    notifies :run, 'execute[systemctl daemon-reload]', :immediately
+  package "iptables-ng::install - #{pkg} package" do
+    package_name pkg
+    notifies :run, 'execute[iptables-ng::install - systemctl daemon-reload]', :immediately
   end
 end
 
 # Check to see if we're using systemd so we run systemctl daemon-reload to pick up new services
-execute 'systemctl daemon-reload' do
+execute 'iptables-ng::install - systemctl daemon-reload' do
+  command 'systemctl daemon-reload'
   action :nothing
   only_if { IO.read('/proc/1/comm').chomp == 'systemd' }
 end
 
 # Make sure ufw is not installed on Ubuntu/Debian, as it might interfere
-package 'ufw' do
+package 'iptables-ng::install - ufw package' do
+  package_name 'uwf'
   action :remove
   only_if { node['platform_family'] == 'debian' }
 end
