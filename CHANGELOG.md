@@ -3,6 +3,11 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+2.3.1
+-----
+
+- Add compatibility fix for older chef-clients
+
 2.3.0
 -----
 
