@@ -54,7 +54,7 @@ def edit_chain(exec_action)
 
   begin
     r = run_context.resource_collection.find(file: rule_path)
-    r.content = "#{policy}\n"
+    r.content "#{policy}\n"
     r.updated_by_last_action?
   rescue Chef::Exceptions::ResourceNotFound
     r = file rule_path do
