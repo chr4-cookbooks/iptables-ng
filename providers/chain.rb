@@ -18,6 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+require 'date'
+
 action :create do
   new_resource.updated_by_last_action(true) if edit_chain(:create)
 end
@@ -50,22 +52,17 @@ def edit_chain(exec_action)
     end
   end
 
+  # Generating a random resource identifier, to workaround Chef cloning issues.
   rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
-
-  begin
-    r = run_context.resource_collection.find(file: rule_path)
-    r.content "#{policy}\n"
-    r.updated_by_last_action?
-  rescue Chef::Exceptions::ResourceNotFound
-    r = file rule_path do
-      owner    'root'
-      group    node['root_group']
-      mode     0o600
-      content  "#{policy}\n"
-      notifies :create, 'ruby_block[create_rules]', :delayed
-      notifies :create, 'ruby_block[restart_iptables]', :delayed
-      action   exec_action
-    end
-    r.updated_by_last_action?
+  r = file "#{rule_path}-#{DateTime.now.to_time.to_i}-#{rand(100_000)}" do
+    path     rule_path
+    owner    'root'
+    group    node['root_group']
+    mode     0o600
+    content  "#{policy}\n"
+    notifies :create, 'ruby_block[create_rules]', :delayed
+    notifies :create, 'ruby_block[restart_iptables]', :delayed
+    action   exec_action
   end
+  r.updated_by_last_action?
 end
