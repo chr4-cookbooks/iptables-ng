@@ -172,6 +172,12 @@ The installs recipe installs iptables packages, makes sure that `/etc/iptables.d
 
 On Debian and Ubuntu systems, it also removes the "ufw" package, as it might interferre with this cookbook.
 
+*Note: This recipe needs to be run before the LWRPs are used!*
+
+```ruby
+include_recipe 'iptables-ng::install'
+```
+
 
 # Providers
 
@@ -229,7 +235,7 @@ The following additional attributes are supported:
 ```ruby
 iptables_ng_rule 'custom' do
   name       'my-rule'    # Name of the rule. Use "xx-" to prioritize rules.
-  chain      'INPUT'      # Chain to use. Defaults to 'INPUT'
+  chain      'INPUT'      # Chain to use. Defaults to 'INPUT' (custom chains need to be created using iptables_ng_chain first!)
   table      'filter'     # Table to use. Defaults to 'filter'
   ip_version 4            # Integer or Array of IP versions to create the rules for.
                           # Defaults to node['iptables-ng']['enabled_ip_versions']

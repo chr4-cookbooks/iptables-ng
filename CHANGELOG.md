@@ -3,6 +3,29 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+3.0.0
+-----
+
+Release to workaround cloning issues, for the upcoming Chef-13 release:
+- Removed the feature to automatically run `iptables-ng::install` upon LWRP
+  usage. It's now required to manually run `iptables-ng::install` before using
+  the LWRPs. This can be achieved by adding the following before using the
+  LWRPs for the first time (also make sure it's only included once):
+```ruby
+include_recipe 'iptables-ng::install'
+```
+- Removed the feature to automatically create new custom chains when using the
+  `iptables_ng_rule` provider. Custom chains are now required to be added
+  manually before using them:
+```ruby
+iptables_ng_chain 'CUSTOM'
+iptables_ng_rule 'rule-using-custom-chain'
+```
+
+This release also fixes a bug previously introduced by trying to workaround the
+cloning issues, where a chain policy wasn't properly updated. See [this
+issue](https://github.com/chr4-cookbooks/iptables-ng/issues/63) for details.
+
 2.3.1
 -----
 
