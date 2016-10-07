@@ -1,3 +1,5 @@
+include_recipe 'iptables-ng::install'
+
 # We need to create the custom chain first
 iptables_ng_chain 'FOO' do
   table 'nat'

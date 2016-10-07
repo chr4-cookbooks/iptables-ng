@@ -1,3 +1,5 @@
+include_recipe 'iptables-ng::install'
+
 iptables_ng_rule '99-last' do
   rule '--protocol tcp --dport 99 --jump ACCEPT'
 end
