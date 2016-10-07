@@ -38,18 +38,6 @@ def edit_rule(exec_action)
             node['iptables-ng']['ip6tables_nat_support'] == false &&
             ip_version == 6
 
-    # Create chain if it doesn't exist
-    begin
-      run_context.resource_collection.find(iptables_ng_chain: "#{new_resource.chain}:#{new_resource.table}:#{new_resource.name}")
-    rescue Chef::Exceptions::ResourceNotFound
-      iptables_ng_chain "#{new_resource.chain}:#{new_resource.table}:#{new_resource.name}" do
-        chain  new_resource.chain
-        table  new_resource.table
-        action :create_if_missing
-        not_if { exec_action == :delete }
-      end
-    end
-
     rule_file = ''
     Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
 
