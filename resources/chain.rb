@@ -26,11 +26,3 @@ default_action :create
 attribute :chain,  kind_of: String, name_attribute: true, regex: /^[\w-]{1,29}$/
 attribute :table,  kind_of: String, default: 'filter', equal_to: %w(filter nat mangle raw)
 attribute :policy, kind_of: String, default: 'ACCEPT [0:0]'
-
-def initialize(*args)
-  super
-  @action = :create
-
-  # Include iptables-ng::install recipe
-  @run_context.include_recipe('iptables-ng::install')
-end

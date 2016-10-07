@@ -31,14 +31,6 @@ attribute :table,      kind_of: String, default: 'filter', equal_to: %w(filter n
 attribute :rule,       kind_of: [Array, String],  default: []
 attribute :ip_version, kind_of: [Array, Integer], default: node['iptables-ng']['enabled_ip_versions'], equal_to: [[4, 6], [4], [6], 4, 6]
 
-def initialize(*args)
-  super
-  @action = :create
-
-  # Include iptables-ng::install recipe
-  @run_context.include_recipe('iptables-ng::install')
-end
-
 def path_for_chain
   "/etc/iptables.d/#{table}/#{chain}"
 end
