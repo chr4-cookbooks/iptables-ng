@@ -94,3 +94,17 @@ Vagrantfile
 # Travis #
 ##########
 .travis.yml
+
+.bundle
+.kitchen
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+.bundle
+.cache
+.kitchen
+bin
+.kitchen.local.yml
