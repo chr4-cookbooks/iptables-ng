@@ -272,7 +272,7 @@ end
 
 There are some issues with systemd support on Fedora systems. Also it might be required to install iptables-service on newer Fedora machines.
 Due to this issues, the tests for Fedora were removed until they are resolved.
-Furthermore, due to the lack of Opscode kitchen boxes, there are not tests for Archlinux.
+Furthermore, due to the lack of Opscode kitchen boxes, there are no tests for Archlinux.
 
 
 # Contributing
