@@ -54,7 +54,7 @@ While iptables-ng tries to automatically determine the correct settings and defa
 node['iptables-ng']['enabled_ip_versions'] = [4, 6]
 
 # Which tables to manage:
-# When using a containered setup (OpenVZ, Docker, LXC) it might might be
+# When using a containered setup (OpenVZ, Docker, LXC) it might be
 # necessary to remove the "nat" and "raw" tables.
 node['iptables-ng']['enabled_tables'] = %w(nat filter mangle raw)
 
@@ -170,7 +170,7 @@ You can also delete old rules by specifying a custom action.
 
 The installs recipe installs iptables packages, makes sure that `/etc/iptables.d` is created and sets all default policies to "ACCEPT", unless they are already configured.
 
-On Debian and Ubuntu systems, it also removes the "ufw" package, as it might interferre with this cookbook.
+On Debian and Ubuntu systems, it also removes the "ufw" package, as it might interfere with this cookbook.
 
 *Note: This recipe needs to be run before the LWRPs are used!*
 
