@@ -3,6 +3,11 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+3.0.1
+-----
+
+- Fix issue with resource cloning in Chef 13
+
 3.0.0
 -----
 
