@@ -50,8 +50,6 @@ def edit_rule(exec_action)
       notifies :create, 'ruby_block[restart_iptables]', :delayed
       action   exec_action
     end
-
-    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 
   # TODO: link to .rule for rhel compatibility?

@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe 'iptables-ng::install' do
   describe 'debian' do
-
     let(:chef_run) do
       ChefSpec::Runner.new do |node|
         node.automatic['platform_family'] = 'debian'

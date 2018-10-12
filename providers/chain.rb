@@ -21,15 +21,15 @@
 require 'date'
 
 action :create do
-  new_resource.updated_by_last_action(true) if edit_chain(:create)
+  edit_chain(:create)
 end
 
 action :create_if_missing do
-  new_resource.updated_by_last_action(true) if edit_chain(:create_if_missing)
+  edit_chain(:create_if_missing)
 end
 
 action :delete do
-  new_resource.updated_by_last_action(true) if edit_chain(:delete)
+  edit_chain(:delete)
 end
 
 def edit_chain(exec_action)
@@ -64,5 +64,4 @@ def edit_chain(exec_action)
     notifies :create, 'ruby_block[restart_iptables]', :delayed
     action   exec_action
   end
-  r.updated_by_last_action?
 end
