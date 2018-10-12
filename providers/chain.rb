@@ -60,8 +60,8 @@ def edit_chain(exec_action)
     group    node['root_group']
     mode     0o600
     content  "#{policy}\n"
-    notifies :create, 'ruby_block[create_rules]', :delayed
-    notifies :create, 'ruby_block[restart_iptables]', :delayed
+    notifies :run, 'ruby_block[create_rules]', :delayed
+    notifies :run, 'ruby_block[restart_iptables]', :delayed
     action   exec_action
   end
 end
