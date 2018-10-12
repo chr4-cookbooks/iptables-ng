@@ -41,21 +41,18 @@ def edit_chain(exec_action)
       '- [0:0]'
     end
 
-  begin
-    run_context.resource_collection.find(directory: "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}")
-  rescue Chef::Exceptions::ResourceNotFound
-    directory "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}" do
-      owner  'root'
-      group  node['root_group']
-      mode   0o700
-      not_if { exec_action == :delete }
-    end
+  chain_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
+
+  directory ::File.dirname(chain_path) do
+    owner  'root'
+    group  node['root_group']
+    mode   0o700
+    not_if { exec_action == :delete }
   end
 
   # Generating a random resource identifier, to workaround Chef cloning issues.
-  rule_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
-  r = file "#{rule_path}-#{DateTime.now.to_time.to_i}-#{rand(100_000)}" do
-    path     rule_path
+  file "#{chain_path}-#{DateTime.now.to_time.to_i}-#{rand(100_000)}" do
+    path     chain_path
     owner    'root'
     group    node['root_group']
     mode     0o600
