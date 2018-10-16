@@ -298,7 +298,7 @@ Contributions of any sort are very welcome!
 
 Authors: Chris Aumann
 
-Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot, Sten Spans
+Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot, Sten Spans, Cédric Félizard
 
 
 ## Other licenses than GPLv3
@@ -306,7 +306,7 @@ Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot, St
 In case you can't use the provided license for some reason, feel free to contact me.
 
 
-Copyright (C) 2015  Chris Aumann
+Copyright (C) 2013-2018  Chris Aumann
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
