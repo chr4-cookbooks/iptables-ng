@@ -44,7 +44,8 @@ def edit_rule(exec_action)
       "--append #{new_resource.chain} #{rule.chomp}"
     end.join("\n")
 
-    directory ::File.dirname(rule_path) do
+    directory rule_path do
+      path   ::File.dirname(rule_path)
       owner  'root'
       group  node['root_group']
       mode   0o700
@@ -62,5 +63,5 @@ def edit_rule(exec_action)
     end
   end
 
-  # TODO: link to .rule for rhel compatibility?
+  # TODO: Link to .rule for rhel compatibility?
 end

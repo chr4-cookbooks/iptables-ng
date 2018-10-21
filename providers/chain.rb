@@ -33,7 +33,7 @@ action :delete do
 end
 
 def edit_chain(exec_action)
-  # only default chains can have a policy
+  # Only default chains can have a policy
   policy =
     if %w(INPUT OUTPUT FORWARD PREROUTING POSTROUTING).include?(new_resource.chain)
       new_resource.policy
@@ -43,15 +43,18 @@ def edit_chain(exec_action)
 
   chain_path = "/etc/iptables.d/#{new_resource.table}/#{new_resource.chain}/default"
 
-  directory ::File.dirname(chain_path) do
+  # Generate a random resource identifier to workaround Chef cloning issues
+  rnd_resource = "#{chain_path}-#{DateTime.now.to_time.to_i}-#{rand(100_000)}"
+
+  directory rnd_resource do
+    path   ::File.dirname(chain_path)
     owner  'root'
     group  node['root_group']
     mode   0o700
     not_if { exec_action == :delete }
   end
 
-  # Generating a random resource identifier, to workaround Chef cloning issues.
-  file "#{chain_path}-#{DateTime.now.to_time.to_i}-#{rand(100_000)}" do
+  file rnd_resource do
     path     chain_path
     owner    'root'
     group    node['root_group']
