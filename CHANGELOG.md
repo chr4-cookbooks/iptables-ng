@@ -3,6 +3,17 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+4.0.0
+-----
+
+- Add support for Chef-13
+
+NOTE: If you want to continue using `iptables-ng` on Chef 12, version lock this cookbook to `3.0.1`. This can be achieved by putting the following in your `Berksfile`:
+
+```ruby
+cookbook 'iptables-ng', '~> 3.0.1'
+```
+
 3.0.1
 -----
 
