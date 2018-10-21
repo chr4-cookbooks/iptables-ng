@@ -38,21 +38,30 @@ def edit_rule(exec_action)
             node['iptables-ng']['ip6tables_nat_support'] == false &&
             ip_version == 6
 
-    rule_file = ''
-    Array(new_resource.rule).each { |r| rule_file << "--append #{new_resource.chain} #{r.chomp}\n" }
+    rule_path = new_resource.path_for_ip_version(ip_version)
 
-    r = file new_resource.path_for_ip_version(ip_version) do
+    rule_content = Array(new_resource.rule).map do |rule|
+      "--append #{new_resource.chain} #{rule.chomp}"
+    end.join("\n")
+
+    directory rule_path do
+      path   ::File.dirname(rule_path)
+      owner  'root'
+      group  node['root_group']
+      mode   0o700
+      not_if { exec_action == :delete }
+    end
+
+    file new_resource.path_for_ip_version(ip_version) do
       owner    'root'
       group    node['root_group']
       mode     0o600
-      content  rule_file
-      notifies :create, 'ruby_block[create_rules]', :delayed
-      notifies :create, 'ruby_block[restart_iptables]', :delayed
+      content  rule_content
+      notifies :run, 'ruby_block[create_rules]', :delayed
+      notifies :run, 'ruby_block[restart_iptables]', :delayed
       action   exec_action
     end
-
-    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 
-  # TODO: link to .rule for rhel compatibility?
+  # TODO: Link to .rule for rhel compatibility?
 end

@@ -7,9 +7,9 @@ DEPENDENCIES
   minitest-handler
 
 GRAPH
-  chef_handler (1.1.6)
-  iptables-ng (3.0.0)
+  chef_handler (3.0.3)
+  iptables-ng (4.0.0)
   iptables_ng_test (0.1.0)
     iptables-ng (>= 0.0.0)
-  minitest-handler (1.3.2)
+  minitest-handler (1.5.1)
     chef_handler (>= 0.0.0)

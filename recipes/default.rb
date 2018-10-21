@@ -56,8 +56,8 @@ node['iptables-ng']['rules'].each do |table, chains|
     # Delete unused rules now
     unused.each do |path|
       file path do
-        notifies :create, 'ruby_block[create_rules]', :delayed
-        notifies :create, 'ruby_block[restart_iptables]', :delayed
+        notifies :run, 'ruby_block[create_rules]', :delayed
+        notifies :run, 'ruby_block[restart_iptables]', :delayed
         action :delete
         only_if { node['iptables-ng']['auto_prune_attribute_rules'] }
       end
