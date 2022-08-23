@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: iptables-ng
+# Cookbook:: iptables-ng
 # Library:: matchers
 #
-# Copyright 2014, Dan Fruehauf
+# Copyright:: 2014, Dan Fruehauf
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,16 +19,3 @@
 #
 
 # Matchers for chefspec
-if defined?(ChefSpec)
-  %w(rule chain).each do |r|
-    ChefSpec.define_matcher("iptables_ng_#{r}".to_sym)
-
-    %w(create create_if_missing delete).each do |a|
-      define_method("#{a}_iptables_ng_#{r}".to_sym) do |resource_name|
-        ChefSpec::Matchers::ResourceMatcher.new(
-          "iptables_ng_#{r}".to_sym, a, resource_name
-        )
-      end
-    end
-  end
-end

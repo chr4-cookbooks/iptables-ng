@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: iptables
+# Cookbook:: iptables
 # Resource:: chain
 #
-# Copyright 2012, Chris Aumann
+# Copyright:: 2012, Chris Aumann
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

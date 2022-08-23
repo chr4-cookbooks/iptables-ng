@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: iptables-ng
+# Cookbook:: iptables-ng
 # Attributes:: default
 #
-# Copyright 2012, Chris Aumann
+# Copyright:: 2012, Chris Aumann
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ default['iptables-ng']['packages'] =
   when 'debian'
     %w(iptables iptables-persistent)
   when 'rhel'
-    if node['platform'] == 'amazon'
+    if platform?('amazon')
       # Amazon Linux doesn't include "iptables-services" or "iptables-ipv6"
       %w(iptables)
     elsif node['platform_version'].to_f >= 7.0

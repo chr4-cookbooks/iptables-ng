@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: iptables-ng
+# Cookbook:: iptables-ng
 # Recipe:: install
 #
-# Copyright 2013, Chris Aumann
+# Copyright:: 2013, Chris Aumann
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,19 +32,19 @@ end
 execute 'iptables-ng::install - systemctl daemon-reload' do
   command 'systemctl daemon-reload'
   action :nothing
-  only_if { IO.read('/proc/1/comm').chomp == 'systemd' }
+  only_if { systemd? }
 end
 
 # Make sure ufw is not installed on Ubuntu/Debian, as it might interfere
 package 'iptables-ng::install - ufw package' do
   package_name 'uwf'
   action :remove
-  only_if { node['platform_family'] == 'debian' }
+  only_if { platform_family?('debian') }
 end
 
 # Create directories
 directory '/etc/iptables.d' do
-  mode 0o700
+  mode '700'
 end
 
 node['iptables-ng']['rules'].each do |table, chains|
@@ -52,7 +52,7 @@ node['iptables-ng']['rules'].each do |table, chains|
   next unless node['iptables-ng']['enabled_tables'].include?(table)
 
   directory "/etc/iptables.d/#{table}" do
-    mode 0o700
+    mode '700'
   end
 
   # Create default policies unless they exist
