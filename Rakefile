@@ -5,10 +5,7 @@ RSpec::Core::RakeTask.new(:chefspec)
 
 require 'cookstyle'
 require 'rubocop/rake_task'
-RuboCop::RakeTask.new
-
-require 'foodcritic'
-FoodCritic::Rake::LintTask.new
+RuboCop::RakeTask.new(:cookstyle)
 
 begin
   require 'kitchen/rake_tasks'
@@ -17,5 +14,5 @@ rescue
   puts '>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
 end
 
-task default: %w(rubocop foodcritic chefspec)
+task default: %w(cookstyle chefspec)
 task all: %w(default kitchen:all)
