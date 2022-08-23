@@ -6,7 +6,7 @@ description      'Installs/Configures iptables-ng'
 source_url       'https://github.com/chr4-cookbooks/iptables-ng'
 issues_url       'https://github.com/chr4-cookbooks/iptables-ng/issues'
 version          '4.0.0'
-chef_version     '>= 13'
+chef_version     '>= 15.3'
 
 %w(ubuntu debian
    redhat centos amazon suse scientific

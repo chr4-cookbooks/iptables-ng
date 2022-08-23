@@ -18,6 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+unified_mode true
+
 actions        :create, :create_if_missing, :delete
 default_action :create
 
