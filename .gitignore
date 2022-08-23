@@ -1,4 +1,6 @@
 .vagrant
+Berksfile.lock
+Gemfile.lock
 .bundle
 .cache
 .kitchen
