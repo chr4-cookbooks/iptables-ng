@@ -11,6 +11,9 @@ provisioner:
   product_name: chef
   # product_version: 13 # default is 'latest', uncomment to test old Chef version
 
+verifier:
+  name: inspec
+
 platforms:
 - name: ubuntu-16.04
 - name: ubuntu-18.04
@@ -22,49 +25,38 @@ platforms:
 suites:
   - name: lwrp_chain_create_default
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_chain_create_default]
   - name: lwrp_chain_create_custom
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_chain_create_custom]
   - name: lwrp_chain_create_if_missing
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_chain_create_if_missing]
   - name: lwrp_chain_create_empty
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_chain_create_empty]
 
   - name: lwrp_rule_create_default
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_rule_create_default]
   - name: lwrp_rule_create_custom
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_rule_create_custom]
   - name: lwrp_rule_create_custom_chain
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_rule_create_custom_chain]
   - name: lwrp_rule_create_if_missing
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_rule_create_if_missing]
   - name: lwrp_rule_delete
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_rule_delete]
   - name: lwrp_rule_check_order
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::lwrp_rule_check_order]
 
-  - name: recipe_default
+  - name: default
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::recipe_default]
     attributes:
       iptables-ng:
@@ -89,14 +81,12 @@ suites:
             FORWARD:
               default: 'DROP [0:0]'
 
-  - name: recipe_install
+  - name: install
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::recipe_install]
 
   - name: attribute_enabled_tables
     run_list:
-    - recipe[minitest-handler]
     - recipe[iptables_ng_test::attribute_enabled_tables]
     attributes:
       iptables-ng:
