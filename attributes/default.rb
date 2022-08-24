@@ -35,11 +35,7 @@ default['iptables-ng']['managed_service'] = true
 default['iptables-ng']['auto_prune_attribute_rules'] = false
 
 # Enable nat support for ipv6
-# Older distributions do not support ipv6 nat, but recent Ubuntu does
-default['iptables-ng']['ip6tables_nat_support'] = value_for_platform(
-  'ubuntu' => { '14.04' => true, '14.10' => true, 'default' => false },
-  'default' => false,
-)
+default['iptables-ng']['ip6tables_nat_support'] = true
 
 # Packages to install
 default['iptables-ng']['packages'] =
