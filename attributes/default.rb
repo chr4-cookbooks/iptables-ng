@@ -59,33 +59,14 @@ default['iptables-ng']['packages'] =
 # rubocop:disable Style/IdenticalConditionalBranches
 case node['platform']
 when 'debian'
-  # Debian squeeze (and before) only support an outdated version
-  # of iptables-persistent, which is not capable of ipv6.
-  # Furthermore, restarting the service doesn't properly reload the rules
-  if node['platform_version'].to_f >= 8.0
-    default['iptables-ng']['service_ipv4'] = 'netfilter-persistent'
-    default['iptables-ng']['service_ipv6'] = 'netfilter-persistent'
-  elsif node['platform_version'].to_f >= 7.0
-    default['iptables-ng']['service_ipv4'] = 'iptables-persistent'
-    default['iptables-ng']['service_ipv6'] = 'iptables-persistent'
-  end
-
-  if node['platform_version'].to_f < 7.0
-    default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules'
-    default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
-  else
-    default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules.v4'
-    default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
-  end
+  default['iptables-ng']['service_ipv4'] = 'netfilter-persistent'
+  default['iptables-ng']['service_ipv6'] = 'netfilter-persistent'
+  default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules.v4'
+  default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
 
 when 'ubuntu'
-  if node['platform_version'].to_f >= 14.10
-    default['iptables-ng']['service_ipv4'] = 'netfilter-persistent'
-    default['iptables-ng']['service_ipv6'] = 'netfilter-persistent'
-  else
-    default['iptables-ng']['service_ipv4'] = 'iptables-persistent'
-    default['iptables-ng']['service_ipv6'] = 'iptables-persistent'
-  end
+  default['iptables-ng']['service_ipv4'] = 'netfilter-persistent'
+  default['iptables-ng']['service_ipv6'] = 'netfilter-persistent'
   default['iptables-ng']['script_ipv4'] = '/etc/iptables/rules.v4'
   default['iptables-ng']['script_ipv6'] = '/etc/iptables/rules.v6'
 
