@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: iptables-ng
+# Cookbook:: iptables-ng
 # Provider:: rule
 #
-# Copyright 2012, Chris Aumann
+# Copyright:: 2012, Chris Aumann
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -48,14 +48,14 @@ def edit_rule(exec_action)
       path   ::File.dirname(rule_path)
       owner  'root'
       group  node['root_group']
-      mode   0o700
+      mode   '700'
       not_if { exec_action == :delete }
     end
 
     file new_resource.path_for_ip_version(ip_version) do
       owner    'root'
       group    node['root_group']
-      mode     0o600
+      mode     '600'
       content  rule_content
       notifies :run, 'ruby_block[create_rules]', :delayed
       notifies :run, 'ruby_block[restart_iptables]', :delayed

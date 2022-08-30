@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: iptables-ng
+# Cookbook:: iptables-ng
 # Provider:: chain
 #
-# Copyright 2012, Chris Aumann
+# Copyright:: 2012, Chris Aumann
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ def edit_chain(exec_action)
     path   ::File.dirname(chain_path)
     owner  'root'
     group  node['root_group']
-    mode   0o700
+    mode   '700'
     not_if { exec_action == :delete }
   end
 
@@ -58,7 +58,7 @@ def edit_chain(exec_action)
     path     chain_path
     owner    'root'
     group    node['root_group']
-    mode     0o600
+    mode     '600'
     content  "#{policy}\n"
     notifies :run, 'ruby_block[create_rules]', :delayed
     notifies :run, 'ruby_block[restart_iptables]', :delayed

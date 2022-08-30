@@ -1,6 +1,9 @@
 # iptables-ng Cookbook
 
-[![Build Status](https://travis-ci.org/chr4-cookbooks/iptables-ng.svg?branch=master)](https://travis-ci.org/chr4-cookbooks/iptables-ng)
+![Build Status](https://github.com/chr4-cookbooks/iptables-ng/actions/workflows/chef.yml/badge.svg)
+
+[![Cookbook Version](https://img.shields.io/cookbook/v/iptables-ng.svg)](https://supermarket.chef.io/cookbooks/iptables-ng)
+
 
 This cookbook maintains and installs iptables and ip6tables rules, trying to keep as close to the way the used distribution maintains their rules.
 
@@ -30,9 +33,9 @@ I also wrote a [blog post](https://chr4.org/blog/2013/09/13/iptables-ng-cookbook
 
 The following distribution are best supported, but as this recipe falls back to a generic iptables restore script in case the system is unknown, it should work with every linux distribution supporting iptables.
 
-* Ubuntu 16.04, 18.04
-* Debian 8, 9
-* RHEL 6, 7
+* Ubuntu
+* Debian
+* RHEL
 * Gentoo
 * Archlinux
 
@@ -298,7 +301,7 @@ Contributions of any sort are very welcome!
 
 Authors: Chris Aumann
 
-Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot, Sten Spans, Cédric Félizard
+Contributors: Dan Fruehauf, Nathan Williams, Christian Graf, James Le Cuirot, Sten Spans, Cédric Félizard, Hans Rakers
 
 
 ## Other licenses than GPLv3

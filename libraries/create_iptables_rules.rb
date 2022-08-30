@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: iptables-ng
+# Cookbook:: iptables-ng
 # Recipe:: manage
 #
-# Copyright 2013, Chris Aumann
+# Copyright:: 2013, Chris Aumann
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ module Iptables
       # as well as default policies
       Dir["/etc/iptables.d/*/*/*.rule_v#{ip_version}",
           '/etc/iptables.d/*/*/default'].each do |path|
-
         # /etc/iptables.d/#{table}/#{chain}/#{rule}.rule_v#{ip_version}
         table, chain, filename = path.split('/')[3..5]
         rule = ::File.basename(filename)

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: iptables
+# Cookbook:: iptables
 # Resource:: rule
 #
-# Copyright 2012, Chris Aumann
+# Copyright:: 2012, Chris Aumann
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+unified_mode true
 
 actions        :create, :create_if_missing, :delete
 default_action :create
