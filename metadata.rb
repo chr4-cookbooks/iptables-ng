@@ -5,7 +5,7 @@ license          'GPL-3.0-or-later'
 description      'Installs/Configures iptables-ng'
 source_url       'https://github.com/chr4-cookbooks/iptables-ng'
 issues_url       'https://github.com/chr4-cookbooks/iptables-ng/issues'
-version          '4.0.0'
+version          '4.1.0'
 chef_version     '>= 15.3'
 
 %w(ubuntu debian

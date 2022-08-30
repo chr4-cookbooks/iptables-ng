@@ -3,6 +3,18 @@ iptables-ng CHANGELOG
 
 This file is used to list changes made in each version of the iptables-ng cookbook.
 
+4.1.0
+-----
+
+- Remove deprecated foodcritic linting
+- Apply cookstyle linting fixes
+- Enable unified_mode
+- Rewrite tests to Inspec, remove deprecated minitest
+- Remove logic for EOL distros
+- Update kitchen test platforms
+- Support Github Actions for integration tests
+
+
 4.0.0
 -----
 
