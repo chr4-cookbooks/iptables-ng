@@ -1,11 +1,7 @@
 script_ipv4 = case os.family
-              when 'arch'
-                '/etc/iptables/iptables.rules'
               when 'debian'
                 '/etc/iptables/rules.v4'
-              when 'gentoo'
-                '/var/lib/iptables/rules-save'
-              when 'rhel'
+              when 'redhat'
                 '/etc/sysconfig/iptables'
               else
                 '/etc/iptables-rules.ipt'
